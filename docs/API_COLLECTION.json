@@ -1,0 +1,529 @@
+{
+  "info": {
+    "name": "Dom Product API",
+    "description": "Complete API collection for domproduct.uz",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    {
+      "key": "base_url",
+      "value": "http://localhost:8000",
+      "type": "string"
+    },
+    {
+      "key": "production_url",
+      "value": "https://api.domproduct.uz",
+      "type": "string"
+    },
+    {
+      "key": "auth_token",
+      "value": "",
+      "type": "string"
+    }
+  ],
+  "item": [
+    {
+      "name": "🔐 Authentication",
+      "item": [
+        {
+          "name": "Register",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Test User\",\n  \"email\": \"test@example.com\",\n  \"password\": \"password\",\n  \"password_confirmation\": \"password\",\n  \"phone\": \"+998901234567\",\n  \"role\": \"customer\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/auth/register",
+              "host": ["{{base_url}}"],
+              "path": ["auth", "register"]
+            }
+          }
+        },
+        {
+          "name": "Login",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"admin@test.com\",\n  \"password\": \"password\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/auth/login",
+              "host": ["{{base_url}}"],
+              "path": ["auth", "login"]
+            }
+          }
+        },
+        {
+          "name": "Get User Profile",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{auth_token}}"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/auth/user",
+              "host": ["{{base_url}}"],
+              "path": ["auth", "user"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "🌐 Languages",
+      "item": [
+        {
+          "name": "Get All Languages",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/v1/languages",
+              "host": ["{{base_url}}"],
+              "path": ["v1", "languages"]
+            }
+          }
+        },
+        {
+          "name": "Get Default Language",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/v1/languages/default",
+              "host": ["{{base_url}}"],
+              "path": ["v1", "languages", "default"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "🏷️ Categories",
+      "item": [
+        {
+          "name": "Get All Categories",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept-Language",
+                "value": "uz"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/v1/categories",
+              "host": ["{{base_url}}"],
+              "path": ["v1", "categories"]
+            }
+          }
+        },
+        {
+          "name": "Get Category Tree",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept-Language",
+                "value": "uz"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/v1/categories/tree",
+              "host": ["{{base_url}}"],
+              "path": ["v1", "categories", "tree"]
+            }
+          }
+        },
+        {
+          "name": "Get Category by ID",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept-Language",
+                "value": "uz"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/v1/categories/1",
+              "host": ["{{base_url}}"],
+              "path": ["v1", "categories", "1"]
+            }
+          }
+        },
+        {
+          "name": "Get Category by Slug",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept-Language",
+                "value": "uz"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/v1/categories/slug/sabzavotlar",
+              "host": ["{{base_url}}"],
+              "path": ["v1", "categories", "slug", "sabzavotlar"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "📦 Products",
+      "item": [
+        {
+          "name": "Get All Products",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept-Language",
+                "value": "uz"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/v1/products?per_page=10&sort_by=created_at&sort_order=desc",
+              "host": ["{{base_url}}"],
+              "path": ["v1", "products"],
+              "query": [
+                {
+                  "key": "per_page",
+                  "value": "10"
+                },
+                {
+                  "key": "sort_by",
+                  "value": "created_at"
+                },
+                {
+                  "key": "sort_order",
+                  "value": "desc"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Get Featured Products",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept-Language",
+                "value": "uz"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/v1/products/featured?limit=5",
+              "host": ["{{base_url}}"],
+              "path": ["v1", "products", "featured"],
+              "query": [
+                {
+                  "key": "limit",
+                  "value": "5"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Get Product by ID",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept-Language",
+                "value": "uz"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/v1/products/1",
+              "host": ["{{base_url}}"],
+              "path": ["v1", "products", "1"]
+            }
+          }
+        },
+        {
+          "name": "Search Products",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept-Language",
+                "value": "uz"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/v1/products?search=pomidor&category_id=1&min_price=10000&max_price=20000",
+              "host": ["{{base_url}}"],
+              "path": ["v1", "products"],
+              "query": [
+                {
+                  "key": "search",
+                  "value": "pomidor"
+                },
+                {
+                  "key": "category_id",
+                  "value": "1"
+                },
+                {
+                  "key": "min_price",
+                  "value": "10000"
+                },
+                {
+                  "key": "max_price",
+                  "value": "20000"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Get Products by Category",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept-Language",
+                "value": "uz"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/v1/products/category/1?include_subcategories=true",
+              "host": ["{{base_url}}"],
+              "path": ["v1", "products", "category", "1"],
+              "query": [
+                {
+                  "key": "include_subcategories",
+                  "value": "true"
+                }
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "👨‍💼 Admin - Categories",
+      "item": [
+        {
+          "name": "Get Admin Categories",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{auth_token}}"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/admin/categories",
+              "host": ["{{base_url}}"],
+              "path": ["admin", "categories"]
+            }
+          }
+        },
+        {
+          "name": "Create Category",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{auth_token}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"parent_id\": null,\n  \"icon\": \"🍎\",\n  \"sort_order\": 1,\n  \"is_active\": true,\n  \"translations\": [\n    {\n      \"language_id\": 1,\n      \"name\": \"Test Category\",\n      \"description\": \"Test category description\",\n      \"meta_title\": \"Test Category Meta\",\n      \"meta_description\": \"Test category meta description\"\n    }\n  ]\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/admin/categories",
+              "host": ["{{base_url}}"],
+              "path": ["admin", "categories"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "👨‍💼 Admin - Products",
+      "item": [
+        {
+          "name": "Get Admin Products",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{auth_token}}"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/admin/products?status=active&search=&per_page=15",
+              "host": ["{{base_url}}"],
+              "path": ["admin", "products"],
+              "query": [
+                {
+                  "key": "status",
+                  "value": "active"
+                },
+                {
+                  "key": "search",
+                  "value": ""
+                },
+                {
+                  "key": "per_page",
+                  "value": "15"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Create Product",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{auth_token}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"sku\": \"TEST-001\",\n  \"category_id\": 1,\n  \"price\": 25000,\n  \"sale_price\": 20000,\n  \"stock_quantity\": 50,\n  \"min_stock_level\": 5,\n  \"weight\": 0.5,\n  \"is_active\": true,\n  \"is_featured\": true,\n  \"published_at\": \"2025-07-31T00:00:00Z\",\n  \"translations\": [\n    {\n      \"language\": \"uz\",\n      \"name\": \"Test Product\",\n      \"short_description\": \"Test product description\",\n      \"description\": \"Detailed test product description\",\n      \"specifications\": {\"origin\": \"Local\"},\n      \"features\": [\"Fresh\", \"Organic\"]\n    }\n  ]\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/admin/products",
+              "host": ["{{base_url}}"],
+              "path": ["admin", "products"]
+            }
+          }
+        },
+        {
+          "name": "Product Statistics",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{auth_token}}"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/admin/products/statistics",
+              "host": ["{{base_url}}"],
+              "path": ["admin", "products", "statistics"]
+            }
+          }
+        }
+      ]
+    }
+  ]
+}

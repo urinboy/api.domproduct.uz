@@ -1,0 +1,623 @@
+{
+  "info": {
+    "name": "Product Delivery API - Languages & Translations",
+    "description": "Mahsulot yetkazib berish API - Tillar va Tarjimalar",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "Languages",
+      "item": [
+        {
+          "name": "1. Get All Languages (Barcha tillar)",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/v1/languages",
+              "host": ["{{base_url}}"],
+              "path": ["v1", "languages"]
+            }
+          },
+          "response": [
+            {
+              "name": "Success Response",
+              "originalRequest": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{base_url}}/v1/languages",
+                  "host": ["{{base_url}}"],
+                  "path": ["v1", "languages"]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [],
+              "body": "{\n  \"success\": true,\n  \"data\": [\n    {\n      \"id\": 1,\n      \"name\": \"O'zbek\",\n      \"code\": \"uz\",\n      \"flag\": \"🇺🇿\",\n      \"is_active\": true,\n      \"is_default\": true,\n      \"sort_order\": 1,\n      \"created_at\": \"2025-07-30T10:00:00.000000Z\",\n      \"updated_at\": \"2025-07-30T10:00:00.000000Z\"\n    },\n    {\n      \"id\": 2,\n      \"name\": \"English\",\n      \"code\": \"en\",\n      \"flag\": \"🇺🇸\",\n      \"is_active\": true,\n      \"is_default\": false,\n      \"sort_order\": 2,\n      \"created_at\": \"2025-07-30T10:00:00.000000Z\",\n      \"updated_at\": \"2025-07-30T10:00:00.000000Z\"\n    },\n    {\n      \"id\": 3,\n      \"name\": \"Русский\",\n      \"code\": \"ru\",\n      \"flag\": \"🇷🇺\",\n      \"is_active\": true,\n      \"is_default\": false,\n      \"sort_order\": 3,\n      \"created_at\": \"2025-07-30T10:00:00.000000Z\",\n      \"updated_at\": \"2025-07-30T10:00:00.000000Z\"\n    }\n  ]\n}"
+            }
+          ]
+        },
+        {
+          "name": "2. Get Active Languages Only (Faqat faol tillar)",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/v1/languages?active_only=true",
+              "host": ["{{base_url}}"],
+              "path": ["v1", "languages"],
+              "query": [
+                {
+                  "key": "active_only",
+                  "value": "true"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "3. Get Default Language (Asosiy til)",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/v1/languages/default",
+              "host": ["{{base_url}}"],
+              "path": ["v1", "languages", "default"]
+            }
+          },
+          "response": [
+            {
+              "name": "Success Response",
+              "originalRequest": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{base_url}}/v1/languages/default",
+                  "host": ["{{base_url}}"],
+                  "path": ["v1", "languages", "default"]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [],
+              "body": "{\n  \"success\": true,\n  \"data\": {\n    \"id\": 1,\n    \"name\": \"O'zbek\",\n    \"code\": \"uz\",\n    \"flag\": \"🇺🇿\",\n    \"is_active\": true,\n    \"is_default\": true,\n    \"sort_order\": 1,\n    \"created_at\": \"2025-07-30T10:00:00.000000Z\",\n    \"updated_at\": \"2025-07-30T10:00:00.000000Z\"\n  }\n}"
+            }
+          ]
+        },
+        {
+          "name": "4. Get Single Language (Bitta til)",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/v1/languages/1",
+              "host": ["{{base_url}}"],
+              "path": ["v1", "languages", "1"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Translations (Public)",
+      "item": [
+        {
+          "name": "1. Get All Translations by Language (Til bo'yicha barcha tarjimalar)",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/v1/translations/uz",
+              "host": ["{{base_url}}"],
+              "path": ["v1", "translations", "uz"]
+            }
+          },
+          "response": [
+            {
+              "name": "Success Response - Uzbek",
+              "originalRequest": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{base_url}}/v1/translations/uz",
+                  "host": ["{{base_url}}"],
+                  "path": ["v1", "translations", "uz"]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [],
+              "body": "{\n  \"success\": true,\n  \"language\": {\n    \"id\": 1,\n    \"name\": \"O'zbek\",\n    \"code\": \"uz\",\n    \"flag\": \"🇺🇿\",\n    \"is_active\": true,\n    \"is_default\": true,\n    \"sort_order\": 1\n  },\n  \"translations\": {\n    \"welcome\": \"Xush kelibsiz\",\n    \"hello\": \"Salom\",\n    \"goodbye\": \"Xayr\",\n    \"yes\": \"Ha\",\n    \"no\": \"Yo'q\",\n    \"save\": \"Saqlash\",\n    \"cancel\": \"Bekor qilish\",\n    \"delete\": \"O'chirish\",\n    \"edit\": \"Tahrirlash\",\n    \"add\": \"Qo'shish\",\n    \"menu.home\": \"Bosh sahifa\",\n    \"menu.categories\": \"Kategoriyalar\",\n    \"menu.products\": \"Mahsulotlar\",\n    \"menu.cart\": \"Savatcha\",\n    \"menu.orders\": \"Buyurtmalar\",\n    \"menu.profile\": \"Profil\",\n    \"auth.login\": \"Kirish\",\n    \"auth.register\": \"Ro'yxatdan o'tish\",\n    \"auth.logout\": \"Chiqish\",\n    \"auth.email\": \"Email\",\n    \"auth.password\": \"Parol\",\n    \"auth.first_name\": \"Ism\",\n    \"auth.last_name\": \"Familiya\",\n    \"auth.phone\": \"Telefon\",\n    \"product.breakfast\": \"Nonushta\",\n    \"product.lunch\": \"Tushlik\",\n    \"product.dinner\": \"Kechki ovqat\",\n    \"product.pizza\": \"Pitsa\",\n    \"product.burger\": \"Burger\",\n    \"product.drinks\": \"Ichimliklar\",\n    \"product.desserts\": \"Shirinliklar\",\n    \"order.total\": \"Jami\",\n    \"order.delivery\": \"Yetkazib berish\",\n    \"order.pickup\": \"Olib ketish\",\n    \"order.status\": \"Holati\",\n    \"order.pending\": \"Kutilmoqda\",\n    \"order.confirmed\": \"Tasdiqlangan\",\n    \"order.preparing\": \"Tayyorlanmoqda\",\n    \"order.delivered\": \"Yetkazildi\",\n    \"address.city\": \"Shahar\",\n    \"address.district\": \"Tuman\",\n    \"address.street\": \"Ko'cha\",\n    \"address.house\": \"Uy\"\n  }\n}"
+            }
+          ]
+        },
+        {
+          "name": "2. Get Translations by Language - English",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/v1/translations/en",
+              "host": ["{{base_url}}"],
+              "path": ["v1", "translations", "en"]
+            }
+          }
+        },
+        {
+          "name": "3. Get Translations by Language - Russian",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/v1/translations/ru",
+              "host": ["{{base_url}}"],
+              "path": ["v1", "translations", "ru"]
+            }
+          }
+        },
+        {
+          "name": "4. Get Translations by Group - Menu (Guruh bo'yicha: Menu)",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/v1/translations/uz/menu",
+              "host": ["{{base_url}}"],
+              "path": ["v1", "translations", "uz", "menu"]
+            }
+          },
+          "response": [
+            {
+              "name": "Success Response",
+              "originalRequest": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{base_url}}/v1/translations/uz/menu",
+                  "host": ["{{base_url}}"],
+                  "path": ["v1", "translations", "uz", "menu"]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [],
+              "body": "{\n  \"success\": true,\n  \"language\": {\n    \"id\": 1,\n    \"name\": \"O'zbek\",\n    \"code\": \"uz\",\n    \"flag\": \"🇺🇿\",\n    \"is_active\": true,\n    \"is_default\": true,\n    \"sort_order\": 1\n  },\n  \"group\": \"menu\",\n  \"translations\": {\n    \"menu.home\": \"Bosh sahifa\",\n    \"menu.categories\": \"Kategoriyalar\",\n    \"menu.products\": \"Mahsulotlar\",\n    \"menu.cart\": \"Savatcha\",\n    \"menu.orders\": \"Buyurtmalar\",\n    \"menu.profile\": \"Profil\"\n  }\n}"
+            }
+          ]
+        },
+        {
+          "name": "5. Get Translations by Group - Auth (Guruh bo'yicha: Auth)",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/v1/translations/en/auth",
+              "host": ["{{base_url}}"],
+              "path": ["v1", "translations", "en", "auth"]
+            }
+          }
+        },
+        {
+          "name": "6. Get Translations by Group - Product (Guruh bo'yicha: Product)",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/v1/translations/ru/product",
+              "host": ["{{base_url}}"],
+              "path": ["v1", "translations", "ru", "food"]
+            }
+          }
+        },
+        {
+          "name": "7. Get Translations by Group - Order (Guruh bo'yicha: Order)",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/v1/translations/uz/order",
+              "host": ["{{base_url}}"],
+              "path": ["v1", "translations", "uz", "order"]
+            }
+          }
+        },
+        {
+          "name": "8. Get Translations by Group - Address (Guruh bo'yicha: Address)",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/v1/translations/en/address",
+              "host": ["{{base_url}}"],
+              "path": ["v1", "translations", "en", "address"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Admin - Languages (Auth Required)",
+      "item": [
+        {
+          "name": "1. Create New Language (Yangi til qo'shish)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json",
+                "type": "text"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{admin_token}}",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Türkçe\",\n  \"code\": \"tr\",\n  \"flag\": \"🇹🇷\",\n  \"is_active\": true,\n  \"is_default\": false,\n  \"sort_order\": 4\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/admin/languages",
+              "host": ["{{base_url}}"],
+              "path": ["admin", "languages"]
+            }
+          }
+        },
+        {
+          "name": "2. Update Language (Tilni yangilash)",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json",
+                "type": "text"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{admin_token}}",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"English (Updated)\",\n  \"is_active\": true,\n  \"sort_order\": 1\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/admin/languages/2",
+              "host": ["{{base_url}}"],
+              "path": ["admin", "languages", "2"]
+            }
+          }
+        },
+        {
+          "name": "3. Delete Language (Tilni o'chirish)",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json",
+                "type": "text"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{admin_token}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/admin/languages/4",
+              "host": ["{{base_url}}"],
+              "path": ["admin", "languages", "4"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Admin - Translations (Auth Required)",
+      "item": [
+        {
+          "name": "1. Get All Translations (Admin) - Paginated",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json",
+                "type": "text"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{admin_token}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/admin/translations?per_page=20&language_code=uz&group=menu",
+              "host": ["{{base_url}}"],
+              "path": ["admin", "translations"],
+              "query": [
+                {
+                  "key": "per_page",
+                  "value": "20"
+                },
+                {
+                  "key": "language_code",
+                  "value": "uz"
+                },
+                {
+                  "key": "group",
+                  "value": "menu"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "2. Create New Translation (Yangi tarjima qo'shish)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json",
+                "type": "text"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{admin_token}}",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"key\": \"app.title\",\n  \"value\": \"Mahsulot yetkazib berish\",\n  \"language_id\": 1,\n  \"group\": \"general\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/admin/translations",
+              "host": ["{{base_url}}"],
+              "path": ["admin", "translations"]
+            }
+          }
+        },
+        {
+          "name": "3. Get Single Translation (Bitta tarjima)",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json",
+                "type": "text"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{admin_token}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/admin/translations/1",
+              "host": ["{{base_url}}"],
+              "path": ["admin", "translations", "1"]
+            }
+          }
+        },
+        {
+          "name": "4. Update Translation (Tarjimani yangilash)",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json",
+                "type": "text"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{admin_token}}",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"value\": \"Yangilangan tarjima\",\n  \"group\": \"updated_group\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/admin/translations/1",
+              "host": ["{{base_url}}"],
+              "path": ["admin", "translations", "1"]
+            }
+          }
+        },
+        {
+          "name": "5. Delete Translation (Tarjimani o'chirish)",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json",
+                "type": "text"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{admin_token}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/admin/translations/100",
+              "host": ["{{base_url}}"],
+              "path": ["admin", "translations", "100"]
+            }
+          }
+        },
+        {
+          "name": "6. Bulk Upsert Translations (Ko'p tarjima qo'shish/yangilash)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json",
+                "type": "text"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{admin_token}}",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"language_id\": 1,\n  \"translations\": [\n    {\n      \"key\": \"app.name\",\n      \"value\": \"Taom yetkazish\",\n      \"group\": \"general\"\n    },\n    {\n      \"key\": \"app.version\",\n      \"value\": \"1.0.0\",\n      \"group\": \"general\"\n    },\n    {\n      \"key\": \"button.submit\",\n      \"value\": \"Yuborish\",\n      \"group\": \"forms\"\n    }\n  ]\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/admin/translations/bulk-upsert",
+              "host": ["{{base_url}}"],
+              "path": ["admin", "translations", "bulk-upsert"]
+            }
+          },
+          "response": [
+            {
+              "name": "Success Response",
+              "originalRequest": {
+                "method": "POST",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": ""
+                },
+                "url": {
+                  "raw": "{{base_url}}/admin/translations/bulk-upsert",
+                  "host": ["{{base_url}}"],
+                  "path": ["admin", "translations", "bulk-upsert"]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [],
+              "body": "{\n  \"success\": true,\n  \"message\": \"Tarjimalar muvaffaqiyatli saqlandi\",\n  \"statistics\": {\n    \"created\": 2,\n    \"updated\": 1,\n    \"total\": 3\n  }\n}"
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "variable": [
+    {
+      "key": "base_url",
+      "value": "http://127.0.0.1:8000",
+      "description": "API base URL"
+    },
+    {
+      "key": "admin_token",
+      "value": "",
+      "description": "Admin access token (login orqali olinadi)"
+    }
+  ]
+}

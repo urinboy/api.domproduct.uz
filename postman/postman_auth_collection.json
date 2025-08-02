@@ -1,0 +1,300 @@
+{
+  "info": {
+    "name": "Product Delivery API - Auth",
+    "description": "Mahsulot yetkazib berish API - Authentication endpoints",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "1. Register (Ro'yxatdan o'tish)",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Accept",
+            "value": "application/json",
+            "type": "text"
+          },
+          {
+            "key": "Content-Type",
+            "value": "application/json",
+            "type": "text"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"first_name\": \"Urinboy\",\n  \"last_name\": \"Raximov\",\n  \"email\": \"urinboy@example.com\",\n  \"phone\": \"+998901234567\",\n  \"password\": \"123456\",\n  \"password_confirmation\": \"123456\",\n  \"birth_date\": \"1995-01-15\",\n  \"gender\": \"male\",\n  \"address\": \"Toshkent shahri, Yunusobod tumani, 4-kvartal\",\n  \"city\": \"Toshkent\",\n  \"district\": \"Yunusobod\",\n  \"postal_code\": \"100084\",\n  \"latitude\": 41.2995,\n  \"longitude\": 69.2401,\n  \"preferred_language_id\": 1\n}"
+        },
+        "url": {
+          "raw": "http://127.0.0.1:8000/v1/register",
+          "protocol": "http",
+          "host": ["127", "0", "0", "1"],
+          "port": "8000",
+          "path": ["v1", "register"]
+        }
+      },
+      "response": [
+        {
+          "name": "Success Response",
+          "originalRequest": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": ""
+            },
+            "url": {
+              "raw": "http://127.0.0.1:8000/v1/register",
+              "protocol": "http",
+              "host": ["127", "0", "0", "1"],
+              "port": "8000",
+              "path": ["v1", "register"]
+            }
+          },
+          "status": "Created",
+          "code": 201,
+          "header": [],
+          "body": "{\n  \"success\": true,\n  \"user\": {\n    \"id\": 1,\n    \"first_name\": \"Urinboy\",\n    \"last_name\": \"Raximov\",\n    \"email\": \"urinboy@example.com\",\n    \"phone\": \"+998901234567\",\n    \"birth_date\": \"1995-01-15\",\n    \"gender\": \"male\",\n    \"address\": \"Toshkent shahri, Yunusobod tumani, 4-kvartal\",\n    \"city\": \"Toshkent\",\n    \"district\": \"Yunusobod\",\n    \"postal_code\": \"100084\",\n    \"latitude\": \"41.29950000\",\n    \"longitude\": \"69.24010000\",\n    \"role\": \"customer\",\n    \"avatar\": null,\n    \"preferred_language_id\": 1,\n    \"email_verified\": false,\n    \"phone_verified\": false,\n    \"is_active\": true,\n    \"last_login_at\": null,\n    \"preferences\": null,\n    \"created_at\": \"2025-07-29T10:30:00.000000Z\",\n    \"updated_at\": \"2025-07-29T10:30:00.000000Z\"\n  },\n  \"token\": \"1|randomTokenString123456789\"\n}"
+        }
+      ]
+    },
+    {
+      "name": "2. Login (Kirish)",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Accept",
+            "value": "application/json",
+            "type": "text"
+          },
+          {
+            "key": "Content-Type",
+            "value": "application/json",
+            "type": "text"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"email\": \"urinboy@example.com\",\n  \"password\": \"123456\"\n}"
+        },
+        "url": {
+          "raw": "http://127.0.0.1:8000/v1/login",
+          "protocol": "http",
+          "host": ["127", "0", "0", "1"],
+          "port": "8000",
+          "path": ["v1", "login"]
+        }
+      },
+      "response": [
+        {
+          "name": "Success Response",
+          "originalRequest": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": ""
+            },
+            "url": {
+              "raw": "http://127.0.0.1:8000/v1/login",
+              "protocol": "http",
+              "host": ["127", "0", "0", "1"],
+              "port": "8000",
+              "path": ["v1", "login"]
+            }
+          },
+          "status": "OK",
+          "code": 200,
+          "header": [],
+          "body": "{\n  \"success\": true,\n  \"user\": {\n    \"id\": 1,\n    \"first_name\": \"Urinboy\",\n    \"last_name\": \"Raximov\",\n    \"email\": \"urinboy@example.com\",\n    \"phone\": \"+998901234567\",\n    \"role\": \"customer\",\n    \"is_active\": true,\n    \"last_login_at\": \"2025-07-29T10:35:00.000000Z\"\n  },\n  \"token\": \"2|newRandomTokenString987654321\"\n}"
+        },
+        {
+          "name": "Error Response",
+          "originalRequest": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": ""
+            },
+            "url": {
+              "raw": "http://127.0.0.1:8000/v1/login",
+              "protocol": "http",
+              "host": ["127", "0", "0", "1"],
+              "port": "8000",
+              "path": ["v1", "login"]
+            }
+          },
+          "status": "Unauthorized",
+          "code": 401,
+          "header": [],
+          "body": "{\n  \"success\": false,\n  \"message\": \"Login yoki parol xato\"\n}"
+        }
+      ]
+    },
+    {
+      "name": "3. Me (Foydalanuvchi ma'lumotlari)",
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Accept",
+            "value": "application/json",
+            "type": "text"
+          },
+          {
+            "key": "Authorization",
+            "value": "Bearer {{token}}",
+            "type": "text",
+            "description": "Login yoki register dan olingan token"
+          }
+        ],
+        "url": {
+          "raw": "http://127.0.0.1:8000/v1/me",
+          "protocol": "http",
+          "host": ["127", "0", "0", "1"],
+          "port": "8000",
+          "path": ["v1", "me"]
+        }
+      },
+      "response": [
+        {
+          "name": "Success Response",
+          "originalRequest": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://127.0.0.1:8000/v1/me",
+              "protocol": "http",
+              "host": ["127", "0", "0", "1"],
+              "port": "8000",
+              "path": ["v1", "me"]
+            }
+          },
+          "status": "OK",
+          "code": 200,
+          "header": [],
+          "body": "{\n  \"success\": true,\n  \"user\": {\n    \"id\": 1,\n    \"first_name\": \"Urinboy\",\n    \"last_name\": \"Raximov\",\n    \"email\": \"urinboy@example.com\",\n    \"phone\": \"+998901234567\",\n    \"birth_date\": \"1995-01-15\",\n    \"gender\": \"male\",\n    \"address\": \"Toshkent shahri, Yunusobod tumani, 4-kvartal\",\n    \"city\": \"Toshkent\",\n    \"district\": \"Yunusobod\",\n    \"postal_code\": \"100084\",\n    \"latitude\": \"41.29950000\",\n    \"longitude\": \"69.24010000\",\n    \"role\": \"customer\",\n    \"avatar\": null,\n    \"preferred_language_id\": 1,\n    \"email_verified\": false,\n    \"phone_verified\": false,\n    \"is_active\": true,\n    \"last_login_at\": \"2025-07-29T10:35:00.000000Z\",\n    \"preferences\": null,\n    \"created_at\": \"2025-07-29T10:30:00.000000Z\",\n    \"updated_at\": \"2025-07-29T10:35:00.000000Z\"\n  }\n}"
+        }
+      ]
+    },
+    {
+      "name": "4. Update Location (Joylashuvni yangilash)",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Accept",
+            "value": "application/json",
+            "type": "text"
+          },
+          {
+            "key": "Content-Type",
+            "value": "application/json",
+            "type": "text"
+          },
+          {
+            "key": "Authorization",
+            "value": "Bearer {{token}}",
+            "type": "text",
+            "description": "Login yoki register dan olingan token"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"latitude\": 41.3111,\n  \"longitude\": 69.2797,\n  \"address\": \"Toshkent shahri, Shayxontohur tumani, Bobur ko'chasi 12\",\n  \"city\": \"Toshkent\",\n  \"district\": \"Shayxontohur\",\n  \"postal_code\": \"100060\"\n}"
+        },
+        "url": {
+          "raw": "http://127.0.0.1:8000/v1/update-location",
+          "protocol": "http",
+          "host": ["127", "0", "0", "1"],
+          "port": "8000",
+          "path": ["v1", "update-location"]
+        }
+      },
+      "response": [
+        {
+          "name": "Success Response",
+          "originalRequest": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": ""
+            },
+            "url": {
+              "raw": "http://127.0.0.1:8000/v1/update-location",
+              "protocol": "http",
+              "host": ["127", "0", "0", "1"],
+              "port": "8000",
+              "path": ["v1", "update-location"]
+            }
+          },
+          "status": "OK",
+          "code": 200,
+          "header": [],
+          "body": "{\n  \"success\": true,\n  \"user\": {\n    \"id\": 1,\n    \"first_name\": \"Urinboy\",\n    \"last_name\": \"Raximov\",\n    \"email\": \"urinboy@example.com\",\n    \"latitude\": \"41.31110000\",\n    \"longitude\": \"69.27970000\",\n    \"address\": \"Toshkent shahri, Shayxontohur tumani, Bobur ko'chasi 12\",\n    \"city\": \"Toshkent\",\n    \"district\": \"Shayxontohur\",\n    \"postal_code\": \"100060\",\n    \"updated_at\": \"2025-07-29T10:40:00.000000Z\"\n  }\n}"
+        }
+      ]
+    },
+    {
+      "name": "5. Logout (Chiqish)",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Accept",
+            "value": "application/json",
+            "type": "text"
+          },
+          {
+            "key": "Authorization",
+            "value": "Bearer {{token}}",
+            "type": "text",
+            "description": "Login yoki register dan olingan token"
+          }
+        ],
+        "url": {
+          "raw": "http://127.0.0.1:8000/v1/logout",
+          "protocol": "http",
+          "host": ["127", "0", "0", "1"],
+          "port": "8000",
+          "path": ["v1", "logout"]
+        }
+      },
+      "response": [
+        {
+          "name": "Success Response",
+          "originalRequest": {
+            "method": "POST",
+            "header": [],
+            "url": {
+              "raw": "http://127.0.0.1:8000/v1/logout",
+              "protocol": "http",
+              "host": ["127", "0", "0", "1"],
+              "port": "8000",
+              "path": ["v1", "logout"]
+            }
+          },
+          "status": "OK",
+          "code": 200,
+          "header": [],
+          "body": "{\n  \"success\": true,\n  \"message\": \"Chiqildi\"\n}"
+        }
+      ]
+    }
+  ],
+  "variable": [
+    {
+      "key": "token",
+      "value": "",
+      "description": "Login yoki register dan olingan access token"
+    },
+    {
+      "key": "base_url",
+      "value": "http://127.0.0.1:8000",
+      "description": "API base URL"
+    }
+  ]
+}
