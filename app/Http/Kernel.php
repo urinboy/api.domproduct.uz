@@ -69,5 +69,6 @@ class Kernel extends HttpKernel
         'verified' => \Illuminate\Auth\Middleware\EnsureEmailIsVerified::class,
         'role' => \App\Http\Middleware\CheckRole::class,
         'rate_limit' => \App\Http\Middleware\RateLimitMiddleware::class, // Custom rate limiting
+        'admin' => \App\Http\Middleware\AdminMiddleware::class, // Admin panel middleware
     ];
 }

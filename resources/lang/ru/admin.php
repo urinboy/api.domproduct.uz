@@ -1,0 +1,161 @@
+<?php
+
+return [
+    // Dashboard
+    'dashboard' => 'Панель управления',
+    'welcome_back' => 'Добро пожаловать!',
+    'overview' => 'Обзор',
+    'statistics' => 'Статистика',
+    
+    // Navigation
+    'main_navigation' => 'Главное меню',
+    'content_management' => 'Управление контентом',
+    'system_management' => 'Управление системой',
+    'reports' => 'Отчеты',
+    'settings' => 'Настройки',
+    
+    // Users
+    'users' => 'Пользователи',
+    'user' => 'Пользователь',
+    'add_user' => 'Добавить пользователя',
+    'edit_user' => 'Редактировать пользователя',
+    'user_profile' => 'Профиль пользователя',
+    'user_roles' => 'Роли пользователей',
+    'active_users' => 'Активные пользователи',
+    'user_management' => 'Управление пользователями',
+    
+    // Categories
+    'categories' => 'Категории',
+    'category' => 'Категория',
+    'add_category' => 'Добавить категорию',
+    'edit_category' => 'Редактировать категорию',
+    'category_tree' => 'Дерево категорий',
+    'parent_category' => 'Родительская категория',
+    'subcategories' => 'Подкатегории',
+    
+    // Products
+    'products' => 'Товары',
+    'product' => 'Товар',
+    'add_product' => 'Добавить товар',
+    'edit_product' => 'Редактировать товар',
+    'product_list' => 'Список товаров',
+    'featured_products' => 'Рекомендуемые товары',
+    'product_gallery' => 'Галерея товара',
+    'inventory' => 'Инвентарь',
+    'stock_management' => 'Управление запасами',
+    
+    // Orders
+    'orders' => 'Заказы',
+    'order' => 'Заказ',
+    'order_details' => 'Детали заказа',
+    'order_status' => 'Статус заказа',
+    'order_history' => 'История заказов',
+    'pending_orders' => 'Ожидающие заказы',
+    'completed_orders' => 'Завершенные заказы',
+    
+    // Languages & Translations
+    'languages' => 'Языки',
+    'language' => 'Язык',
+    'translations' => 'Переводы',
+    'translation' => 'Перевод',
+    'add_language' => 'Добавить язык',
+    'edit_translation' => 'Редактировать перевод',
+    'multilingual' => 'Мультиязычность',
+    
+    // Actions
+    'actions' => 'Действия',
+    'add' => 'Добавить',
+    'edit' => 'Редактировать',
+    'delete' => 'Удалить',
+    'view' => 'Просмотр',
+    'save' => 'Сохранить',
+    'cancel' => 'Отмена',
+    'update' => 'Обновить',
+    'create' => 'Создать',
+    'search' => 'Поиск',
+    'filter' => 'Фильтр',
+    'export' => 'Экспорт',
+    'import' => 'Импорт',
+    'bulk_actions' => 'Групповые действия',
+    
+    // Status
+    'status' => 'Статус',
+    'active' => 'Активный',
+    'inactive' => 'Неактивный',
+    'enabled' => 'Включен',
+    'disabled' => 'Отключен',
+    'published' => 'Опубликован',
+    'draft' => 'Черновик',
+    'pending' => 'Ожидает',
+    'approved' => 'Утвержден',
+    'rejected' => 'Отклонен',
+    
+    // Common fields
+    'name' => 'Название',
+    'title' => 'Заголовок',
+    'description' => 'Описание',
+    'image' => 'Изображение',
+    'images' => 'Изображения',
+    'price' => 'Цена',
+    'quantity' => 'Количество',
+    'date' => 'Дата',
+    'created_at' => 'Создано',
+    'updated_at' => 'Обновлено',
+    'email' => 'Email',
+    'phone' => 'Телефон',
+    'address' => 'Адрес',
+    'city' => 'Город',
+    'country' => 'Страна',
+    
+    // Messages
+    'success' => 'Успех',
+    'error' => 'Ошибка',
+    'warning' => 'Предупреждение',
+    'info' => 'Информация',
+    'confirmation' => 'Подтверждение',
+    'delete_confirmation' => 'Вы уверены, что хотите удалить это?',
+    'save_success' => 'Данные успешно сохранены',
+    'update_success' => 'Данные успешно обновлены',
+    'delete_success' => 'Данные успешно удалены',
+    'action_not_allowed' => 'У вас нет прав для выполнения этого действия',
+    
+    // Pagination
+    'showing' => 'Показано',
+    'of' => 'из',
+    'results' => 'результатов',
+    'previous' => 'Предыдущая',
+    'next' => 'Следующая',
+    'first' => 'Первая',
+    'last' => 'Последняя',
+    
+    // File upload
+    'upload' => 'Загрузить',
+    'choose_file' => 'Выбрать файл',
+    'drag_drop' => 'Перетащите файл сюда',
+    'file_uploaded' => 'Файл загружен',
+    'max_file_size' => 'Максимальный размер файла',
+    
+    // Profile
+    'profile' => 'Профиль',
+    'my_profile' => 'Мой профиль',
+    'edit_profile' => 'Редактировать профиль',
+    'change_password' => 'Изменить пароль',
+    'logout' => 'Выйти',
+    
+    // Dashboard stats
+    'total_users' => 'Всего пользователей',
+    'total_products' => 'Всего товаров',
+    'total_orders' => 'Всего заказов',
+    'total_revenue' => 'Общий доход',
+    'new_orders' => 'Новые заказы',
+    'pending_orders' => 'Ожидающие заказы',
+    'low_stock' => 'Низкий запас',
+    
+    // Form validation
+    'required' => 'Это поле обязательно',
+    'email_format' => 'Неверный формат email',
+    'min_length' => 'Минимальная длина',
+    'max_length' => 'Максимальная длина',
+    'numeric' => 'Введите только цифры',
+    'unique' => 'Это значение уже существует',
+];

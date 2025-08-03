@@ -104,6 +104,12 @@ export const productService = {
     return response.data
   },
 
+  // Barcha mahsulotlarni olish (getAll alias)
+  getAll: async (params = {}) => {
+    const response = await apiClient.get('/v1/products', { params })
+    return response.data
+  },
+
   // Mahsulot bo'yicha qidirish
   searchProducts: async (query, params = {}) => {
     const response = await apiClient.get('/v1/products/search', {
@@ -147,6 +153,12 @@ export const productService = {
 export const categoryService = {
   // Barcha kategoriyalarni olish
   getCategories: async () => {
+    const response = await apiClient.get('/v1/categories')
+    return response.data
+  },
+
+  // Barcha kategoriyalarni olish (getAll alias)
+  getAll: async () => {
     const response = await apiClient.get('/v1/categories')
     return response.data
   },

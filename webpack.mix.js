@@ -11,7 +11,24 @@ const mix = require('laravel-mix');
  |
  */
 
+// Admin Panel Assets
+mix.js('resources/js/admin.js', 'public/js')
+    .postCss('resources/css/admin.css', 'public/css', [
+        require('tailwindcss'),
+        require('autoprefixer'),
+    ])
+    .options({
+        processCssUrls: false
+    });
+
+// API Documentation Assets  
 mix.js('resources/js/app.js', 'public/js')
     .postCss('resources/css/app.css', 'public/css', [
-        //
+        require('tailwindcss'),
+        require('autoprefixer'),
     ]);
+
+// Version files in production
+if (mix.inProduction()) {
+    mix.version();
+}

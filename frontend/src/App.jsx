@@ -18,6 +18,8 @@ import CartPage from './pages/CartPage'
 import ProfilePage from './pages/ProfilePage'
 import OrdersPage from './pages/OrdersPage'
 import CheckoutPage from './pages/CheckoutPage'
+import CategoriesPage from './pages/CategoriesPage'
+import AboutPage from './pages/AboutPage'
 
 // Components
 import MobileLayout from './components/layout/MobileLayout'
@@ -72,6 +74,8 @@ function App() {
                     <Route path="/reset-password" element={<ResetPasswordPage />} />
                     <Route path="/products" element={<ProductsPage />} />
                     <Route path="/products/:id" element={<ProductDetailPage />} />
+                    <Route path="/categories" element={<CategoriesPage />} />
+                    <Route path="/about" element={<AboutPage />} />
 
                     {/* Protected routes */}
                     <Route
