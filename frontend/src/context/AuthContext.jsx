@@ -1,5 +1,6 @@
 import React, { createContext, useState, useEffect } from 'react'
 import { authService } from '../services'
+import { setAuthToken } from '../services/api'
 
 export const AuthContext = createContext()
 
@@ -11,24 +12,35 @@ export const AuthProvider = ({ children }) => {
   // Sahifa yuklanganda foydalanuvchini tekshirish
   useEffect(() => {
     const initAuth = async () => {
+      console.log('initAuth started.')
       const token = localStorage.getItem('token')
       const savedUser = localStorage.getItem('user')
+      console.log('Token from localStorage:', token)
+      console.log('Saved user from localStorage:', savedUser)
 
       if (token && savedUser) {
+        setAuthToken(token)
+        console.log('Token and user found in localStorage. Attempting to get current user from API.')
         try {
           // Tokenni serverda tekshirish
           const userData = await authService.getCurrentUser()
-          setUser(userData.user)
+          console.log('getCurrentUser response:', userData)
+          setUser(userData.data.user)
           setIsAuthenticated(true)
-                } catch (_e) {
-          // Token yaroqsiz
+          console.log('User authenticated successfully.')
+                } catch (error) {
+          console.error('Auth initialization error:', error)
           localStorage.removeItem('token')
           localStorage.removeItem('user')
           setUser(null)
           setIsAuthenticated(false)
+          console.log('Auth failed. Token and user removed from localStorage.')
         }
+      } else {
+        console.log('No token or user found in localStorage. Not authenticating.')
       }
       setIsLoading(false)
+      console.log('initAuth finished. isLoading set to false.')
     }
 
     initAuth()

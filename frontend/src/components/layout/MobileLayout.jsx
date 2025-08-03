@@ -23,7 +23,7 @@ const MobileHeader = () => {
   return (
     <header className="mobile-header flex items-center justify-between">
       <div className="flex items-center">
-        <h1 className="text-xl font-bold text-primary-600">DomProduct</h1>
+        <h1 className="text-xl font-bold text-primary">DomProduct</h1>
       </div>
 
       <div className="flex items-center space-x-3">
@@ -36,7 +36,7 @@ const MobileHeader = () => {
         <Link to="/cart" className="relative p-2 rounded-lg hover:bg-gray-100">
           <ShoppingCartIcon className="h-5 w-5 text-gray-600" />
           {itemCount > 0 && (
-            <span className="absolute -top-1 -right-1 bg-primary-600 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center">
+            <span className="absolute -top-1 -right-1 bg-primary text-white text-xs rounded-full h-5 w-5 flex items-center justify-center">
               {itemCount > 9 ? '9+' : itemCount}
             </span>
           )}
@@ -73,7 +73,7 @@ const BottomNavigation = () => {
     },
     {
       name: 'Profil',
-      path: isAuthenticated ? '/profile' : '/login',
+      path: '/profile',
       icon: UserIcon,
       activeIcon: UserIconSolid
     }
@@ -93,7 +93,7 @@ const BottomNavigation = () => {
               className={`
                 flex flex-col items-center py-2 px-3 rounded-lg transition-colors
                 ${isActive
-                  ? 'text-primary-600'
+                  ? 'text-primary'
                   : 'text-gray-500 hover:text-gray-700'
                 }
               `}

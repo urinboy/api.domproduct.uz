@@ -35,6 +35,11 @@ const LoginPage = () => {
             message: error.response.data.errors[field][0]
           })
         })
+      } else if (error.response?.status === 429) {
+        setError('root', {
+          type: 'server',
+          message: 'Juda ko\'p so\'rovlar. Iltimos, 1 daqiqadan so\'ng qayta urinib ko\'ring.'
+        })
       } else {
         setError('root', {
           type: 'server',
@@ -51,7 +56,7 @@ const LoginPage = () => {
       <div className="sm:mx-auto sm:w-full sm:max-w-md">
         {/* Logo */}
         <div className="text-center">
-          <h1 className="text-3xl font-bold text-primary-600 mb-2">DomProduct</h1>
+          <h1 className="text-3xl font-bold text-primary mb-2">DomProduct</h1>
           <h2 className="text-2xl font-semibold text-gray-900">Hisobingizga kiring</h2>
           <p className="mt-2 text-gray-600">
             Yoki{' '}
@@ -129,7 +134,7 @@ const LoginPage = () => {
             <div className="text-right">
               <Link
                 to="/forgot-password"
-                className="text-sm text-primary-600 hover:text-primary-700"
+                className="text-primary hover:text-primary-dark"
               >
                 Parolni unutdingizmi?
               </Link>
@@ -137,8 +142,8 @@ const LoginPage = () => {
 
             {/* Server xatoligi */}
             {errors.root && (
-              <div className="bg-error-50 border border-error-200 rounded-lg p-3">
-                <p className="text-sm text-error-600">{errors.root.message}</p>
+              <div className="bg-error border border-error rounded-lg p-3">
+                <p className="text-sm text-error">{errors.root.message}</p>
               </div>
             )}
 
@@ -173,7 +178,7 @@ const LoginPage = () => {
             <div className="mt-6 text-center">
               <p className="text-sm text-gray-600">
                 Hali hisobingiz yo'qmi?{' '}
-                <Link to="/register" className="text-primary-600 hover:text-primary-700 font-medium">
+                <Link to="/register" className="text-primary hover:text-primary-dark font-medium">
                   Ro'yxatdan o'ting
                 </Link>
               </p>

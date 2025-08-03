@@ -1,23 +1,32 @@
-import apiClient from './api'
+import apiClient, { setAuthToken } from './api'
 
 // Auth xizmatlari
 export const authService = {
   // Foydalanuvchi ro'yxatdan o'tkazish
   register: async (userData) => {
     const response = await apiClient.post('/auth/register', userData)
-    if (response.data.token) {
-      localStorage.setItem('token', response.data.token)
-      localStorage.setItem('user', JSON.stringify(response.data.user))
+    if (response.data.data.token) {
+      localStorage.setItem('token', response.data.data.token)
+      localStorage.setItem('user', JSON.stringify(response.data.data.user))
+      setAuthToken(response.data.data.token)
     }
     return response.data
   },
 
   // Foydalanuvchi kirishi
   login: async (credentials) => {
+    console.log('Login request sent with credentials:', credentials)
     const response = await apiClient.post('/auth/login', credentials)
-    if (response.data.token) {
-      localStorage.setItem('token', response.data.token)
-      localStorage.setItem('user', JSON.stringify(response.data.user))
+    console.log('Login response:', response)
+    console.log('Login response data:', response.data)
+    if (response.data.data.token) {
+      console.log('Token received:', response.data.data.token)
+      localStorage.setItem('token', response.data.data.token)
+      localStorage.setItem('user', JSON.stringify(response.data.data.user))
+      setAuthToken(response.data.data.token)
+      console.log('Token and user data saved to localStorage.')
+    } else {
+      console.log('No token in response data.', response.data)
     }
     return response.data
   },
@@ -29,6 +38,7 @@ export const authService = {
     } finally {
       localStorage.removeItem('token')
       localStorage.removeItem('user')
+      setAuthToken(null)
     }
   },
 
@@ -45,12 +55,8 @@ export const authService = {
   },
 
   // Parolni tiklash
-  resetPassword: async (token, password, confirmPassword) => {
-    const response = await apiClient.post('/auth/reset-password', {
-      token,
-      password,
-      password_confirmation: confirmPassword
-    })
+  resetPassword: async (data) => {
+    const response = await apiClient.post('/auth/reset-password', data)
     return response.data
   },
 
@@ -156,13 +162,13 @@ export const categoryService = {
 export const cartService = {
   // Savatchani olish
   getCart: async () => {
-    const response = await apiClient.get('/user/cart')
+    const response = await apiClient.get('/cart')
     return response.data
   },
 
   // Savatchaga mahsulot qo'shish
   addToCart: async (productId, quantity = 1) => {
-    const response = await apiClient.post('/user/cart', {
+    const response = await apiClient.post('/cart/add', {
       product_id: productId,
       quantity
     })
@@ -171,19 +177,19 @@ export const cartService = {
 
   // Savatcha elementini yangilash
   updateCartItem: async (itemId, quantity) => {
-    const response = await apiClient.put(`/user/cart/${itemId}`, { quantity })
+    const response = await apiClient.put(`/cart/items/${itemId}`, { quantity })
     return response.data
   },
 
   // Savatcha elementini o'chirish
   removeFromCart: async (itemId) => {
-    const response = await apiClient.delete(`/user/cart/${itemId}`)
+    const response = await apiClient.delete(`/cart/items/${itemId}`)
     return response.data
   },
 
   // Savatchani tozalash
   clearCart: async () => {
-    const response = await apiClient.delete('/user/cart')
+    const response = await apiClient.delete('/cart/clear')
     return response.data
   }
 }

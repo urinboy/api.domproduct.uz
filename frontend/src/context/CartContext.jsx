@@ -19,7 +19,7 @@ const cartReducer = (state, action) => {
       }
     case 'ADD_ITEM': {
       const existingItemIndex = state.items.findIndex(
-        item => item.product_id === action.payload.product_id
+        item => item.product?.id === action.payload.product_id
       )
 
       let newItems
@@ -78,10 +78,11 @@ const cartReducer = (state, action) => {
 // Jami summani hisoblash
 const calculateTotal = (items) => {
   return items.reduce((total, item) => {
-    const price = item.product?.discounted_price || item.product?.price || 0
-    return total + (price * item.quantity)
-  }, 0)
-}
+    if (!item || !item.product) return total; // item yoki item.product mavjud emasligini tekshirish
+    const price = item.product.sale_price || item.product.price || 0;
+    return total + (price * item.quantity);
+  }, 0);
+};
 
 // Boshlang'ich holat
 const initialState = {
@@ -135,7 +136,7 @@ export const CartProvider = ({ children }) => {
 
   // Mahsulot savatchada borligini tekshirish
   const isInCart = (productId) => {
-    return state.items.some(item => item.product_id === productId)
+    return state.items.some(item => item && item.product?.id === productId)
   }
 
   // Mahsulot miqdorini olish

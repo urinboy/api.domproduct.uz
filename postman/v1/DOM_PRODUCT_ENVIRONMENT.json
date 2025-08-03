@@ -1,0 +1,73 @@
+{
+  "id": "dom-product-environment",
+  "name": "DOM PRODUCT - Development",
+  "values": [
+    {
+      "key": "base_url",
+      "value": "https://api.domproduct.uz/api",
+      "description": "API base URL (Laravel development server)",
+      "enabled": true
+    },
+    {
+      "key": "auth_token",
+      "value": "",
+      "description": "Authentication bearer token (automatically set after login)",
+      "enabled": true
+    },
+    {
+      "key": "user_id",
+      "value": "",
+      "description": "Current user ID (automatically set after login)",
+      "enabled": true
+    },
+    {
+      "key": "product_id",
+      "value": "1",
+      "description": "Test product ID for API calls",
+      "enabled": true
+    },
+    {
+      "key": "category_id",
+      "value": "1",
+      "description": "Test category ID for API calls",
+      "enabled": true
+    },
+    {
+      "key": "order_id",
+      "value": "",
+      "description": "Order ID (automatically set after order creation)",
+      "enabled": true
+    },
+    {
+      "key": "address_id",
+      "value": "",
+      "description": "Address ID (automatically set after address creation)",
+      "enabled": true
+    },
+    {
+      "key": "payment_id",
+      "value": "",
+      "description": "Payment ID (automatically set after payment processing)",
+      "enabled": true
+    },
+    {
+      "key": "admin_token",
+      "value": "",
+      "description": "Admin user token for admin panel APIs",
+      "enabled": true
+    },
+    {
+      "key": "test_email",
+      "value": "ahmad@example.com",
+      "description": "Test user email for login",
+      "enabled": true
+    },
+    {
+      "key": "test_password",
+      "value": "password123",
+      "description": "Test user password for login",
+      "enabled": true
+    }
+  ],
+  "_postman_variable_scope": "environment"
+}
