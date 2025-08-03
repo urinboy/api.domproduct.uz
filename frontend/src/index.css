@@ -19,7 +19,7 @@
 
   /* Focus styles */
   *:focus {
-    @apply outline-none ring-2 ring-primary-500 ring-offset-2;
+    @apply outline-none ring-2 ring-primary ring-offset-2;
   }
 
   /* Scrollbar styles */
@@ -48,7 +48,7 @@
   }
 
   .btn-primary {
-    @apply btn bg-primary-600 text-white hover:bg-primary-700 focus:ring-primary-500;
+    @apply btn bg-primary text-white hover:bg-primary-dark focus:ring-primary;
   }
 
   .btn-secondary {
@@ -60,7 +60,7 @@
   }
 
   .btn-danger {
-    @apply btn bg-error-600 text-white hover:bg-error-700 focus:ring-error-500;
+    @apply btn bg-error text-white hover:bg-error focus:ring-error;
   }
 
   .btn-sm {
@@ -73,11 +73,11 @@
 
   /* Input styles */
   .input {
-    @apply block w-full px-3 py-2 border border-gray-300 rounded-lg shadow-sm placeholder-gray-400 focus:border-primary-500 focus:ring-primary-500 sm:text-sm;
+    @apply block w-full px-3 py-2 border border-gray-300 rounded-lg shadow-sm placeholder-gray-400 focus:border-primary focus:ring-primary sm:text-sm;
   }
 
   .input-error {
-    @apply border-error-500 focus:border-error-500 focus:ring-error-500;
+    @apply border-error focus:border-error focus:ring-error;
   }
 
   /* Card styles */
@@ -150,15 +150,15 @@
   }
 
   .badge-success {
-    @apply badge bg-success-100 text-success-800;
+    @apply badge bg-success text-success;
   }
 
   .badge-warning {
-    @apply badge bg-warning-100 text-warning-800;
+    @apply badge bg-warning text-warning;
   }
 
   .badge-error {
-    @apply badge bg-error-100 text-error-800;
+    @apply badge bg-error text-error;
   }
 }
 

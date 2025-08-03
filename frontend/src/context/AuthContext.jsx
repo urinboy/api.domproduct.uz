@@ -1,15 +1,7 @@
-import React, { createContext, useContext, useState, useEffect } from 'react'
+import React, { createContext, useState, useEffect } from 'react'
 import { authService } from '../services'
 
-const AuthContext = createContext()
-
-export const useAuth = () => {
-  const context = useContext(AuthContext)
-  if (!context) {
-    throw new Error('useAuth hook AuthProvider ichida ishlatilishi kerak')
-  }
-  return context
-}
+export const AuthContext = createContext()
 
 export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null)
@@ -28,7 +20,7 @@ export const AuthProvider = ({ children }) => {
           const userData = await authService.getCurrentUser()
           setUser(userData.user)
           setIsAuthenticated(true)
-        } catch (error) {
+                } catch (_e) {
           // Token yaroqsiz
           localStorage.removeItem('token')
           localStorage.removeItem('user')
@@ -44,26 +36,18 @@ export const AuthProvider = ({ children }) => {
 
   // Login funksiyasi
   const login = async (credentials) => {
-    try {
-      const response = await authService.login(credentials)
-      setUser(response.user)
-      setIsAuthenticated(true)
-      return response
-    } catch (error) {
-      throw error
-    }
+    const response = await authService.login(credentials)
+    setUser(response.user)
+    setIsAuthenticated(true)
+    return response
   }
 
   // Register funksiyasi
   const register = async (userData) => {
-    try {
-      const response = await authService.register(userData)
-      setUser(response.user)
-      setIsAuthenticated(true)
-      return response
-    } catch (error) {
-      throw error
-    }
+    const response = await authService.register(userData)
+    setUser(response.user)
+    setIsAuthenticated(true)
+    return response
   }
 
   // Logout funksiyasi
@@ -80,13 +64,9 @@ export const AuthProvider = ({ children }) => {
 
   // Profilni yangilash
   const updateProfile = async (data) => {
-    try {
-      const response = await authService.updateProfile(data)
-      setUser(response.user)
-      return response
-    } catch (error) {
-      throw error
-    }
+    const response = await authService.updateProfile(data)
+    setUser(response.user)
+    return response
   }
 
   const value = {

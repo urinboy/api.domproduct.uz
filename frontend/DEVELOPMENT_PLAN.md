@@ -29,7 +29,7 @@
 
 ### 🚧 Joriy holat:
 - Vite dev server ishlamoqda: http://localhost:5174/
-- Laravel API server ishlashi kerak: http://localhost:8000/api/
+- Laravel API server ishlashi kerak: https://api.domproduct.uz/api/
 
 ---
 

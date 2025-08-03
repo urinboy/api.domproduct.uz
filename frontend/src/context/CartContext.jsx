@@ -1,7 +1,5 @@
-import React, { createContext, useContext, useReducer, useEffect } from 'react'
+import React, { createContext, useReducer, useEffect } from 'react'
 import { cartService } from '../services'
-
-const CartContext = createContext()
 
 // Cart reducer
 const cartReducer = (state, action) => {
@@ -19,7 +17,7 @@ const cartReducer = (state, action) => {
         ...state,
         isLoading: action.payload
       }
-    case 'ADD_ITEM':
+    case 'ADD_ITEM': {
       const existingItemIndex = state.items.findIndex(
         item => item.product_id === action.payload.product_id
       )
@@ -43,7 +41,8 @@ const cartReducer = (state, action) => {
         itemCount: newItems.length,
         total: calculateTotal(newItems)
       }
-    case 'UPDATE_ITEM':
+    }
+    case 'UPDATE_ITEM': {
       const updatedItems = state.items.map(item =>
         item.id === action.payload.id
           ? { ...item, quantity: action.payload.quantity }
@@ -54,7 +53,8 @@ const cartReducer = (state, action) => {
         items: updatedItems,
         total: calculateTotal(updatedItems)
       }
-    case 'REMOVE_ITEM':
+    }
+    case 'REMOVE_ITEM': {
       const filteredItems = state.items.filter(item => item.id !== action.payload)
       return {
         ...state,
@@ -62,6 +62,7 @@ const cartReducer = (state, action) => {
         itemCount: filteredItems.length,
         total: calculateTotal(filteredItems)
       }
+    }
     case 'CLEAR_CART':
       return {
         ...state,
@@ -90,13 +91,7 @@ const initialState = {
   isLoading: true
 }
 
-export const useCart = () => {
-  const context = useContext(CartContext)
-  if (!context) {
-    throw new Error('useCart hook CartProvider ichida ishlatilishi kerak')
-  }
-  return context
-}
+export const CartContext = createContext()
 
 export const CartProvider = ({ children }) => {
   const [state, dispatch] = useReducer(cartReducer, initialState)
@@ -115,43 +110,27 @@ export const CartProvider = ({ children }) => {
 
   // Savatchaga mahsulot qo'shish
   const addToCart = async (productId, quantity = 1) => {
-    try {
-      const response = await cartService.addToCart(productId, quantity)
-      dispatch({ type: 'ADD_ITEM', payload: response.data.item })
-      return response.data
-    } catch (error) {
-      throw error
-    }
+    const response = await cartService.addToCart(productId, quantity)
+    dispatch({ type: 'ADD_ITEM', payload: response.data.item })
+    return response.data
   }
 
   // Savatcha elementini yangilash
   const updateCartItem = async (itemId, quantity) => {
-    try {
-      await cartService.updateCartItem(itemId, quantity)
-      dispatch({ type: 'UPDATE_ITEM', payload: { id: itemId, quantity } })
-    } catch (error) {
-      throw error
-    }
+    await cartService.updateCartItem(itemId, quantity)
+    dispatch({ type: 'UPDATE_ITEM', payload: { id: itemId, quantity } })
   }
 
   // Savatcha elementini o'chirish
   const removeFromCart = async (itemId) => {
-    try {
-      await cartService.removeFromCart(itemId)
-      dispatch({ type: 'REMOVE_ITEM', payload: itemId })
-    } catch (error) {
-      throw error
-    }
+    await cartService.removeFromCart(itemId)
+    dispatch({ type: 'REMOVE_ITEM', payload: itemId })
   }
 
   // Savatchani tozalash
   const clearCart = async () => {
-    try {
-      await cartService.clearCart()
-      dispatch({ type: 'CLEAR_CART' })
-    } catch (error) {
-      throw error
-    }
+    await cartService.clearCart()
+    dispatch({ type: 'CLEAR_CART' })
   }
 
   // Mahsulot savatchada borligini tekshirish

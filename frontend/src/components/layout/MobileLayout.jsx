@@ -13,12 +13,11 @@ import {
   ShoppingCartIcon as ShoppingCartIconSolid,
   UserIcon as UserIconSolid
 } from '@heroicons/react/24/solid'
-import { useAuth } from '../../context/AuthContext'
-import { useCart } from '../../context/CartContext'
+import { useAuth } from '../../hooks/useAuth'
+import { useCart } from '../../hooks/useCart'
 
 // Header komponenti
 const MobileHeader = () => {
-  const { user } = useAuth()
   const { itemCount } = useCart()
 
   return (

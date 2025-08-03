@@ -21,7 +21,7 @@ import ProtectedRoute from './components/auth/ProtectedRoute'
 import LoadingSpinner from './components/ui/LoadingSpinner'
 
 // Hooks
-import { useAuth } from './context/AuthContext'
+import { useAuth } from './hooks/useAuth'
 
 // React Query client
 const queryClient = new QueryClient({
