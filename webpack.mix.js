@@ -21,7 +21,7 @@ mix.js('resources/js/admin.js', 'public/js')
         processCssUrls: false
     });
 
-// API Documentation Assets  
+// API Documentation Assets
 mix.js('resources/js/app.js', 'public/js')
     .postCss('resources/css/app.css', 'public/css', [
         require('tailwindcss'),

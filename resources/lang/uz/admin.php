@@ -6,14 +6,70 @@ return [
     'welcome_back' => 'Xush kelibsiz!',
     'overview' => 'Umumiy ko\'rinish',
     'statistics' => 'Statistika',
-    
+    'total_users' => 'Jami foydalanuvchilar',
+    'total_products' => 'Jami mahsulotlar',
+    'total_orders' => 'Jami buyurtmalar',
+    'total_revenue' => 'Jami daromad',
+    'today' => 'bugun',
+    'this_month' => 'shu oy',
+    'weekly_statistics' => 'Haftalik statistika',
+    'categories_distribution' => 'Kategoriyalar taqsimoti',
+    'recent_users' => 'So\'nggi foydalanuvchilar',
+    'recent_orders' => 'So\'nggi buyurtmalar',
+    'top_viewed_products' => 'Eng ko\'p ko\'rilgan mahsulotlar',
+    'views' => 'Ko\'rishlar',
+
+    // Additional Dashboard
+    'total_categories' => 'Jami kategoriyalar',
+    'total_payments' => 'Jami to\'lovlar',
+    'pending_orders' => 'Kutilayotgan buyurtmalar',
+    'low_stock_products' => 'Kam qolgan mahsulotlar',
+    'top_selling_products' => 'Eng ko\'p sotiladigan mahsulotlar',
+    'recent_notifications' => 'So\'nggi bildirishnomalar',
+
+    // Product info
+    'product' => 'Mahsulot',
+    'category' => 'Kategoriya',
+    'brand' => 'Brend',
+    'price' => 'Narx',
+    'orders' => 'Buyurtmalar',
+    'stock' => 'Ombor',
+    'no_products_found' => 'Mahsulotlar topilmadi',
+
+    // Auth
+    'admin_login' => 'Admin panelga kirish',
+    'admin_login_subtitle' => 'Admin panelga kirish uchun ma\'lumotlaringizni kiriting',
+    'please_sign_in' => 'Iltimos, hisobingizga kiring',
+    'email_or_phone' => 'Email yoki telefon',
+    'enter_email_or_phone' => 'Email yoki telefon raqamini kiriting',
+    'remember_me' => 'Meni eslab qol',
+    'password' => 'Parol',
+    'forgot_password' => 'Parolni unutdingizmi?',
+    'login' => 'Kirish',
+    'sign_in' => 'Kirish',
+    'all_rights_reserved' => 'Barcha huquqlar himoyalangan',
+    'login_required' => 'Email yoki telefon maydoni talab qilinadi',
+    'password_required' => 'Parol maydoni talab qilinadi',
+    'invalid_credentials' => 'Bunday email yoki telefon raqam topilmadi',
+    'access_denied' => 'Sizda admin panelga kirish huquqi yo\'q',
+    'invalid_password' => 'Noto\'g\'ri parol',
+    'login_success' => 'Muvaffaqiyatli kirdingiz',
+    'logout_success' => 'Muvaffaqiyatli chiqdingiz',
+    'admin_panel' => 'Admin Panel',
+    'secure_access' => 'Xavfsiz kirish',
+    'secure_access_desc' => 'Ikki bosqichli himoya bilan',
+    'fast_performance' => 'Tez ishlash',
+    'fast_performance_desc' => 'Yuqori tezlik va samaradorlik',
+    'data_protection' => 'Ma\'lumotlar himoyasi',
+    'data_protection_desc' => 'SSL shifrlash va xavfsizlik',
+
     // Navigation
     'main_navigation' => 'Asosiy menyu',
     'content_management' => 'Kontent boshqaruvi',
     'system_management' => 'Tizim boshqaruvi',
     'reports' => 'Hisobotlar',
     'settings' => 'Sozlamalar',
-    
+
     // Users
     'users' => 'Foydalanuvchilar',
     'user' => 'Foydalanuvchi',
@@ -23,7 +79,7 @@ return [
     'user_roles' => 'Foydalanuvchi rollari',
     'active_users' => 'Faol foydalanuvchilar',
     'user_management' => 'Foydalanuvchilar boshqaruvi',
-    
+
     // Categories
     'categories' => 'Kategoriyalar',
     'category' => 'Kategoriya',
@@ -32,10 +88,9 @@ return [
     'category_tree' => 'Kategoriya daraxti',
     'parent_category' => 'Ota kategoriya',
     'subcategories' => 'Ichki kategoriyalar',
-    
+
     // Products
     'products' => 'Mahsulotlar',
-    'product' => 'Mahsulot',
     'add_product' => 'Mahsulot qo\'shish',
     'edit_product' => 'Mahsulotni tahrirlash',
     'product_list' => 'Mahsulotlar ro\'yxati',
@@ -43,16 +98,14 @@ return [
     'product_gallery' => 'Mahsulot galereyasi',
     'inventory' => 'Inventar',
     'stock_management' => 'Zaxira boshqaruvi',
-    
+
     // Orders
-    'orders' => 'Buyurtmalar',
     'order' => 'Buyurtma',
     'order_details' => 'Buyurtma tafsilotlari',
     'order_status' => 'Buyurtma holati',
     'order_history' => 'Buyurtma tarixi',
-    'pending_orders' => 'Kutilayotgan buyurtmalar',
     'completed_orders' => 'Bajarilgan buyurtmalar',
-    
+
     // Languages & Translations
     'languages' => 'Tillar',
     'language' => 'Til',
@@ -61,7 +114,7 @@ return [
     'add_language' => 'Til qo\'shish',
     'edit_translation' => 'Tarjimani tahrirlash',
     'multilingual' => 'Ko\'p tillik',
-    
+
     // Actions
     'actions' => 'Amallar',
     'add' => 'Qo\'shish',
@@ -77,7 +130,7 @@ return [
     'export' => 'Eksport',
     'import' => 'Import',
     'bulk_actions' => 'Ommaviy amallar',
-    
+
     // Status
     'status' => 'Holat',
     'active' => 'Faol',
@@ -89,14 +142,13 @@ return [
     'pending' => 'Kutilmoqda',
     'approved' => 'Tasdiqlangan',
     'rejected' => 'Rad etilgan',
-    
+
     // Common fields
     'name' => 'Nom',
     'title' => 'Sarlavha',
     'description' => 'Tavsif',
     'image' => 'Rasm',
     'images' => 'Rasmlar',
-    'price' => 'Narx',
     'quantity' => 'Miqdor',
     'date' => 'Sana',
     'created_at' => 'Yaratilgan',
@@ -106,7 +158,7 @@ return [
     'address' => 'Manzil',
     'city' => 'Shahar',
     'country' => 'Mamlakat',
-    
+
     // Messages
     'success' => 'Muvaffaqiyat',
     'error' => 'Xatolik',
@@ -118,7 +170,7 @@ return [
     'update_success' => 'Ma\'lumotlar muvaffaqiyatli yangilandi',
     'delete_success' => 'Ma\'lumot muvaffaqiyatli o\'chirildi',
     'action_not_allowed' => 'Bu amalni bajarish uchun sizda huquq yo\'q',
-    
+
     // Pagination
     'showing' => 'Ko\'rsatilmoqda',
     'of' => 'dan',
@@ -127,30 +179,25 @@ return [
     'next' => 'Keyingi',
     'first' => 'Birinchi',
     'last' => 'Oxirgi',
-    
+
     // File upload
     'upload' => 'Yuklash',
     'choose_file' => 'Fayl tanlash',
     'drag_drop' => 'Faylni bu yerga sudrab qo\'ying',
     'file_uploaded' => 'Fayl yuklandi',
     'max_file_size' => 'Maksimal fayl hajmi',
-    
+
     // Profile
     'profile' => 'Profil',
     'my_profile' => 'Mening profilim',
     'edit_profile' => 'Profilni tahrirlash',
     'change_password' => 'Parolni o\'zgartirish',
     'logout' => 'Chiqish',
-    
+
     // Dashboard stats
-    'total_users' => 'Jami foydalanuvchilar',
-    'total_products' => 'Jami mahsulotlar',
-    'total_orders' => 'Jami buyurtmalar',
-    'total_revenue' => 'Jami daromad',
     'new_orders' => 'Yangi buyurtmalar',
-    'pending_orders' => 'Kutilayotgan buyurtmalar',
     'low_stock' => 'Kam zaxira',
-    
+
     // Form validation
     'required' => 'Bu maydon majburiy',
     'email_format' => 'Email formati noto\'g\'ri',

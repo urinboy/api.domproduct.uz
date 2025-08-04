@@ -39,6 +39,7 @@ class Kernel extends HttpKernel
             \Illuminate\View\Middleware\ShareErrorsFromSession::class,
             \App\Http\Middleware\VerifyCsrfToken::class,
             \Illuminate\Routing\Middleware\SubstituteBindings::class,
+            \App\Http\Middleware\SetLocale::class,
         ],
 
         'api' => [
@@ -70,5 +71,6 @@ class Kernel extends HttpKernel
         'role' => \App\Http\Middleware\CheckRole::class,
         'rate_limit' => \App\Http\Middleware\RateLimitMiddleware::class, // Custom rate limiting
         'admin' => \App\Http\Middleware\AdminMiddleware::class, // Admin panel middleware
+        'redirect.if.admin' => \App\Http\Middleware\RedirectIfAdmin::class, // Redirect authenticated admin
     ];
 }

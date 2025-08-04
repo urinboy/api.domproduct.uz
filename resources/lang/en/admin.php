@@ -6,14 +6,54 @@ return [
     'welcome_back' => 'Welcome back!',
     'overview' => 'Overview',
     'statistics' => 'Statistics',
-    
+    'total_users' => 'Total Users',
+    'total_products' => 'Total Products',
+    'total_orders' => 'Total Orders',
+    'total_revenue' => 'Total Revenue',
+    'today' => 'today',
+    'this_month' => 'this month',
+    'weekly_statistics' => 'Weekly Statistics',
+    'categories_distribution' => 'Categories Distribution',
+    'recent_users' => 'Recent Users',
+    'recent_orders' => 'Recent Orders',
+    'top_viewed_products' => 'Top Viewed Products',
+    'views' => 'Views',
+
+    // Auth
+    'admin_login' => 'Admin Login',
+    'admin_login_subtitle' => 'Enter your credentials to access admin panel',
+    'please_sign_in' => 'Please log in to your account',
+    'email_or_phone' => 'Email or Phone',
+    'enter_email_or_phone' => 'Enter email or phone number',
+    'remember_me' => 'Remember me',
+    'password' => 'Password',
+    'forgot_password' => 'Forgot password?',
+    'login' => 'Login',
+    'sign_in' => 'Sign In',
+    'all_rights_reserved' => 'All rights reserved',
+    'login_required' => 'Email or phone field is required',
+    'password_required' => 'Password field is required',
+    'invalid_credentials' => 'No user found with this email or phone',
+    'access_denied' => 'You don\'t have permission to access admin panel',
+    'invalid_password' => 'Invalid password',
+    'login_success' => 'Successfully logged in',
+    'logout_success' => 'Successfully logged out',
+    'admin_panel' => 'Admin Panel',
+    'secure_access' => 'Secure Access',
+    'secure_access_desc' => 'Two-factor authentication protection',
+    'fast_performance' => 'Fast Performance',
+    'fast_performance_desc' => 'High speed and efficiency',
+    'data_protection' => 'Data Protection',
+    'data_protection_desc' => 'SSL encryption and security',
+    'welcome_back' => 'Welcome Back!',
+
     // Navigation
     'main_navigation' => 'Main Navigation',
     'content_management' => 'Content Management',
     'system_management' => 'System Management',
     'reports' => 'Reports',
     'settings' => 'Settings',
-    
+
     // Users
     'users' => 'Users',
     'user' => 'User',
@@ -23,7 +63,7 @@ return [
     'user_roles' => 'User Roles',
     'active_users' => 'Active Users',
     'user_management' => 'User Management',
-    
+
     // Categories
     'categories' => 'Categories',
     'category' => 'Category',
@@ -32,7 +72,7 @@ return [
     'category_tree' => 'Category Tree',
     'parent_category' => 'Parent Category',
     'subcategories' => 'Subcategories',
-    
+
     // Products
     'products' => 'Products',
     'product' => 'Product',
@@ -43,7 +83,7 @@ return [
     'product_gallery' => 'Product Gallery',
     'inventory' => 'Inventory',
     'stock_management' => 'Stock Management',
-    
+
     // Orders
     'orders' => 'Orders',
     'order' => 'Order',
@@ -52,7 +92,7 @@ return [
     'order_history' => 'Order History',
     'pending_orders' => 'Pending Orders',
     'completed_orders' => 'Completed Orders',
-    
+
     // Languages & Translations
     'languages' => 'Languages',
     'language' => 'Language',
@@ -61,7 +101,7 @@ return [
     'add_language' => 'Add Language',
     'edit_translation' => 'Edit Translation',
     'multilingual' => 'Multilingual',
-    
+
     // Actions
     'actions' => 'Actions',
     'add' => 'Add',
@@ -77,7 +117,7 @@ return [
     'export' => 'Export',
     'import' => 'Import',
     'bulk_actions' => 'Bulk Actions',
-    
+
     // Status
     'status' => 'Status',
     'active' => 'Active',
@@ -89,7 +129,7 @@ return [
     'pending' => 'Pending',
     'approved' => 'Approved',
     'rejected' => 'Rejected',
-    
+
     // Common fields
     'name' => 'Name',
     'title' => 'Title',
@@ -106,7 +146,7 @@ return [
     'address' => 'Address',
     'city' => 'City',
     'country' => 'Country',
-    
+
     // Messages
     'success' => 'Success',
     'error' => 'Error',
@@ -118,7 +158,7 @@ return [
     'update_success' => 'Data updated successfully',
     'delete_success' => 'Data deleted successfully',
     'action_not_allowed' => 'You don\'t have permission to perform this action',
-    
+
     // Pagination
     'showing' => 'Showing',
     'of' => 'of',
@@ -127,21 +167,21 @@ return [
     'next' => 'Next',
     'first' => 'First',
     'last' => 'Last',
-    
+
     // File upload
     'upload' => 'Upload',
     'choose_file' => 'Choose File',
     'drag_drop' => 'Drag and drop file here',
     'file_uploaded' => 'File uploaded',
     'max_file_size' => 'Maximum file size',
-    
+
     // Profile
     'profile' => 'Profile',
     'my_profile' => 'My Profile',
     'edit_profile' => 'Edit Profile',
     'change_password' => 'Change Password',
     'logout' => 'Logout',
-    
+
     // Dashboard stats
     'total_users' => 'Total Users',
     'total_products' => 'Total Products',
@@ -150,7 +190,7 @@ return [
     'new_orders' => 'New Orders',
     'pending_orders' => 'Pending Orders',
     'low_stock' => 'Low Stock',
-    
+
     // Form validation
     'required' => 'This field is required',
     'email_format' => 'Invalid email format',

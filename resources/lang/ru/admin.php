@@ -6,14 +6,74 @@ return [
     'welcome_back' => 'Добро пожаловать!',
     'overview' => 'Обзор',
     'statistics' => 'Статистика',
-    
+    'total_users' => 'Всего пользователей',
+    'total_products' => 'Всего продуктов',
+    'total_orders' => 'Всего заказов',
+    'total_revenue' => 'Общий доход',
+    'today' => 'сегодня',
+    'this_month' => 'в этом месяце',
+    'weekly_statistics' => 'Недельная статистика',
+    'categories_distribution' => 'Распределение категорий',
+    'recent_users' => 'Недавние пользователи',
+    'recent_orders' => 'Недавние заказы',
+    'top_viewed_products' => 'Самые просматриваемые продукты',
+    'views' => 'Просмотры',
+
+    // Additional Dashboard
+    'total_categories' => 'Всего категорий',
+    'total_payments' => 'Всего платежей',
+    'pending_orders' => 'Ожидающие заказы',
+    'low_stock_products' => 'Товары с низким остатком',
+    'top_selling_products' => 'Самые продаваемые товары',
+    'recent_notifications' => 'Последние уведомления',
+
+    // Product info
+    'product' => 'Товар',
+    'category' => 'Категория',
+    'brand' => 'Бренд',
+    'price' => 'Цена',
+    'orders' => 'Заказы',
+    'stock' => 'Склад',
+    'no_products_found' => 'Товары не найдены',
+
+    // Auth labels
+    'phone' => 'Номер телефона',
+    'password' => 'Пароль',
+    'login' => 'Войти',
+    'please_sign_in' => 'Пожалуйста, войдите в свой аккаунт',
+
+    // Auth
+    'admin_login' => 'Вход в админ панель',
+    'admin_login_subtitle' => 'Введите ваши данные для доступа к админ панели',
+    'email_or_phone' => 'Email или телефон',
+    'enter_email_or_phone' => 'Введите email или номер телефона',
+    'remember_me' => 'Запомнить меня',
+    'forgot_password' => 'Забыли пароль?',
+    'sign_in' => 'Войти',
+    'all_rights_reserved' => 'Все права защищены',
+    'login_required' => 'Поле email или телефон обязательно',
+    'password_required' => 'Поле пароль обязательно',
+    'invalid_credentials' => 'Пользователь с таким email или телефоном не найден',
+    'access_denied' => 'У вас нет прав доступа к админ панели',
+    'invalid_password' => 'Неверный пароль',
+    'login_success' => 'Успешно вошли в систему',
+    'logout_success' => 'Успешно вышли из системы',
+    'admin_panel' => 'Панель администратора',
+    'secure_access' => 'Безопасный доступ',
+    'secure_access_desc' => 'Защита двухфакторной аутентификацией',
+    'fast_performance' => 'Быстрая работа',
+    'fast_performance_desc' => 'Высокая скорость и эффективность',
+    'data_protection' => 'Защита данных',
+    'data_protection_desc' => 'SSL шифрование и безопасность',
+    'welcome_back' => 'Добро пожаловать!',
+
     // Navigation
     'main_navigation' => 'Главное меню',
     'content_management' => 'Управление контентом',
     'system_management' => 'Управление системой',
     'reports' => 'Отчеты',
     'settings' => 'Настройки',
-    
+
     // Users
     'users' => 'Пользователи',
     'user' => 'Пользователь',
@@ -23,7 +83,7 @@ return [
     'user_roles' => 'Роли пользователей',
     'active_users' => 'Активные пользователи',
     'user_management' => 'Управление пользователями',
-    
+
     // Categories
     'categories' => 'Категории',
     'category' => 'Категория',
@@ -32,7 +92,7 @@ return [
     'category_tree' => 'Дерево категорий',
     'parent_category' => 'Родительская категория',
     'subcategories' => 'Подкатегории',
-    
+
     // Products
     'products' => 'Товары',
     'product' => 'Товар',
@@ -43,7 +103,7 @@ return [
     'product_gallery' => 'Галерея товара',
     'inventory' => 'Инвентарь',
     'stock_management' => 'Управление запасами',
-    
+
     // Orders
     'orders' => 'Заказы',
     'order' => 'Заказ',
@@ -52,7 +112,7 @@ return [
     'order_history' => 'История заказов',
     'pending_orders' => 'Ожидающие заказы',
     'completed_orders' => 'Завершенные заказы',
-    
+
     // Languages & Translations
     'languages' => 'Языки',
     'language' => 'Язык',
@@ -61,7 +121,7 @@ return [
     'add_language' => 'Добавить язык',
     'edit_translation' => 'Редактировать перевод',
     'multilingual' => 'Мультиязычность',
-    
+
     // Actions
     'actions' => 'Действия',
     'add' => 'Добавить',
@@ -77,7 +137,7 @@ return [
     'export' => 'Экспорт',
     'import' => 'Импорт',
     'bulk_actions' => 'Групповые действия',
-    
+
     // Status
     'status' => 'Статус',
     'active' => 'Активный',
@@ -89,7 +149,7 @@ return [
     'pending' => 'Ожидает',
     'approved' => 'Утвержден',
     'rejected' => 'Отклонен',
-    
+
     // Common fields
     'name' => 'Название',
     'title' => 'Заголовок',
@@ -106,7 +166,7 @@ return [
     'address' => 'Адрес',
     'city' => 'Город',
     'country' => 'Страна',
-    
+
     // Messages
     'success' => 'Успех',
     'error' => 'Ошибка',
@@ -118,7 +178,7 @@ return [
     'update_success' => 'Данные успешно обновлены',
     'delete_success' => 'Данные успешно удалены',
     'action_not_allowed' => 'У вас нет прав для выполнения этого действия',
-    
+
     // Pagination
     'showing' => 'Показано',
     'of' => 'из',
@@ -127,21 +187,21 @@ return [
     'next' => 'Следующая',
     'first' => 'Первая',
     'last' => 'Последняя',
-    
+
     // File upload
     'upload' => 'Загрузить',
     'choose_file' => 'Выбрать файл',
     'drag_drop' => 'Перетащите файл сюда',
     'file_uploaded' => 'Файл загружен',
     'max_file_size' => 'Максимальный размер файла',
-    
+
     // Profile
     'profile' => 'Профиль',
     'my_profile' => 'Мой профиль',
     'edit_profile' => 'Редактировать профиль',
     'change_password' => 'Изменить пароль',
     'logout' => 'Выйти',
-    
+
     // Dashboard stats
     'total_users' => 'Всего пользователей',
     'total_products' => 'Всего товаров',
@@ -150,7 +210,7 @@ return [
     'new_orders' => 'Новые заказы',
     'pending_orders' => 'Ожидающие заказы',
     'low_stock' => 'Низкий запас',
-    
+
     // Form validation
     'required' => 'Это поле обязательно',
     'email_format' => 'Неверный формат email',

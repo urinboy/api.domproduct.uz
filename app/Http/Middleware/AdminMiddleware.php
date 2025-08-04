@@ -80,7 +80,7 @@ class AdminMiddleware
     private function hasPermission($user, $permission)
     {
         $permissions = $this->getUserPermissions($user->role);
-        
+
         return in_array($permission, $permissions) || in_array('*', $permissions);
     }
 

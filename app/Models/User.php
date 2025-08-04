@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
@@ -60,6 +61,12 @@ class User extends Authenticatable
     public function preferredLanguage(): BelongsTo
     {
         return $this->belongsTo(Language::class, 'preferred_language_id');
+    }
+
+    // Roles relationship (Many-to-Many)
+    public function roles(): BelongsToMany
+    {
+        return $this->belongsToMany(Role::class, 'user_roles');
     }
 
     // Shopping Cart relationship
@@ -280,5 +287,17 @@ class User extends Authenticatable
     public function scopeVerified($query)
     {
         return $query->where('email_verified', true)->where('phone_verified', true);
+    }
+
+    /**
+     * Check if user has any of the given roles
+     */
+    public function hasRole($roles)
+    {
+        if (is_string($roles)) {
+            $roles = [$roles];
+        }
+
+        return $this->roles()->whereIn('name', $roles)->exists();
     }
 }

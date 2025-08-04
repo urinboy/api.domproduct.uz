@@ -17,16 +17,16 @@ class AdminUserSeeder extends Seeder
     {
         // Admin foydalanuvchi yaratish yoki yangilash
         $admin = User::updateOrCreate(
-            ['email' => 'admin@test.com'],
+            ['email' => 'admin@domproduct.uz'],
             [
                 'name' => 'Administrator',
-                'email' => 'admin@test.com',
+                'email' => 'admin@domproduct.uz',
                 'password' => Hash::make('admin123'),
                 'role' => 'admin',
                 'is_active' => true,
                 'email_verified' => true,
                 'phone_verified' => true,
-                'phone' => '+998901111111',
+                'phone' => '+998901234567',
                 'city' => 'Toshkent',
                 'email_verified_at' => now(),
             ]
@@ -67,7 +67,7 @@ class AdminUserSeeder extends Seeder
         );
 
         echo "Admin users created successfully:\n";
-        echo "- Admin: admin@test.com / admin123\n";
+        echo "- Admin: admin@domproduct.uz / admin123\n";
         echo "- Manager: manager@test.com / manager123\n";
         echo "- Employee: employee@test.com / employee123\n";
     }

@@ -41,14 +41,14 @@ Alpine.data('confirmDelete', () => ({
     action: '',
     title: '',
     message: '',
-    
+
     confirm(action, title = 'O\'chirish tasdiqi', message = 'Rostdan ham o\'chirmoqchimisiz?') {
         this.action = action
         this.title = title
         this.message = message
         this.show = true
     },
-    
+
     execute() {
         if (this.action) {
             if (typeof this.action === 'string') {
@@ -59,7 +59,7 @@ Alpine.data('confirmDelete', () => ({
         }
         this.cancel()
     },
-    
+
     cancel() {
         this.show = false
         this.action = ''
@@ -74,7 +74,7 @@ Alpine.data('dataTable', () => ({
     sortDirection: 'asc',
     perPage: 10,
     currentPage: 1,
-    
+
     sort(column) {
         if (this.sortBy === column) {
             this.sortDirection = this.sortDirection === 'asc' ? 'desc' : 'asc'
@@ -88,32 +88,32 @@ Alpine.data('dataTable', () => ({
 
 Alpine.data('toast', () => ({
     messages: [],
-    
+
     add(message, type = 'info', duration = 5000) {
         const id = Date.now()
         this.messages.push({ id, message, type })
-        
+
         setTimeout(() => {
             this.remove(id)
         }, duration)
     },
-    
+
     remove(id) {
         this.messages = this.messages.filter(msg => msg.id !== id)
     },
-    
+
     success(message) {
         this.add(message, 'success')
     },
-    
+
     error(message) {
         this.add(message, 'error')
     },
-    
+
     warning(message) {
         this.add(message, 'warning')
     },
-    
+
     info(message) {
         this.add(message, 'info')
     }
@@ -122,7 +122,7 @@ Alpine.data('toast', () => ({
 // Language switcher
 Alpine.data('languageSwitcher', () => ({
     currentLang: document.documentElement.lang || 'uz',
-    
+
     switch(lang) {
         // AJAX request to switch language
         fetch('/admin/language/switch', {
@@ -147,7 +147,7 @@ window.adminHelpers = {
     formatNumber(num) {
         return new Intl.NumberFormat('uz-UZ').format(num)
     },
-    
+
     // Format currency
     formatCurrency(amount, currency = 'UZS') {
         return new Intl.NumberFormat('uz-UZ', {
@@ -155,12 +155,12 @@ window.adminHelpers = {
             currency: currency
         }).format(amount)
     },
-    
+
     // Format date
     formatDate(date) {
         return new Intl.DateTimeFormat('uz-UZ').format(new Date(date))
     },
-    
+
     // Copy to clipboard
     copyToClipboard(text) {
         navigator.clipboard.writeText(text).then(() => {
@@ -170,7 +170,7 @@ window.adminHelpers = {
             }
         })
     },
-    
+
     // Debounce function
     debounce(func, wait) {
         let timeout
@@ -188,18 +188,18 @@ window.adminHelpers = {
 // Dark mode toggle (future feature)
 Alpine.data('darkMode', () => ({
     dark: localStorage.getItem('darkMode') === 'true',
-    
+
     toggle() {
         this.dark = !this.dark
         localStorage.setItem('darkMode', this.dark)
-        
+
         if (this.dark) {
             document.documentElement.classList.add('dark')
         } else {
             document.documentElement.classList.remove('dark')
         }
     },
-    
+
     init() {
         if (this.dark) {
             document.documentElement.classList.add('dark')
@@ -219,10 +219,10 @@ document.addEventListener('DOMContentLoaded', function() {
             }, 300)
         }, 5000)
     })
-    
+
     // Initialize tooltips (if using a tooltip library)
     // initTooltips()
-    
+
     // Initialize any other admin functionality
     console.log('Admin panel initialized')
 })
