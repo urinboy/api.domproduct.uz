@@ -104,6 +104,14 @@ class Product extends Model
     }
 
     /**
+     * Get the order items for the product.
+     */
+    public function orderItems(): HasMany
+    {
+        return $this->hasMany(OrderItem::class);
+    }
+
+    /**
      * Get translation for specific language
      */
     public function getTranslation($language = 'uz')

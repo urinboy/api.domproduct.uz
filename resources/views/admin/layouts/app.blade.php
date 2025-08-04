@@ -1,5 +1,7 @@
 <!DOCTYPE html>
-<html lang="{{ str_replace('_', '-', app()->getLocale()) }}" dir="{{ app()->getLocale() == 'ar' ? 'rtl' : 'ltr' }}">
+<html lang="{{ str_replace('_', '-', app()->getLocale()) }}"
+      dir="{{ app()->getLocale() == 'ar' ? 'rtl' : 'ltr' }}"
+      class="{{ session('theme', 'light') === 'dark' ? 'dark' : '' }}">
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -13,17 +15,179 @@
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
 
-    <!-- Styles -->
-    <link href="{{ mix('css/admin.css') }}" rel="stylesheet">
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                    },
+                    colors: {
+                        primary: {
+                            50: '#f0fdf4',
+                            100: '#dcfce7',
+                            200: '#bbf7d0',
+                            300: '#86efac',
+                            400: '#4ade80',
+                            500: '#22c55e',
+                            600: '#16a34a',
+                            700: '#15803d',
+                            800: '#166534',
+                            900: '#14532d',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
 
     <!-- Alpine.js -->
     <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
 
+    <!-- Custom CSS -->
+    <link href="{{ mix('css/admin.css') }}" rel="stylesheet">
+
     @stack('styles')
 </head>
-<body class="bg-gray-50 font-sans antialiased" x-data="{ sidebarOpen: false }">
+<body class="h-screen bg-gray-50 dark:bg-gray-900 font-sans antialiased transition-colors duration-200"
+      x-data="{
+          theme: '{{ session('theme', 'light') }}',
+          sidebarOpen: false,
+          isMobile: window.innerWidth < 768,
+          init() {
+              this.updateScreenSize();
+              window.addEventListener('resize', () => {
+                  this.updateScreenSize();
+              });
+          },
+          updateScreenSize() {
+              this.isMobile = window.innerWidth < 768;
+              if (!this.isMobile) {
+                  this.sidebarOpen = false;
+              }
+          },
+          toggleTheme() {
+              this.theme = this.theme === 'light' ? 'dark' : 'light';
+              document.documentElement.classList.toggle('dark');
+
+              // Save theme preference
+              fetch('/admin/theme/switch', {
+                  method: 'POST',
+                  headers: {
+                      'Content-Type': 'application/json',
+                      'X-CSRF-TOKEN': document.querySelector('meta[name=csrf-token]').content
+                  },
+                  body: JSON.stringify({ theme: this.theme })
+              });
+          }
+      }">
+
+    <!-- Toast Messages -->
+    <div x-data="toast()" x-show="messages.length > 0"
+         class="fixed top-4 right-4 z-50 space-y-2">
+        <template x-for="message in messages" :key="message.id">
+            <div x-show="true"
+                 x-transition:enter="transform ease-out duration-300 transition"
+                 x-transition:enter-start="translate-y-2 opacity-0 sm:translate-y-0 sm:translate-x-2"
+                 x-transition:enter-end="translate-y-0 opacity-100 sm:translate-x-0"
+                 x-transition:leave="transition ease-in duration-100"
+                 x-transition:leave-start="opacity-100"
+                 x-transition:leave-end="opacity-0"
+                 class="max-w-sm w-full shadow-lg rounded-lg pointer-events-auto ring-1 ring-black ring-opacity-5 overflow-hidden"
+                 :class="{
+                     'bg-green-500': message.type === 'success',
+                     'bg-red-500': message.type === 'error',
+                     'bg-yellow-500': message.type === 'warning',
+                     'bg-blue-500': message.type === 'info'
+                 }">
+                <div class="p-4">
+                    <div class="flex items-start">
+                        <!-- Success Icon -->
+                        <svg x-show="message.type === 'success'" class="h-5 w-5 text-white" fill="currentColor" viewBox="0 0 20 20">
+                            <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path>
+                        </svg>
+                        <!-- Error Icon -->
+                        <svg x-show="message.type === 'error'" class="h-5 w-5 text-white" fill="currentColor" viewBox="0 0 20 20">
+                            <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clip-rule="evenodd"></path>
+                        </svg>
+                        <!-- Warning Icon -->
+                        <svg x-show="message.type === 'warning'" class="h-5 w-5 text-yellow-400" fill="currentColor" viewBox="0 0 20 20">
+                            <path fill-rule="evenodd" d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z" clip-rule="evenodd"></path>
+                        </svg>
+                        <!-- Info Icon -->
+                        <svg x-show="message.type === 'info'" class="h-5 w-5 text-blue-400" fill="currentColor" viewBox="0 0 20 20">
+                            <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clip-rule="evenodd"></path>
+                        </svg>
+                    </div>
+                    <div class="ml-3">
+                        <p class="text-sm font-medium text-white" x-text="message.message"></p>
+                    </div>
+                </div>
+            </div>
+        </template>
+    </div>
+
+    <!-- Mobile menu overlay -->
+    <div x-show="sidebarOpen && isMobile"
+         x-transition:enter="transition-opacity ease-linear duration-300"
+         x-transition:enter-start="opacity-0"
+         x-transition:enter-end="opacity-100"
+         x-transition:leave="transition-opacity ease-linear duration-300"
+         x-transition:leave-start="opacity-100"
+         x-transition:leave-end="opacity-0"
+         class="fixed inset-0 flex z-40 md:hidden"
+         style="display: none;">
+        <div @click="sidebarOpen = false" class="fixed inset-0 bg-gray-600 bg-opacity-75"></div>
+    </div>
+
+    <!-- Mobile sidebar -->
+    <div x-show="sidebarOpen && isMobile"
+         x-transition:enter="transition ease-in-out duration-300 transform"
+         x-transition:enter-start="-translate-x-full"
+         x-transition:enter-end="translate-x-0"
+         x-transition:leave="transition ease-in-out duration-300 transform"
+         x-transition:leave-start="translate-x-0"
+         x-transition:leave-end="-translate-x-full"
+         class="relative flex-1 flex flex-col max-w-xs w-full bg-white dark:bg-gray-800 pt-5 pb-4 z-50 md:hidden"
+         style="display: none;">
+        <div class="absolute top-0 right-0 -mr-12 pt-2">
+            <button @click="sidebarOpen = false"
+                    class="ml-1 flex items-center justify-center h-10 w-10 rounded-full focus:outline-none focus:ring-2 focus:ring-inset focus:ring-white">
+                <svg class="h-6 w-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                </svg>
+            </button>
+        </div>
+        @include('admin.layouts.sidebar')
+    </div>
+
+    <!-- Desktop layout -->
+    <div class="flex h-screen bg-gray-50 dark:bg-gray-900">
+        <!-- Desktop sidebar -->
+        <div class="hidden md:flex md:flex-shrink-0">
+            <div class="flex flex-col w-80">
+                @include('admin.layouts.sidebar')
+            </div>
+        </div>
+
+        <!-- Main content -->
+        <div class="flex flex-col flex-1 min-h-screen overflow-hidden">
+            @include('admin.layouts.header')
+
+            <main class="flex-1 relative overflow-y-auto focus:outline-none bg-gray-50 dark:bg-gray-900">
+                <div class="py-4 md:py-6">
+                    <div class="w-full px-4 sm:px-6 lg:px-8">
+                        @yield('content')
+                    </div>
+                </div>
+            </main>
+        </div>
+    </div>
     <!-- Toast Messages -->
     <div x-data="toast()" class="fixed top-4 right-4 z-50 space-y-4">
         <template x-for="message in messages" :key="message.id">
@@ -69,100 +233,24 @@
         </template>
     </div>
 
-    <!-- Off-canvas sidebar for mobile -->
-    <div x-show="sidebarOpen" class="fixed inset-0 z-40 lg:hidden">
-        <div x-show="sidebarOpen"
-             x-transition:enter="transition-opacity ease-linear duration-300"
-             x-transition:enter-start="opacity-0"
-             x-transition:enter-end="opacity-100"
-             x-transition:leave="transition-opacity ease-linear duration-300"
-             x-transition:leave-start="opacity-100"
-             x-transition:leave-end="opacity-0"
-             class="fixed inset-0 bg-gray-600 bg-opacity-75"
-             @click="sidebarOpen = false"></div>
 
-        <div x-show="sidebarOpen"
-             x-transition:enter="transition ease-in-out duration-300 transform"
-             x-transition:enter-start="-translate-x-full"
-             x-transition:enter-end="translate-x-0"
-             x-transition:leave="transition ease-in-out duration-300 transform"
-             x-transition:leave-start="translate-x-0"
-             x-transition:leave-end="-translate-x-full"
-             class="relative flex flex-col flex-1 max-w-xs w-full bg-white focus:outline-none">
-            @include('admin.layouts.sidebar')
-        </div>
-    </div>
 
     <!-- Static sidebar for desktop -->
-    <div class="hidden lg:flex lg:flex-shrink-0">
-        <div class="flex flex-col w-64">
+    <div class="flex flex-shrink-0">
+        <div class="flex flex-col w-80">
             @include('admin.layouts.sidebar')
         </div>
     </div>
 
     <!-- Main content -->
-    <div class="flex flex-col flex-1 lg:pl-64">
-        <!-- Header -->
+    <div class="flex flex-col flex-1 min-h-screen">
         @include('admin.layouts.header')
 
-        <!-- Page content -->
-        <main class="flex-1">
-            <!-- Breadcrumbs -->
-            @if(isset($breadcrumbs) && count($breadcrumbs) > 0)
-                <div class="bg-white border-b border-gray-200">
-                    <div class="px-4 sm:px-6 lg:px-8">
-                        <nav class="flex py-4" aria-label="Breadcrumb">
-                            <ol class="flex items-center space-x-4">
-                                @foreach($breadcrumbs as $breadcrumb)
-                                    <li>
-                                        <div class="flex items-center">
-                                            @if(!$loop->first)
-                                                <svg class="flex-shrink-0 h-5 w-5 text-gray-300" fill="currentColor" viewBox="0 0 20 20">
-                                                    <path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd"></path>
-                                                </svg>
-                                            @endif
-                                            @if($loop->last)
-                                                <span class="ml-4 text-sm font-medium text-gray-500">{{ $breadcrumb['title'] }}</span>
-                                            @else
-                                                <a href="{{ $breadcrumb['url'] }}" class="ml-4 text-sm font-medium text-gray-500 hover:text-gray-700">{{ $breadcrumb['title'] }}</a>
-                                            @endif
-                                        </div>
-                                    </li>
-                                @endforeach
-                            </ol>
-                        </nav>
-                    </div>
-                </div>
-            @endif
-
-            <!-- Flash Messages -->
-            @if(session('success'))
-                <div class="mx-4 sm:mx-6 lg:mx-8 mt-4">
-                    <div class="alert alert-success" data-auto-hide>
-                        <p>{{ session('success') }}</p>
-                    </div>
-                </div>
-            @endif
-
-            @if(session('error'))
-                <div class="mx-4 sm:mx-6 lg:mx-8 mt-4">
-                    <div class="alert alert-error" data-auto-hide>
-                        <p>{{ session('error') }}</p>
-                    </div>
-                </div>
-            @endif
-
-            @if(session('warning'))
-                <div class="mx-4 sm:mx-6 lg:mx-8 mt-4">
-                    <div class="alert alert-warning" data-auto-hide>
-                        <p>{{ session('warning') }}</p>
-                    </div>
-                </div>
-            @endif
-
-            <!-- Page Content -->
+        <main class="flex-1 relative overflow-y-auto focus:outline-none bg-gray-50 dark:bg-gray-900">
             <div class="py-6">
-                @yield('content')
+                <div class="w-full px-6">
+                    @yield('content')
+                </div>
             </div>
         </main>
     </div>

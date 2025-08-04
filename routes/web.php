@@ -20,6 +20,22 @@ use App\Http\Controllers\LanguageController;
 
 /*
 |--------------------------------------------------------------------------
+| Main Routes
+|--------------------------------------------------------------------------
+*/
+Route::get('/', function () {
+    return view('home');
+})->name('home');
+
+Route::get('/home', function () {
+    return view('home');
+})->name('home.page');
+
+// Global logout route
+Route::post('/logout', [\App\Http\Controllers\Admin\AuthController::class, 'logout'])->name('global.logout')->middleware('auth');
+
+/*
+|--------------------------------------------------------------------------
 | Test Routes (Development Only)
 |--------------------------------------------------------------------------
 */
@@ -87,6 +103,12 @@ Route::prefix('admin')->name('admin.')->middleware(['auth', 'admin'])->group(fun
 
     // Language switching
     Route::post('/language/switch', [\App\Http\Controllers\Admin\LanguageController::class, 'switch'])->name('language.switch');
+    Route::get('/language/switch/{locale}', [\App\Http\Controllers\Admin\LanguageController::class, 'switchLanguage'])->name('language.switch.get');
+    Route::get('/language/{locale}', [\App\Http\Controllers\Admin\LanguageController::class, 'switchLanguage'])->name('admin.language.switch');
+
+    // Theme switching
+    Route::post('/theme/toggle', [\App\Http\Controllers\Admin\ThemeController::class, 'toggle'])->name('theme.toggle');
+    Route::get('/theme/current', [\App\Http\Controllers\Admin\ThemeController::class, 'getCurrent'])->name('theme.current');
 
     // User Management
     Route::middleware('admin:users.view')->group(function () {

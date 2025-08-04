@@ -66,19 +66,34 @@ class AuthController extends Controller
                            ->withInput($request->only('login'));
         }
 
-        // Admin email tekshirish (oddiy variant)
-        if (!in_array($user->email, ['admin@test.com', 'manager@test.com', 'employee@test.com'])) {
-            Auth::logout();
-            return redirect()->back()
-                           ->withErrors(['login' => __('admin.access_denied')])
-                           ->withInput($request->only('login'));
-        }
+        // Admin tekshirish
+        $adminEmails = [
+            'admin@domproduct.uz',
+            'admin@test.com',
+            'manager@test.com',
+            'employee@test.com',
+            'urinboydev@gmail.com'
+        ];
+
+        $adminPhones = [
+            '+998901234567',
+            '+998991234567'
+        ];
+
+        $isAdmin = in_array($user->email, $adminEmails) ||
+                  in_array($user->phone, $adminPhones);
 
         $request->session()->regenerate();
 
-        // Admin dashboardga yo'naltirish
-        return redirect()->intended(route('admin.dashboard'))
-                         ->with('success', __('admin.login_success'));
+        if ($isAdmin) {
+            // Admin dashboardga yo'naltirish
+            return redirect()->intended('/admin')
+                             ->with('success', __('admin.login_success'));
+        } else {
+            // Oddiy foydalanuvchilarni home sahifasiga yo'naltirish
+            return redirect()->intended('/home')
+                             ->with('success', __('auth.login_success', ['name' => $user->name]));
+        }
     }
 
     /**
@@ -86,13 +101,42 @@ class AuthController extends Controller
      */
     public function logout(Request $request)
     {
+        $user = Auth::user();
         Auth::logout();
 
         $request->session()->invalidate();
         $request->session()->regenerateToken();
 
-        return redirect()->route('admin.login')
-                         ->with('success', __('admin.logout_success'));
+        // Agar admin bo'lsa admin login'ga, aks holda home'ga yo'naltirish
+        if ($user && $this->isAdmin($user)) {
+            return redirect()->route('admin.login')
+                             ->with('success', __('admin.logout_success'));
+        } else {
+            return redirect('/home')
+                             ->with('success', __('auth.logout_success'));
+        }
+    }
+
+    /**
+     * Foydalanuvchi admin ekanligini tekshirish
+     */
+    private function isAdmin($user)
+    {
+        $adminEmails = [
+            'admin@domproduct.uz',
+            'admin@test.com',
+            'manager@test.com',
+            'employee@test.com',
+            'urinboydev@gmail.com'
+        ];
+
+        $adminPhones = [
+            '+998901234567',
+            '+998991234567'
+        ];
+
+        return in_array($user->email, $adminEmails) ||
+               in_array($user->phone, $adminPhones);
     }
 
     /**

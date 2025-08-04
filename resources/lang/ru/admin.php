@@ -1,8 +1,19 @@
 <?php
 
 return [
-    // Dashboard
+    // Navigation & Layout
     'dashboard' => 'Панель управления',
+    'users' => 'Пользователи',
+    'products' => 'Продукты',
+    'all_products' => 'Все продукты',
+    'add_product' => 'Добавить продукт',
+    'categories' => 'Категории',
+    'orders' => 'Заказы',
+    'settings' => 'Настройки',
+    'logout' => 'Выйти',
+    'language' => 'Язык',
+    'main' => 'Основное',
+    'management' => 'Управление',
     'welcome_back' => 'Добро пожаловать!',
     'overview' => 'Обзор',
     'statistics' => 'Статистика',
@@ -18,6 +29,9 @@ return [
     'recent_orders' => 'Недавние заказы',
     'top_viewed_products' => 'Самые просматриваемые продукты',
     'views' => 'Просмотры',
+    'conversion_rate' => 'Конверсия',
+    'growth' => 'Рост',
+    'performance' => 'Производительность',
 
     // Additional Dashboard
     'total_categories' => 'Всего категорий',

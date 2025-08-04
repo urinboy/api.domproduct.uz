@@ -81,7 +81,7 @@ class DashboardController extends Controller
                           ->get();
 
         // So'nggi buyurtmalar
-        $recentOrders = Order::with(['user', 'orderItems.product'])
+        $recentOrders = Order::with(['user', 'items.product'])
                             ->orderBy('created_at', 'desc')
                             ->limit(5)
                             ->get();
@@ -114,13 +114,31 @@ class DashboardController extends Controller
         $activeProducts = Product::where('is_active', true)->count();
         $inactiveProducts = Product::where('is_active', false)->count();
 
+        // Pending orders
+        $pendingOrders = Order::where('status', 'pending')->count();
+
+        // Recent notifications
+        $recentNotifications = Notification::orderBy('created_at', 'desc')
+                                         ->limit(5)
+                                         ->get();
+
         return view('admin.dashboard', compact(
+            'totalUsers',
             'totalProducts',
             'totalCategories',
             'totalOrders',
             'totalPayments',
+            'todayUsers',
+            'todayProducts',
+            'todayOrders',
+            'monthlyUsers',
+            'monthlyOrders',
+            'monthlyRevenue',
             'lowStockProducts',
             'topSellingProducts',
+            'recentUsers',
+            'recentOrders',
+            'categoriesWithProducts',
             'weeklyStats',
             'totalRevenue',
             'pendingOrders',

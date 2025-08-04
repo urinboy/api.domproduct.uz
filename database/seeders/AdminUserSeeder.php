@@ -66,9 +66,27 @@ class AdminUserSeeder extends Seeder
             ]
         );
 
+        // Regular user
+        $user = User::updateOrCreate(
+            ['email' => 'user@test.com'],
+            [
+                'name' => 'Regular User',
+                'email' => 'user@test.com',
+                'password' => Hash::make('user123'),
+                'role' => 'customer',
+                'is_active' => true,
+                'email_verified' => true,
+                'phone_verified' => true,
+                'phone' => '+998904444444',
+                'city' => 'Toshkent',
+                'email_verified_at' => now(),
+            ]
+        );
+
         echo "Admin users created successfully:\n";
         echo "- Admin: admin@domproduct.uz / admin123\n";
         echo "- Manager: manager@test.com / manager123\n";
         echo "- Employee: employee@test.com / employee123\n";
+        echo "- Regular User: user@test.com / user123\n";
     }
 }

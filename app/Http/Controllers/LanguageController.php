@@ -32,23 +32,7 @@ class LanguageController extends Controller
         Session::put('locale', $locale);
         App::setLocale($locale);
 
-        // Get previous URL or redirect to home
-        $previousUrl = url()->previous();
-
-        // If the previous URL has a lang parameter, replace it
-        $parsedUrl = parse_url($previousUrl);
-        if (isset($parsedUrl['query'])) {
-            parse_str($parsedUrl['query'], $queryParams);
-            $queryParams['lang'] = $locale;
-            $newQuery = http_build_query($queryParams);
-            $redirectUrl = $parsedUrl['scheme'] . '://' . $parsedUrl['host'] .
-                          (isset($parsedUrl['port']) ? ':' . $parsedUrl['port'] : '') .
-                          $parsedUrl['path'] . '?' . $newQuery;
-        } else {
-            $redirectUrl = $previousUrl . '?lang=' . $locale;
-        }
-
-        return redirect($redirectUrl);
+        return Redirect::back();
     }
 
     /**

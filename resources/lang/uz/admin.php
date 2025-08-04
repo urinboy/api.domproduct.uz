@@ -1,8 +1,19 @@
 <?php
 
 return [
-    // Dashboard
+    // Navigation & Layout
     'dashboard' => 'Boshqaruv paneli',
+    'users' => 'Foydalanuvchilar',
+    'products' => 'Mahsulotlar',
+    'all_products' => 'Barcha mahsulotlar',
+    'add_product' => 'Mahsulot qo\'shish',
+    'categories' => 'Kategoriyalar',
+    'orders' => 'Buyurtmalar',
+    'settings' => 'Sozlamalar',
+    'logout' => 'Chiqish',
+    'language' => 'Til',
+    'main' => 'Asosiy',
+    'management' => 'Boshqaruv',
     'welcome_back' => 'Xush kelibsiz!',
     'overview' => 'Umumiy ko\'rinish',
     'statistics' => 'Statistika',
@@ -18,6 +29,9 @@ return [
     'recent_orders' => 'So\'nggi buyurtmalar',
     'top_viewed_products' => 'Eng ko\'p ko\'rilgan mahsulotlar',
     'views' => 'Ko\'rishlar',
+    'conversion_rate' => 'Konversiya darajasi',
+    'growth' => 'O\'sish',
+    'performance' => 'Faoliyat',
 
     // Additional Dashboard
     'total_categories' => 'Jami kategoriyalar',
@@ -48,6 +62,7 @@ return [
     'login' => 'Kirish',
     'sign_in' => 'Kirish',
     'all_rights_reserved' => 'Barcha huquqlar himoyalangan',
+    'theme_changed' => 'Tema muvaffaqiyatli o\'zgartirildi',
     'login_required' => 'Email yoki telefon maydoni talab qilinadi',
     'password_required' => 'Parol maydoni talab qilinadi',
     'invalid_credentials' => 'Bunday email yoki telefon raqam topilmadi',

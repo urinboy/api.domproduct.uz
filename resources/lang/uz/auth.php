@@ -16,5 +16,7 @@ return [
     'failed' => 'Kiritilgan ma\'lumotlar bizning yozuvlarimizga mos kelmaydi.',
     'password' => 'Kiritilgan parol noto\'g\'ri.',
     'throttle' => 'Juda ko\'p kirish urinishi. Iltimos, :seconds soniyadan keyin qayta urinib ko\'ring.',
+    'login_success' => 'Xush kelibsiz, :name! Muvaffaqiyatli tizimga kirdingiz.',
+    'logout_success' => 'Muvaffaqiyatli tizimdan chiqdingiz. Xayr!',
 
 ];

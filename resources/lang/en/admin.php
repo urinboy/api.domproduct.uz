@@ -1,8 +1,19 @@
 <?php
 
 return [
-    // Dashboard
+    // Navigation & Layout
     'dashboard' => 'Dashboard',
+    'users' => 'Users',
+    'products' => 'Products',
+    'all_products' => 'All Products',
+    'add_product' => 'Add Product',
+    'categories' => 'Categories',
+    'orders' => 'Orders',
+    'settings' => 'Settings',
+    'logout' => 'Logout',
+    'language' => 'Language',
+    'main' => 'Main',
+    'management' => 'Management',
     'welcome_back' => 'Welcome back!',
     'overview' => 'Overview',
     'statistics' => 'Statistics',
@@ -18,6 +29,9 @@ return [
     'recent_orders' => 'Recent Orders',
     'top_viewed_products' => 'Top Viewed Products',
     'views' => 'Views',
+    'conversion_rate' => 'Conversion Rate',
+    'growth' => 'Growth',
+    'performance' => 'Performance',
 
     // Auth
     'admin_login' => 'Admin Login',
