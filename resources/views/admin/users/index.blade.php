@@ -1,33 +1,33 @@
 @extends('admin.layouts.app')
 
 @section('title', __('admin.users'))
+@section('page-title', __('admin.users'))
+
+@section('breadcrumbs')
+<li class="breadcrumb-item active">{{ __('admin.users') }}</li>
+@endsection
 
 @section('content')
-<div class="space-y-6">
-    <!-- Page Header -->
-    <div class="flex items-center justify-between">
-        <div>
-            <h1 class="text-2xl font-bold text-gray-900 dark:text-white">{{ __('admin.users') }}</h1>
-            <p class="text-gray-600 dark:text-gray-400">{{ __('admin.user_management') }}</p>
-        </div>
-        <a href="{{ route('admin.users.create') }}" class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg font-medium transition-colors">
-            <svg class="w-5 h-5 inline-block mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path>
-            </svg>
-            {{ __('admin.add_user') }}
-        </a>
-    </div>
-
-    <!-- Filters -->
-    <div class="bg-white dark:bg-gray-800 rounded-lg shadow p-6">
-        <form method="GET" action="{{ route('admin.users.index') }}" class="grid grid-cols-1 md:grid-cols-4 gap-4">
-            <!-- Search -->
-            <div>
-                <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">{{ __('admin.search') }}</label>
-                <input type="text" name="search" value="{{ request('search') }}"
-                       placeholder="{{ __('admin.search_users_placeholder') }}"
-                       class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 dark:bg-gray-700 dark:text-white">
+<div class="row">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-header">
+                <h3 class="card-title">{{ __('admin.users_list') }}</h3>
+                <div class="card-tools">
+                    <a href="{{ route('admin.users.create') }}" class="btn btn-primary btn-sm">
+                        <i class="fas fa-plus"></i> {{ __('admin.add_user') }}
+                    </a>
+                </div>
             </div>
+            <div class="card-body">
+                <!-- Filters -->
+                <form method="GET" action="{{ route('admin.users.index') }}" class="mb-3">
+                    <div class="row">
+                        <div class="col-md-3">
+                            <input type="text" name="search" value="{{ request('search') }}"
+                                   placeholder="{{ __('admin.search_users_placeholder') }}"
+                                   class="form-control">
+                        </div>
 
             <!-- Role Filter -->
             <div>

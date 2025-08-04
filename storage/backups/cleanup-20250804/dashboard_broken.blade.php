@@ -147,42 +147,40 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    @if(isset($recentUsers) && $recentUsers->count() > 0)
-                                        @foreach($recentUsers->take(10) as $user)
-                                        <tr>
-                                            <td>{{ $user->id }}</td>
-                                            <td>
-                                                <div class="d-flex align-items-center">
-                                                    @if($user->avatar)
-                                                        <img src="{{ $user->avatar }}" alt="{{ $user->name }}" class="img-circle mr-2" style="width: 30px; height: 30px;">
-                                                    @else
-                                                        <div class="bg-primary text-white rounded-circle d-flex align-items-center justify-content-center mr-2" style="width: 30px; height: 30px; font-size: 12px;">
-                                                            {{ strtoupper(substr($user->name, 0, 1)) }}
-                                                        </div>
-                                                    @endif
-                                                    {{ $user->name }}
-                                                </div>
-                                            </td>
-                                            <td>{{ $user->email }}</td>
-                                            <td>
-                                                <span class="badge badge-{{ $user->role === 'admin' ? 'danger' : ($user->role === 'manager' ? 'warning' : 'info') }}">
-                                                    {{ ucfirst($user->role) }}
-                                                </span>
-                                            </td>
-                                            <td>
-                                                <small class="text-muted">{{ $user->created_at->diffForHumans() }}</small><br>
-                                                <small>{{ $user->created_at->format('d M Y, H:i') }}</small>
-                                            </td>
-                                        </tr>
-                                        @endforeach
-                                    @else
-                                        <tr>
-                                            <td colspan="5" class="text-center text-muted py-4">
-                                                <i class="fas fa-users fa-2x mb-2"></i><br>
-                                                {{ __('admin.no_users_found') }}
-                                            </td>
-                                        </tr>
-                                    @endif
+                                    @forelse(($recentUsers ?? collect())->take(10) as $user)
+                                    <tr>
+                                        <td>{{ $user->id }}</td>
+                                        <td>
+                                            <div class="d-flex align-items-center">
+                                                @if($user->avatar)
+                                                    <img src="{{ $user->avatar }}" alt="{{ $user->name }}" class="img-circle mr-2" style="width: 30px; height: 30px;">
+                                                @else
+                                                    <div class="bg-primary text-white rounded-circle d-flex align-items-center justify-content-center mr-2" style="width: 30px; height: 30px; font-size: 12px;">
+                                                        {{ strtoupper(substr($user->name, 0, 1)) }}
+                                                    </div>
+                                                @endif
+                                                {{ $user->name }}
+                                            </div>
+                                        </td>
+                                        <td>{{ $user->email }}</td>
+                                        <td>
+                                            <span class="badge badge-{{ $user->role === 'admin' ? 'danger' : ($user->role === 'manager' ? 'warning' : 'info') }}">
+                                                {{ ucfirst($user->role) }}
+                                            </span>
+                                        </td>
+                                        <td>
+                                            <small class="text-muted">{{ $user->created_at->diffForHumans() }}</small><br>
+                                            <small>{{ $user->created_at->format('d M Y, H:i') }}</small>
+                                        </td>
+                                    </tr>
+                                    @empty
+                                    <tr>
+                                        <td colspan="5" class="text-center text-muted py-4">
+                                            <i class="fas fa-users fa-2x mb-2"></i><br>
+                                            {{ __('admin.no_users_found') }}
+                                        </td>
+                                    </tr>
+                                    @endforelse
                                 </tbody>
                             </table>
                         </div>
@@ -213,30 +211,28 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    @if(isset($recentOrders) && $recentOrders->count() > 0)
-                                        @foreach($recentOrders->take(10) as $order)
-                                        <tr>
-                                            <td>#{{ $order->id }}</td>
-                                            <td>{{ $order->user->name ?? __('admin.guest') }}</td>
-                                            <td>
-                                                <span class="badge badge-{{ $order->status === 'completed' ? 'success' : ($order->status === 'pending' ? 'warning' : ($order->status === 'cancelled' ? 'danger' : 'secondary')) }}">
-                                                    {{ ucfirst($order->status) }}
-                                                </span>
-                                            </td>
-                                            <td>
-                                                <small class="text-muted">{{ $order->created_at->diffForHumans() }}</small><br>
-                                                <small>{{ $order->created_at->format('d M Y, H:i') }}</small>
-                                            </td>
-                                        </tr>
-                                        @endforeach
-                                    @else
-                                        <tr>
-                                            <td colspan="4" class="text-center text-muted py-4">
-                                                <i class="fas fa-shopping-cart fa-2x mb-2"></i><br>
-                                                {{ __('admin.no_orders_found') }}
-                                            </td>
-                                        </tr>
-                                    @endif
+                                    @forelse(($recentOrders ?? collect())->take(10) as $order)
+                                    <tr>
+                                        <td>#{{ $order->id }}</td>
+                                        <td>{{ $order->user->name ?? __('admin.guest') }}</td>
+                                        <td>
+                                            <span class="badge badge-{{ $order->status === 'completed' ? 'success' : ($order->status === 'pending' ? 'warning' : ($order->status === 'cancelled' ? 'danger' : 'secondary')) }}">
+                                                {{ ucfirst($order->status) }}
+                                            </span>
+                                        </td>
+                                        <td>
+                                            <small class="text-muted">{{ $order->created_at->diffForHumans() }}</small><br>
+                                            <small>{{ $order->created_at->format('d M Y, H:i') }}</small>
+                                        </td>
+                                    </tr>
+                                    @empty
+                                    <tr>
+                                        <td colspan="4" class="text-center text-muted py-4">
+                                            <i class="fas fa-shopping-cart fa-2x mb-2"></i><br>
+                                            {{ __('admin.no_orders_found') }}
+                                        </td>
+                                    </tr>
+                                    @endforelse
                                 </tbody>
                             </table>
                         </div>
@@ -255,7 +251,7 @@
 $(document).ready(function() {
     // Monthly Statistics Chart
     var areaChartData = {
-        labels: {!! json_encode($monthlyLabels ?? ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']) !!},
+        labels: @json($monthlyLabels ?? ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']),
         datasets: [
             {
                 label: '{{ __("admin.users") }}',
@@ -266,7 +262,7 @@ $(document).ready(function() {
                 pointStrokeColor: 'rgba(60,141,188,1)',
                 pointHighlightFill: '#fff',
                 pointHighlightStroke: 'rgba(60,141,188,1)',
-                data: {!! json_encode($monthlyUsers ?? [28, 48, 40, 19, 86, 27, 90, 95, 65, 45, 78, 92]) !!}
+                data: @json($monthlyUsers ?? [28, 48, 40, 19, 86, 27, 90, 95, 65, 45, 78, 92])
             },
             {
                 label: '{{ __("admin.orders") }}',
@@ -277,8 +273,8 @@ $(document).ready(function() {
                 pointStrokeColor: '#c1c7d1',
                 pointHighlightFill: '#fff',
                 pointHighlightStroke: 'rgba(220,220,220,1)',
-                data: {!! json_encode($monthlyOrders ?? [65, 59, 80, 81, 56, 55, 40, 65, 78, 89, 95, 100]) !!}
-            }
+                data: @json($monthlyOrders ?? [65, 59, 80, 81, 56, 55, 40, 65, 78, 89, 95, 100])
+            },
         ]
     };
 
@@ -291,12 +287,12 @@ $(document).ready(function() {
         scales: {
             xAxes: [{
                 gridLines: {
-                    display: false
+                    display: false,
                 }
             }],
             yAxes: [{
                 gridLines: {
-                    display: false
+                    display: false,
                 }
             }]
         }

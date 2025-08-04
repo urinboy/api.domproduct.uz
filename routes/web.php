@@ -87,81 +87,40 @@ require __DIR__.'/auth.php';
 |--------------------------------------------------------------------------
 */
 Route::prefix('admin')->name('admin.')->middleware(['auth', 'admin'])->group(function () {
-        // Dashboard
+    // Dashboard
     Route::get('/', [DashboardController::class, 'index'])->name('dashboard');
     Route::get('/api/stats', [DashboardController::class, 'apiStats'])->name('api.stats');
 
-    // Users Management
+    // User Management
     Route::resource('users', UserController::class);
     Route::patch('users/{user}/toggle-status', [UserController::class, 'toggleStatus'])->name('users.toggle-status');
     Route::post('users/{user}/reset-password', [UserController::class, 'resetPassword'])->name('users.reset-password');
     Route::post('users/bulk-action', [UserController::class, 'bulkAction'])->name('users.bulk-action');
 
-    // Profile
-    Route::get('/profile', [\App\Http\Controllers\Admin\ProfileController::class, 'show'])->name('profile');
-    Route::put('/profile', [\App\Http\Controllers\Admin\ProfileController::class, 'update'])->name('profile.update');
-
-    // Language switching
-    Route::post('/language/switch', [\App\Http\Controllers\Admin\LanguageController::class, 'switch'])->name('language.switch');
-    Route::get('/language/switch/{locale}', [\App\Http\Controllers\Admin\LanguageController::class, 'switchLanguage'])->name('language.switch.get');
-    Route::get('/language/{locale}', [\App\Http\Controllers\Admin\LanguageController::class, 'switchLanguage'])->name('admin.language.switch');
-
-    // Theme switching
-    Route::post('/theme/toggle', [\App\Http\Controllers\Admin\ThemeController::class, 'toggle'])->name('theme.toggle');
-    Route::get('/theme/current', [\App\Http\Controllers\Admin\ThemeController::class, 'getCurrent'])->name('theme.current');
-
-    // User Management
-    Route::middleware('admin:users.view')->group(function () {
-        Route::resource('users', \App\Http\Controllers\Admin\UserController::class);
-    });
-
     // Category Management
-    Route::middleware('admin:categories.view')->group(function () {
-        Route::resource('categories', \App\Http\Controllers\Admin\CategoryController::class);
-        Route::post('categories/{category}/upload-image', [\App\Http\Controllers\Admin\CategoryController::class, 'uploadImage'])->name('categories.upload-image');
-    });
+    Route::resource('categories', \App\Http\Controllers\Admin\CategoryController::class);
+    Route::post('categories/{category}/upload-image', [\App\Http\Controllers\Admin\CategoryController::class, 'uploadImage'])->name('categories.upload-image');
 
     // Product Management
-    Route::middleware('admin:products.view')->group(function () {
-        Route::resource('products', \App\Http\Controllers\Admin\ProductController::class);
-        Route::post('products/{product}/upload-images', [\App\Http\Controllers\Admin\ProductController::class, 'uploadImages'])->name('products.upload-images');
-        Route::get('products/low-stock', [\App\Http\Controllers\Admin\ProductController::class, 'lowStock'])->name('products.low-stock');
-    });
+    Route::resource('products', \App\Http\Controllers\Admin\ProductController::class);
+    Route::post('products/{product}/upload-images', [\App\Http\Controllers\Admin\ProductController::class, 'uploadImages'])->name('products.upload-images');
+    Route::get('products/low-stock', [\App\Http\Controllers\Admin\ProductController::class, 'lowStock'])->name('products.low-stock');
 
     // Order Management
-    Route::middleware('admin:orders.view')->group(function () {
-        Route::resource('orders', \App\Http\Controllers\Admin\OrderController::class)->only(['index', 'show', 'edit', 'update']);
-        Route::patch('orders/{order}/status', [\App\Http\Controllers\Admin\OrderController::class, 'updateStatus'])->name('orders.update-status');
-    });
+    Route::resource('orders', \App\Http\Controllers\Admin\OrderController::class)->only(['index', 'show', 'edit', 'update']);
+    Route::patch('orders/{order}/status', [\App\Http\Controllers\Admin\OrderController::class, 'updateStatus'])->name('orders.update-status');
 
-    // Language Management
-    Route::middleware('admin:languages.view')->group(function () {
-        Route::resource('languages', \App\Http\Controllers\Admin\LanguageController::class);
-    });
-
-    // Translation Management
-    Route::middleware('admin:translations.view')->group(function () {
-        Route::resource('translations', \App\Http\Controllers\Admin\TranslationController::class);
-        Route::post('translations/bulk-update', [\App\Http\Controllers\Admin\TranslationController::class, 'bulkUpdate'])->name('translations.bulk-update');
-    });
-
-    // Reports
-    Route::middleware('admin:reports.view')->group(function () {
-        Route::get('reports', [\App\Http\Controllers\Admin\ReportController::class, 'index'])->name('reports.index');
-        Route::get('reports/sales', [\App\Http\Controllers\Admin\ReportController::class, 'sales'])->name('reports.sales');
-        Route::get('reports/products', [\App\Http\Controllers\Admin\ReportController::class, 'products'])->name('reports.products');
-        Route::get('reports/users', [\App\Http\Controllers\Admin\ReportController::class, 'users'])->name('reports.users');
-    });
+    // Profile Management
+    Route::get('/profile', [\App\Http\Controllers\Admin\ProfileController::class, 'show'])->name('profile.show');
+    Route::get('/profile/edit', [\App\Http\Controllers\Admin\ProfileController::class, 'edit'])->name('profile.edit');
+    Route::put('/profile', [\App\Http\Controllers\Admin\ProfileController::class, 'update'])->name('profile.update');
 
     // Settings (Admin only)
-    Route::middleware('admin:*')->group(function () {
-        Route::get('settings', [\App\Http\Controllers\Admin\SettingsController::class, 'index'])->name('settings.index');
-        Route::put('settings', [\App\Http\Controllers\Admin\SettingsController::class, 'update'])->name('settings.update');
-    });
+    Route::get('settings', [\App\Http\Controllers\Admin\SettingsController::class, 'index'])->name('settings.index');
+    Route::put('settings', [\App\Http\Controllers\Admin\SettingsController::class, 'update'])->name('settings.update');
 
-    // Notifications
-    Route::get('notifications', [\App\Http\Controllers\Admin\NotificationController::class, 'index'])->name('notifications.index');
-    Route::patch('notifications/{notification}/read', [\App\Http\Controllers\Admin\NotificationController::class, 'markAsRead'])->name('notifications.read');
+    // Language switching
+    Route::get('/language/{locale}', [LanguageController::class, 'switchLanguage'])->name('language.switch');
 });
 
 /*

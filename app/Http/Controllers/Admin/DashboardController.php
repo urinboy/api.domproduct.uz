@@ -12,6 +12,7 @@ use App\Models\Notification;
 use App\Models\CartItem;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Schema;
 
 class DashboardController extends Controller
 {
@@ -22,127 +23,88 @@ class DashboardController extends Controller
 
     public function index()
     {
-        // Asosiy statistikalar
+        // Basic statistics
         $totalUsers = User::count();
+        $totalOrders = Order::count();
         $totalProducts = Product::count();
         $totalCategories = Category::count();
-        $totalOrders = Order::count();
-        $totalPayments = Payment::count();
 
-        // Bugungi statistikalar
-        $todayUsers = User::whereDate('created_at', Carbon::today())->count();
-        $todayOrders = Order::whereDate('created_at', Carbon::today())->count();
-        $todayProducts = Product::whereDate('created_at', Carbon::today())->count();
+        // Recent entities
+        $recentUsers = User::latest()->limit(10)->get();
+        $recentOrders = Order::with('user')->latest()->limit(10)->get();
 
-        // Bu oydagi statistikalar
-        $monthlyUsers = User::whereMonth('created_at', Carbon::now()->month)
-                           ->whereYear('created_at', Carbon::now()->year)
-                           ->count();
+        // Order statistics by status
+        $newOrders = Order::where('status', 'new')->count();
+        $pendingOrders = Order::where('status', 'pending')->count();
+        $completedOrders = Order::where('status', 'completed')->count();
+        $cancelledOrders = Order::where('status', 'cancelled')->count();
 
-        $monthlyOrders = Order::whereMonth('created_at', Carbon::now()->month)
-                             ->whereYear('created_at', Carbon::now()->year)
-                             ->count();
+        // User statistics by role
+        $adminUsers = User::where('role', 'admin')->count();
+        $managerUsers = User::where('role', 'manager')->count();
+        $customerUsers = User::where('role', 'customer')->count();
 
-        // Oxirgi 7 kunlik statistikalar
-        $weeklyStats = [];
-        for ($i = 6; $i >= 0; $i--) {
-            $date = Carbon::today()->subDays($i);
-            $weeklyStats[] = [
-                'date' => $date->format('Y-m-d'),
-                'date_display' => $date->format('d M'),
-                'users' => User::whereDate('created_at', $date)->count(),
-                'orders' => Order::whereDate('created_at', $date)->count(),
-                'products' => Product::whereDate('created_at', $date)->count(),
-            ];
+        // Monthly data for charts (last 12 months)
+        $monthlyLabels = [];
+        $monthlyUsers = [];
+        $monthlyOrders = [];
+
+        for ($i = 11; $i >= 0; $i--) {
+            $month = now()->subMonths($i);
+            $monthlyLabels[] = $month->format('M');
+
+            $monthlyUsers[] = User::whereYear('created_at', $month->year)
+                                 ->whereMonth('created_at', $month->month)
+                                 ->count();
+
+            $monthlyOrders[] = Order::whereYear('created_at', $month->year)
+                                   ->whereMonth('created_at', $month->month)
+                                   ->count();
         }
 
-        // Eng ko'p sotilgan mahsulotlar (order items orqali)
-                // Top selling products based on order items count
-        $topSellingProducts = Product::withCount(['orderItems' => function($query) {
-                $query->whereHas('order', function($orderQuery) {
-                    $orderQuery->where('created_at', '>=', now()->subMonth());
-                });
-            }])
-            ->with(['category.translations', 'images'])
-            ->orderBy('order_items_count', 'desc')
-            ->take(5)
-            ->get();
+        // Weekly data for line chart (last 7 days)
+        $weeklyLabels = [];
+        $weeklyUsers = [];
 
-        // Eng yuqori narxli mahsulotlar
-        $expensiveProducts = Product::with(['category'])
-                                  ->where('is_active', true)
-                                  ->orderBy('price', 'desc')
-                                  ->limit(5)
-                                  ->get();
+        for ($i = 6; $i >= 0; $i--) {
+            $date = now()->subDays($i);
+            $weeklyLabels[] = $date->format('D');
+            $weeklyUsers[] = User::whereDate('created_at', $date)->count();
+        }
 
-        // So'nggi ro'yxatdan o'tgan foydalanuvchilar
-        $recentUsers = User::orderBy('created_at', 'desc')
-                          ->limit(5)
-                          ->get();
+        // Revenue statistics (if you have price/amount fields)
+        $monthlyRevenue = 0;
+        $totalRevenue = 0;
 
-        // So'nggi buyurtmalar
-        $recentOrders = Order::with(['user', 'items.product'])
-                            ->orderBy('created_at', 'desc')
-                            ->limit(5)
-                            ->get();
-
-        // Kategoriyalar bo'yicha mahsulotlar taqsimoti
-        $categoriesWithProducts = Category::withCount('products')
-                                        ->orderBy('products_count', 'desc')
-                                        ->limit(8)
-                                        ->get();
-
-        // Status bo'yicha buyurtmalar
-        $ordersByStatus = Order::selectRaw('status, COUNT(*) as count')
-                              ->groupBy('status')
-                              ->get()
-                              ->pluck('count', 'status');
-
-        // Jami daromad (payments jadvalidan)
-        $totalRevenue = Payment::where('status', 'completed')->sum('amount') ?? 0;
-        $monthlyRevenue = Payment::where('status', 'completed')
-                                ->whereMonth('created_at', Carbon::now()->month)
-                                ->whereYear('created_at', Carbon::now()->year)
-                                ->sum('amount') ?? 0;
-
-        // Stok holati
-        $lowStockProducts = Product::where('track_stock', true)
-                                  ->whereColumn('stock_quantity', '<=', 'min_stock_level')
-                                  ->count();
-
-        // Faol va nofaol mahsulotlar
-        $activeProducts = Product::where('is_active', true)->count();
-        $inactiveProducts = Product::where('is_active', false)->count();
-
-        // Pending orders
-        $pendingOrders = Order::where('status', 'pending')->count();
-
-        // Recent notifications
-        $recentNotifications = Notification::orderBy('created_at', 'desc')
-                                         ->limit(5)
-                                         ->get();
+        // Get orders with amount if exists
+        if (Schema::hasColumn('orders', 'total_amount')) {
+            $monthlyRevenue = Order::whereMonth('created_at', now()->month)
+                                  ->whereYear('created_at', now()->year)
+                                  ->sum('total_amount');
+            $totalRevenue = Order::sum('total_amount');
+        }
 
         return view('admin.dashboard', compact(
             'totalUsers',
+            'totalOrders',
             'totalProducts',
             'totalCategories',
-            'totalOrders',
-            'totalPayments',
-            'todayUsers',
-            'todayProducts',
-            'todayOrders',
-            'monthlyUsers',
-            'monthlyOrders',
-            'monthlyRevenue',
-            'lowStockProducts',
-            'topSellingProducts',
             'recentUsers',
             'recentOrders',
-            'categoriesWithProducts',
-            'weeklyStats',
-            'totalRevenue',
+            'newOrders',
             'pendingOrders',
-            'recentNotifications'
+            'completedOrders',
+            'cancelledOrders',
+            'adminUsers',
+            'managerUsers',
+            'customerUsers',
+            'monthlyLabels',
+            'monthlyUsers',
+            'monthlyOrders',
+            'weeklyLabels',
+            'weeklyUsers',
+            'monthlyRevenue',
+            'totalRevenue'
         ));
     }
 

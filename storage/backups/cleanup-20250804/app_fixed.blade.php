@@ -43,33 +43,22 @@
         <ul class="navbar-nav ml-auto">
             <!-- Language Dropdown -->
             <li class="nav-item dropdown">
-                <a class="nav-link" data-toggle="dropdown" href="#" aria-expanded="false">
-                    @php
-                        $currentLocale = app()->getLocale();
-                        $languages = [
-                            'uz' => ['name' => 'O\'zbek', 'flag' => '🇺🇿'],
-                            'en' => ['name' => 'English', 'flag' => '🇺🇸'],
-                            'ru' => ['name' => 'Русский', 'flag' => '🇷🇺']
-                        ];
-                    @endphp
-                    <span class="flag-icon">{{ $languages[$currentLocale]['flag'] ?? '🇺🇿' }}</span>
-                    <span class="d-none d-md-inline ml-1">{{ $languages[$currentLocale]['name'] ?? 'O\'zbek' }}</span>
-                    {{-- <i class="fas fa-angle-down ml-1"></i> --}}
+                <a class="nav-link" data-toggle="dropdown" href="#">
+                    <i class="fas fa-globe"></i>
+                    <span class="badge badge-warning navbar-badge">{{ strtoupper(app()->getLocale()) }}</span>
                 </a>
                 <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right">
-                    <div class="dropdown-header">{{ __('admin.choose_language') }}</div>
+                    <a href="{{ route('language.switch', 'uz') }}" class="dropdown-item {{ app()->getLocale() == 'uz' ? 'active' : '' }}">
+                        <i class="fas fa-flag mr-2"></i> O'zbek
+                    </a>
                     <div class="dropdown-divider"></div>
-
-                    @foreach($languages as $code => $language)
-                        <a href="{{ url()->current() }}?lang={{ $code }}"
-                           class="dropdown-item {{ $currentLocale == $code ? 'active' : '' }}">
-                            <span class="mr-2">{{ $language['flag'] }}</span>
-                            {{ $language['name'] }}
-                            @if($currentLocale == $code)
-                                <i class="fas fa-check text-success float-right mt-1"></i>
-                            @endif
-                        </a>
-                    @endforeach
+                    <a href="{{ route('language.switch', 'en') }}" class="dropdown-item {{ app()->getLocale() == 'en' ? 'active' : '' }}">
+                        <i class="fas fa-flag mr-2"></i> English
+                    </a>
+                    <div class="dropdown-divider"></div>
+                    <a href="{{ route('language.switch', 'ru') }}" class="dropdown-item {{ app()->getLocale() == 'ru' ? 'active' : '' }}">
+                        <i class="fas fa-flag mr-2"></i> Русский
+                    </a>
                 </div>
             </li>
 

@@ -32,6 +32,21 @@ return [
     'conversion_rate' => 'Conversion Rate',
     'growth' => 'Growth',
     'performance' => 'Performance',
+    'home' => 'Home',
+
+    // Language Selector
+    'choose_language' => 'Choose Language',
+    'current_language' => 'Current Language',
+
+    // Header Navigation
+    'notifications' => 'Notifications',
+    'no_notifications' => 'No notifications',
+    'see_all_notifications' => 'See all notifications',
+    'quick_add' => 'Quick Add',
+    'profile' => 'Profile',
+    'my_profile' => 'My Profile',
+    'member_since' => 'Member since',
+    'sign_out' => 'Sign Out',
 
     // Auth
     'admin_login' => 'Admin Login',
@@ -204,6 +219,35 @@ return [
     'new_orders' => 'New Orders',
     'pending_orders' => 'Pending Orders',
     'low_stock' => 'Low Stock',
+
+    // Categories
+    'all_categories' => 'All Categories',
+    'add_category' => 'Add Category',
+    'categories_list' => 'Categories List',
+    'category_information' => 'Category Information',
+    'no_categories_found' => 'No categories found',
+    'create_first_category' => 'Create your first category',
+    'category_created_successfully' => 'Category created successfully',
+    'category_updated_successfully' => 'Category updated successfully',
+    'category_deleted_successfully' => 'Category deleted successfully',
+    'category_name' => 'Category Name',
+    'category_description' => 'Category Description',
+
+    // Products
+    'product_created_successfully' => 'Product created successfully',
+    'product_updated_successfully' => 'Product updated successfully',
+    'product_deleted_successfully' => 'Product deleted successfully',
+
+    // Profile & Settings
+    'profile_updated_successfully' => 'Profile updated successfully',
+    'current_password_incorrect' => 'Current password is incorrect',
+    'settings_updated_successfully' => 'Settings updated successfully',
+
+    // Common UI
+    'choose_file' => 'Choose file',
+    'image_upload_hint' => 'Max size: 2MB. Supported formats: JPEG, PNG, JPG, GIF',
+    'preview' => 'Preview',
+    'more_info' => 'More info',
 
     // Form validation
     'required' => 'This field is required',

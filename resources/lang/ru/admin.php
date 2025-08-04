@@ -32,6 +32,21 @@ return [
     'conversion_rate' => 'Конверсия',
     'growth' => 'Рост',
     'performance' => 'Производительность',
+    'home' => 'Главная',
+
+    // Language Selector
+    'choose_language' => 'Выберите язык',
+    'current_language' => 'Текущий язык',
+
+    // Header Navigation
+    'notifications' => 'Уведомления',
+    'no_notifications' => 'Нет уведомлений',
+    'see_all_notifications' => 'Посмотреть все уведомления',
+    'quick_add' => 'Быстро добавить',
+    'profile' => 'Профиль',
+    'my_profile' => 'Мой профиль',
+    'member_since' => 'Участник с',
+    'sign_out' => 'Выйти',
 
     // Additional Dashboard
     'total_categories' => 'Всего категорий',

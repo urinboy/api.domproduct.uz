@@ -32,6 +32,21 @@ return [
     'conversion_rate' => 'Konversiya darajasi',
     'growth' => 'O\'sish',
     'performance' => 'Faoliyat',
+    'home' => 'Bosh sahifa',
+
+    // Language Selector
+    'choose_language' => 'Tilni tanlang',
+    'current_language' => 'Joriy til',
+
+    // Header Navigation
+    'notifications' => 'Bildirishnomalar',
+    'no_notifications' => 'Bildirishnomalar yo\'q',
+    'see_all_notifications' => 'Barcha bildirishnomalarni ko\'rish',
+    'quick_add' => 'Tezkor qo\'shish',
+    'profile' => 'Profil',
+    'my_profile' => 'Mening profilim',
+    'member_since' => 'A\'zo bo\'lgan vaqt',
+    'sign_out' => 'Chiqish',
 
     // Additional Dashboard
     'total_categories' => 'Jami kategoriyalar',
@@ -212,6 +227,24 @@ return [
     // Dashboard stats
     'new_orders' => 'Yangi buyurtmalar',
     'low_stock' => 'Kam zaxira',
+    'home' => 'Bosh sahifa',
+    'more_info' => 'Batafsil ma\'lumot',
+    'id' => 'ID',
+    'user' => 'Foydalanuvchi',
+    'email' => 'Email',
+    'role' => 'Rol',
+    'date' => 'Sana',
+    'order_id' => 'Buyurtma ID',
+    'customer' => 'Mijoz',
+    'status' => 'Holat',
+    'guest' => 'Mehmon',
+    'no_users_found' => 'Foydalanuvchilar topilmadi',
+    'no_orders_found' => 'Buyurtmalar topilmadi',
+    'admin' => 'Admin',
+    'manager' => 'Menejer',
+    'customer' => 'Mijoz',
+    'monthly_statistics' => 'Oylik statistika',
+    'users_distribution' => 'Foydalanuvchilar taqsimoti',
 
     // Form validation
     'required' => 'Bu maydon majburiy',

@@ -2,7 +2,7 @@ const mix = require('laravel-mix');
 
 /*
  |--------------------------------------------------------------------------
- | Mix Asset Management
+ | Mix Asset Management - DOM Product Admin Panel
  |--------------------------------------------------------------------------
  |
  | Mix provides a clean, fluent API for defining some Webpack build steps
@@ -11,24 +11,10 @@ const mix = require('laravel-mix');
  |
  */
 
-// Admin Panel Assets
+// Admin Panel Assets (AdminLTE + Custom)
 mix.js('resources/js/admin.js', 'public/js')
-    .postCss('resources/css/admin.css', 'public/css', [
-        require('tailwindcss'),
-        require('autoprefixer'),
-    ])
+    .css('resources/css/admin.css', 'public/css')
     .options({
-        processCssUrls: false
-    });
-
-// API Documentation Assets
-mix.js('resources/js/app.js', 'public/js')
-    .postCss('resources/css/app.css', 'public/css', [
-        require('tailwindcss'),
-        require('autoprefixer'),
-    ]);
-
-// Version files in production
-if (mix.inProduction()) {
-    mix.version();
-}
+        processCssUrls: false // AdminLTE CDN orqali yuklanadi
+    })
+    .version(); // Cache busting uchun

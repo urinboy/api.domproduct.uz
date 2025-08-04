@@ -1,0 +1,704 @@
+@extends('admin.layouts.app')
+
+@section('title', __('admin.dashboard'))
+@section('page-title', __('admin.dashboard'))
+
+@section('breadcrumbs')
+<li class="breadcrumb-item active">{{ __('admin.dashboard') }}</li>
+@endsection
+
+@section('content')
+<!-- Small boxes (Stat box) -->
+<div class="row">
+    <div class="col-lg-3 col-6">
+        <!-- small box -->
+        <div class="small-box bg-info">
+            <div class="inner">
+                <h3 id="total-users">{{ $totalUsers ?? 0 }}</h3>
+                <p>{{ __('admin.total_users') }}</p>
+            </div>
+            <div class="icon">
+                <i class="fas fa-users"></i>
+            </div>
+            <a href="{{ route('admin.users.index') }}" class="small-box-footer">
+                {{ __('admin.more_info') }} <i class="fas fa-arrow-circle-right"></i>
+            </a>
+        </div>
+    </div>
+
+    <div class="col-lg-3 col-6">
+        <!-- small box -->
+        <div class="small-box bg-success">
+            <div class="inner">
+                <h3 id="total-orders">{{ $totalOrders ?? 0 }}</h3>
+                <p>{{ __('admin.total_orders') }}</p>
+            </div>
+            <div class="icon">
+                <i class="fas fa-shopping-cart"></i>
+            </div>
+            <a href="{{ route('admin.orders.index') }}" class="small-box-footer">
+                {{ __('admin.more_info') }} <i class="fas fa-arrow-circle-right"></i>
+            </a>
+        </div>
+    </div>
+
+    <div class="col-lg-3 col-6">
+        <!-- small box -->
+        <div class="small-box bg-warning">
+            <div class="inner">
+                <h3 id="total-products">{{ $totalProducts ?? 0 }}</h3>
+                <p>{{ __('admin.total_products') }}</p>
+            </div>
+            <div class="icon">
+                <i class="fas fa-box"></i>
+            </div>
+            <a href="{{ route('admin.products.index') }}" class="small-box-footer">
+                {{ __('admin.more_info') }} <i class="fas fa-arrow-circle-right"></i>
+            </a>
+        </div>
+    </div>
+
+    <div class="col-lg-3 col-6">
+        <!-- small box -->
+        <div class="small-box bg-danger">
+            <div class="inner">
+                <h3 id="total-categories">{{ $totalCategories ?? 0 }}</h3>
+                <p>{{ __('admin.total_categories') }}</p>
+            </div>
+            <div class="icon">
+                <i class="fas fa-th-large"></i>
+            </div>
+            <a href="{{ route('admin.categories.index') }}" class="small-box-footer">
+                {{ __('admin.more_info') }} <i class="fas fa-arrow-circle-right"></i>
+            </a>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-8">
+        <!-- AREA CHART -->
+        <div class="card card-primary">
+            <div class="card-header">
+                <h3 class="card-title">{{ __('admin.monthly_stats') }}</h3>
+                <div class="card-tools">
+                    <button type="button" class="btn btn-tool" data-card-widget="collapse">
+                        <i class="fas fa-minus"></i>
+                    </button>
+                </div>
+            </div>
+            <div class="card-body">
+                <div class="chart">
+                    <canvas id="areaChart" style="min-height: 250px; height: 250px; max-height: 250px; max-width: 100%;"></canvas>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-4">
+        <!-- PIE CHART -->
+        <div class="card card-danger">
+            <div class="card-header">
+                <h3 class="card-title">{{ __('admin.user_roles') }}</h3>
+                <div class="card-tools">
+                    <button type="button" class="btn btn-tool" data-card-widget="collapse">
+                        <i class="fas fa-minus"></i>
+                    </button>
+                </div>
+            </div>
+            <div class="card-body">
+                <canvas id="pieChart" style="min-height: 250px; height: 250px; max-height: 250px; max-width: 100%;"></canvas>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-header">
+                <h3 class="card-title">{{ __('admin.recent_users') }}</h3>
+            </div>
+            <div class="card-body table-responsive p-0">
+                <table class="table table-hover text-nowrap">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>{{ __('admin.name') }}</th>
+                            <th>{{ __('admin.email') }}</th>
+                            <th>{{ __('admin.role') }}</th>
+                            <th>{{ __('admin.created_at') }}</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @forelse(($recentUsers ?? \App\Models\User::latest()->limit(10)->get()) as $user)
+                        <tr>
+                            <td>{{ $user->id }}</td>
+                            <td>
+                                <div class="d-flex align-items-center">
+                                    @if($user->avatar)
+                                        <img src="{{ $user->avatar }}" alt="{{ $user->name }}" class="img-circle mr-2" style="width: 30px; height: 30px;">
+                                    @else
+                                        <div class="bg-primary text-white rounded-circle d-flex align-items-center justify-content-center mr-2" style="width: 30px; height: 30px; font-size: 12px;">
+                                            {{ strtoupper(substr($user->name, 0, 1)) }}
+                                        </div>
+                                    @endif
+                                    {{ $user->name }}
+                                </div>
+                            </td>
+                            <td>{{ $user->email }}</td>
+                            <td>
+                                <span class="badge badge-{{ $user->role === 'admin' ? 'danger' : ($user->role === 'manager' ? 'warning' : 'info') }}">
+                                    {{ ucfirst($user->role) }}
+                                </span>
+                            </td>
+                            <td>
+                                <small class="text-muted">{{ $user->created_at->diffForHumans() }}</small><br>
+                                <small>{{ $user->created_at->format('d M Y, H:i') }}</small>
+                            </td>
+                        </tr>
+                        @empty
+                        <tr>
+                            <td colspan="5" class="text-center text-muted py-4">
+                                <i class="fas fa-users fa-2x mb-2"></i><br>
+                                {{ __('admin.no_users_found') }}
+                            </td>
+                        </tr>
+                        @endforelse
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+@endsection
+
+@push('scripts')
+<!-- Chart.js -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+$(document).ready(function() {
+    // Area Chart (Monthly Users and Orders)
+    var areaChartData = {
+        labels: @json($monthlyLabels ?? ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']),
+        datasets: [
+            {
+                label: '{{ __("admin.users") }}',
+                backgroundColor: 'rgba(60,141,188,0.9)',
+                borderColor: 'rgba(60,141,188,0.8)',
+                pointRadius: false,
+                pointColor: '#3b8bba',
+                pointStrokeColor: 'rgba(60,141,188,1)',
+                pointHighlightFill: '#fff',
+                pointHighlightStroke: 'rgba(60,141,188,1)',
+                data: @json($monthlyUsers ?? [28, 48, 40, 19, 86, 27, 90, 95, 65, 45, 78, 92])
+            },
+            {
+                label: '{{ __("admin.orders") }}',
+                backgroundColor: 'rgba(210, 214, 222, 1)',
+                borderColor: 'rgba(210, 214, 222, 1)',
+                pointRadius: false,
+                pointColor: 'rgba(210, 214, 222, 1)',
+                pointStrokeColor: '#c1c7d1',
+                pointHighlightFill: '#fff',
+                pointHighlightStroke: 'rgba(220,220,220,1)',
+                data: @json($monthlyOrders ?? [65, 59, 80, 81, 56, 55, 40, 65, 78, 89, 95, 100])
+            },
+        ]
+    };
+
+    var areaChartOptions = {
+        maintainAspectRatio: false,
+        responsive: true,
+        legend: {
+            display: false
+        },
+        scales: {
+            xAxes: [{
+                gridLines: {
+                    display: false,
+                }
+            }],
+            yAxes: [{
+                gridLines: {
+                    display: false,
+                }
+            }]
+        }
+    };
+
+    var areaChartCanvas = $('#areaChart').get(0).getContext('2d');
+    var areaChart = new Chart(areaChartCanvas, {
+        type: 'line',
+        data: areaChartData,
+        options: areaChartOptions
+    });
+
+    // Pie Chart (User Roles Distribution)
+    var pieChartCanvas = $('#pieChart').get(0).getContext('2d');
+    var pieData = {
+        labels: [
+            '{{ __("admin.admin") }}',
+            '{{ __("admin.manager") }}',
+            '{{ __("admin.customer") }}'
+        ],
+        datasets: [
+            {
+                data: [
+                    {{ $adminUsers ?? 10 }},
+                    {{ $managerUsers ?? 5 }},
+                    {{ $customerUsers ?? 85 }}
+                ],
+                backgroundColor: ['#f56954', '#f39c12', '#00c0ef']
+            }
+        ]
+    };
+    var pieOptions = {
+        maintainAspectRatio: false,
+        responsive: true
+    };
+    var pieChart = new Chart(pieChartCanvas, {
+        type: 'doughnut',
+        data: pieData,
+        options: pieOptions
+    });
+});
+</script>
+@endpush
+                    <svg class="w-5 h-5 sm:w-6 sm:h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197m13.5-9a2.5 2.5 0 11-5 0 2.5 2.5 0 015 0z"></path>
+                    </svg>
+                </div>
+                <div class="ml-3 sm:ml-4 min-w-0 flex-1">
+                    <h3 class="text-base sm:text-lg font-semibold text-gray-900 dark:text-white truncate">{{ number_format($totalUsers) }}</h3>
+                    <p class="text-xs sm:text-sm text-gray-600 dark:text-gray-400 truncate">{{ __('admin.total_users') }}</p>
+                    <p class="text-xs text-green-600 dark:text-green-400 font-medium">+{{ $todayUsers }} {{ __('admin.today') }}</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Total Products -->
+        <div class="bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700 p-4 sm:p-6 hover:shadow-md transition-shadow duration-200">
+            <div class="flex items-center">
+                <div class="p-2 sm:p-3 bg-gradient-to-r from-green-500 to-green-600 rounded-lg sm:rounded-xl shadow-lg">
+                    <svg class="w-5 h-5 sm:w-6 sm:h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"></path>
+                    </svg>
+                </div>
+                <div class="ml-3 sm:ml-4 min-w-0 flex-1">
+                    <h3 class="text-base sm:text-lg font-semibold text-gray-900 dark:text-white truncate">{{ number_format($totalProducts) }}</h3>
+                    <p class="text-xs sm:text-sm text-gray-600 dark:text-gray-400 truncate">{{ __('admin.total_products') }}</p>
+                    <p class="text-xs text-green-600 dark:text-green-400 font-medium">+{{ $todayProducts }} {{ __('admin.today') }}</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Total Orders -->
+        <div class="bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700 p-4 sm:p-6 hover:shadow-md transition-shadow duration-200">
+            <div class="flex items-center">
+                <div class="p-2 sm:p-3 bg-gradient-to-r from-yellow-500 to-orange-500 rounded-lg sm:rounded-xl shadow-lg">
+                    <svg class="w-5 h-5 sm:w-6 sm:h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"></path>
+                    </svg>
+                </div>
+                <div class="ml-3 sm:ml-4 min-w-0 flex-1">
+                    <h3 class="text-base sm:text-lg font-semibold text-gray-900 dark:text-white truncate">{{ number_format($totalOrders) }}</h3>
+                    <p class="text-xs sm:text-sm text-gray-600 dark:text-gray-400 truncate">{{ __('admin.total_orders') }}</p>
+                    <p class="text-xs text-green-600 dark:text-green-400 font-medium">+{{ $todayOrders }} {{ __('admin.today') }}</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Total Revenue -->
+        <div class="bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700 p-4 sm:p-6 hover:shadow-md transition-shadow duration-200">
+            <div class="flex items-center">
+                <div class="p-2 sm:p-3 bg-gradient-to-r from-purple-500 to-purple-600 rounded-lg sm:rounded-xl shadow-lg">
+                    <svg class="w-5 h-5 sm:w-6 sm:h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1"></path>
+                    </svg>
+                </div>
+                <div class="ml-3 sm:ml-4 min-w-0 flex-1">
+                    <h3 class="text-base sm:text-lg font-semibold text-gray-900 dark:text-white truncate">{{ number_format($totalRevenue) }} UZS</h3>
+                    <p class="text-xs sm:text-sm text-gray-600 dark:text-gray-400 truncate">{{ __('admin.total_revenue') }}</p>
+                    <p class="text-xs text-green-600 dark:text-green-400 font-medium">{{ number_format($monthlyRevenue) }} UZS {{ __('admin.this_month') }}</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Views Card -->
+        <div class="bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700 p-4 sm:p-6 hover:shadow-md transition-shadow duration-200">
+            <div class="flex items-center">
+                <div class="p-2 sm:p-3 bg-gradient-to-r from-red-500 to-pink-500 rounded-lg sm:rounded-xl shadow-lg">
+                    <svg class="w-5 h-5 sm:w-6 sm:h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path>
+                    </svg>
+                </div>
+                <div class="ml-3 sm:ml-4 min-w-0 flex-1">
+                    <h3 class="text-base sm:text-lg font-semibold text-gray-900 dark:text-white truncate">{{ number_format(1250) }}</h3>
+                    <p class="text-xs sm:text-sm text-gray-600 dark:text-gray-400 truncate">{{ __('admin.views') }}</p>
+                    <p class="text-xs text-blue-600 dark:text-blue-400 font-medium">+{{ number_format(150) }} {{ __('admin.today') }}</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Conversion Rate Card -->
+        <div class="bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700 p-4 sm:p-6 hover:shadow-md transition-shadow duration-200">
+            <div class="flex items-center">
+                <div class="p-2 sm:p-3 bg-gradient-to-r from-indigo-500 to-blue-500 rounded-lg sm:rounded-xl shadow-lg">
+                    <svg class="w-5 h-5 sm:w-6 sm:h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"></path>
+                    </svg>
+                </div>
+                <div class="ml-3 sm:ml-4 min-w-0 flex-1">
+                    <h3 class="text-base sm:text-lg font-semibold text-gray-900 dark:text-white truncate">85.2%</h3>
+                    <p class="text-xs sm:text-sm text-gray-600 dark:text-gray-400 truncate">Conversion Rate</p>
+                    <p class="text-xs text-green-600 dark:text-green-400 font-medium">+2.5% {{ __('admin.this_month') }}</p>
+                </div>
+            </div>
+        </div>
+    </div>
+                <div class="ml-4">
+                    <h3 class="text-lg font-semibold text-gray-900 dark:text-white">{{ number_format($totalProducts) }}</h3>
+                    <p class="text-sm text-gray-600 dark:text-gray-400">{{ __('admin.total_products') }}</p>
+                    <p class="text-xs text-green-600 dark:text-green-400 font-medium">+{{ $todayProducts }} {{ __('admin.today') }}</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Total Orders -->
+        <div class="bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700 p-6 hover:shadow-md transition-shadow duration-200">
+            <div class="flex items-center">
+                <div class="p-3 bg-gradient-to-r from-yellow-500 to-orange-500 rounded-xl shadow-lg">
+                    <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"></path>
+                    </svg>
+                </div>
+                <div class="ml-4">
+                    <h3 class="text-lg font-semibold text-gray-900 dark:text-white">{{ number_format($totalOrders) }}</h3>
+                    <p class="text-sm text-gray-600 dark:text-gray-400">{{ __('admin.total_orders') }}</p>
+                    <p class="text-xs text-green-600 dark:text-green-400 font-medium">+{{ $todayOrders }} {{ __('admin.today') }}</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Total Revenue -->
+        <div class="bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700 p-6 hover:shadow-md transition-shadow duration-200">
+            <div class="flex items-center">
+                <div class="p-3 bg-gradient-to-r from-purple-500 to-purple-600 rounded-xl shadow-lg">
+                    <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1"></path>
+                    </svg>
+                </div>
+                <div class="ml-4">
+                    <h3 class="text-lg font-semibold text-gray-900 dark:text-white">{{ number_format($totalRevenue) }} UZS</h3>
+                    <p class="text-sm text-gray-600 dark:text-gray-400">{{ __('admin.total_revenue') }}</p>
+                    <p class="text-xs text-green-600 dark:text-green-400 font-medium">{{ number_format($monthlyRevenue) }} UZS {{ __('admin.this_month') }}</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- New Metric Cards -->
+        <div class="bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700 p-6 hover:shadow-md transition-shadow duration-200">
+            <div class="flex items-center">
+                <div class="p-3 bg-gradient-to-r from-red-500 to-pink-500 rounded-xl shadow-lg">
+                    <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path>
+                    </svg>
+                </div>
+                <div class="ml-4">
+                    <h3 class="text-lg font-semibold text-gray-900 dark:text-white">{{ number_format(1250) }}</h3>
+                    <p class="text-sm text-gray-600 dark:text-gray-400">{{ __('admin.views') }}</p>
+                    <p class="text-xs text-blue-600 dark:text-blue-400 font-medium">+{{ number_format(150) }} {{ __('admin.today') }}</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700 p-6 hover:shadow-md transition-shadow duration-200">
+            <div class="flex items-center">
+                <div class="p-3 bg-gradient-to-r from-indigo-500 to-blue-500 rounded-xl shadow-lg">
+                    <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"></path>
+                    </svg>
+                </div>
+                <div class="ml-4">
+                    <h3 class="text-lg font-semibold text-gray-900 dark:text-white">85.2%</h3>
+                    <p class="text-sm text-gray-600 dark:text-gray-400">Conversion Rate</p>
+                    <p class="text-xs text-green-600 dark:text-green-400 font-medium">+2.5% {{ __('admin.this_month') }}</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Additional Info Cards -->
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
+        <!-- Categories -->
+        <div class="bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700 p-4 sm:p-6 hover:shadow-md transition-shadow duration-200">
+            <div class="flex items-center justify-between">
+                <div class="min-w-0 flex-1">
+                    <h3 class="text-base sm:text-lg font-semibold text-gray-900 dark:text-white truncate">{{ number_format($totalCategories) }}</h3>
+                    <p class="text-xs sm:text-sm text-gray-600 dark:text-gray-400 truncate">{{ __('admin.total_categories') }}</p>
+                </div>
+                <div class="p-2 sm:p-3 bg-gradient-to-r from-indigo-500 to-purple-600 rounded-lg sm:rounded-xl shadow-lg ml-4">
+                    <svg class="w-5 h-5 sm:w-6 sm:h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"></path>
+                    </svg>
+                </div>
+            </div>
+        </div>
+
+        <!-- Low Stock Products -->
+        <div class="bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700 p-4 sm:p-6 hover:shadow-md transition-shadow duration-200">
+            <div class="flex items-center justify-between">
+                <div class="min-w-0 flex-1">
+                    <h3 class="text-base sm:text-lg font-semibold text-gray-900 dark:text-white truncate">{{ number_format($lowStockProducts) }}</h3>
+                    <p class="text-xs sm:text-sm text-gray-600 dark:text-gray-400 truncate">{{ __('admin.low_stock_products') }}</p>
+                </div>
+                <div class="p-2 sm:p-3 bg-gradient-to-r from-red-500 to-red-600 rounded-lg sm:rounded-xl shadow-lg ml-4">
+                    <svg class="w-5 h-5 sm:w-6 sm:h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.964-.833-2.732 0L3.232 16.5c-.77.833.192 2.5 1.732 2.5z"></path>
+                    </svg>
+                </div>
+            </div>
+        </div>
+
+        <!-- Total Payments -->
+        <div class="bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700 p-4 sm:p-6 hover:shadow-md transition-shadow duration-200">
+            <div class="flex items-center justify-between">
+                <div class="min-w-0 flex-1">
+                    <h3 class="text-base sm:text-lg font-semibold text-gray-900 dark:text-white truncate">{{ number_format($totalPayments) }}</h3>
+                    <p class="text-xs sm:text-sm text-gray-600 dark:text-gray-400 truncate">{{ __('admin.total_payments') }}</p>
+                </div>
+                <div class="p-2 sm:p-3 bg-gradient-to-r from-teal-500 to-teal-600 rounded-lg sm:rounded-xl shadow-lg ml-4">
+                    <svg class="w-5 h-5 sm:w-6 sm:h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z"></path>
+                    </svg>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Charts and Tables -->
+    <div class="grid grid-cols-1 xl:grid-cols-2 gap-4 sm:gap-6">
+        <!-- Weekly Statistics Chart -->
+        <div class="bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700 p-4 sm:p-6">
+            <h3 class="text-base sm:text-lg font-semibold text-gray-900 dark:text-white mb-4">{{ __('admin.weekly_statistics') }}</h3>
+            <div class="space-y-4">
+                <canvas id="weeklyChart" class="w-full" style="height: 250px;"></canvas>
+            </div>
+        </div>
+
+        <!-- Categories Distribution -->
+        <div class="bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700 p-4 sm:p-6">
+            <h3 class="text-base sm:text-lg font-semibold text-gray-900 dark:text-white mb-4">{{ __('admin.categories_distribution') }}</h3>
+            <div class="space-y-3">
+                @foreach($categoriesWithProducts as $category)
+                    <div class="flex items-center justify-between">
+                        <span class="text-xs sm:text-sm text-gray-600 dark:text-gray-400 truncate flex-1 mr-2">{{ $category->name_uz }}</span>
+                        <div class="flex items-center space-x-2">
+                            <div class="w-16 sm:w-24 bg-gray-200 dark:bg-gray-700 rounded-full h-2">
+                                <div class="bg-gradient-to-r from-blue-500 to-blue-600 h-2 rounded-full" style="width: {{ ($category->products_count / $categoriesWithProducts->max('products_count')) * 100 }}%"></div>
+                            </div>
+                            <span class="text-xs sm:text-sm font-medium text-gray-900 dark:text-white w-8 text-right">{{ $category->products_count }}</span>
+                        </div>
+                    </div>
+                @endforeach
+            </div>
+        </div>
+    </div>
+
+    <!-- Recent Activities -->
+    <div class="grid grid-cols-1 xl:grid-cols-2 gap-4 sm:gap-6">
+        <!-- Recent Users -->
+        <div class="bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700 p-4 sm:p-6">
+            <h3 class="text-base sm:text-lg font-semibold text-gray-900 dark:text-white mb-4">{{ __('admin.recent_users') }}</h3>
+            <div class="space-y-3">
+                @foreach($recentUsers as $user)
+                    <div class="flex items-center space-x-3 p-2 sm:p-3 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors duration-200">
+                        <div class="w-8 h-8 sm:w-10 sm:h-10 bg-gray-300 dark:bg-gray-600 rounded-full flex items-center justify-center flex-shrink-0">
+                            @if($user->avatar)
+                                <img src="{{ asset('storage/' . $user->avatar) }}" alt="{{ $user->name }}" class="w-8 h-8 sm:w-10 sm:h-10 rounded-full object-cover">
+                            @else
+                                <span class="text-xs sm:text-sm font-medium text-gray-700 dark:text-gray-300">{{ substr($user->name, 0, 1) }}</span>
+                            @endif
+                        </div>
+                        <div class="flex-1 min-w-0">
+                            <p class="text-xs sm:text-sm font-medium text-gray-900 dark:text-white truncate">{{ $user->name }}</p>
+                            <p class="text-xs text-gray-600 dark:text-gray-400 truncate">{{ $user->email }}</p>
+                        </div>
+                        <div class="text-xs text-gray-500 flex-shrink-0">
+                            {{ $user->created_at->diffForHumans() }}
+                        </div>
+                    </div>
+                @endforeach
+            </div>
+        </div>
+
+        <!-- Recent Orders -->
+        <div class="bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700 p-4 sm:p-6">
+            <h3 class="text-base sm:text-lg font-semibold text-gray-900 dark:text-white mb-4">{{ __('admin.recent_orders') }}</h3>
+            <div class="space-y-3">
+                @foreach($recentOrders as $order)
+                    <div class="flex items-center justify-between p-2 sm:p-3 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors duration-200">
+                        <div class="flex-1 min-w-0">
+                            <p class="text-xs sm:text-sm font-medium text-gray-900 dark:text-white truncate">#{{ $order->id }}</p>
+                            <p class="text-xs text-gray-600 dark:text-gray-400 truncate">{{ $order->user->name ?? 'Guest' }}</p>
+                        </div>
+                        <div class="flex flex-col items-end space-y-1">
+                            <span class="inline-flex px-2 py-1 text-xs font-semibold rounded-full
+                                @if($order->status == 'completed') bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200
+                                @elseif($order->status == 'pending') bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-200
+                                @elseif($order->status == 'cancelled') bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-200
+                                @else bg-gray-100 text-gray-800 dark:bg-gray-900 dark:text-gray-200 @endif">
+                                {{ ucfirst($order->status) }}
+                            </span>
+                            <div class="text-xs text-gray-500">
+                                {{ $order->created_at->diffForHumans() }}
+                            </div>
+                        </div>
+                    </div>
+                @endforeach
+            </div>
+        </div>
+    </div>
+
+    <!-- Top Products -->
+    <div class="bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700 p-4 sm:p-6">
+        <h3 class="text-base sm:text-lg font-semibold text-gray-900 dark:text-white mb-4">{{ __('admin.top_selling_products') }}</h3>
+        <div class="overflow-x-auto -mx-4 sm:mx-0">
+            <div class="inline-block min-w-full align-middle">
+                <table class="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
+                    <thead class="bg-gray-50 dark:bg-gray-900">
+                        <tr>
+                            <th class="px-3 sm:px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">{{ __('admin.product') }}</th>
+                            <th class="hidden sm:table-cell px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">{{ __('admin.category') }}</th>
+                            <th class="px-3 sm:px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">{{ __('admin.price') }}</th>
+                            <th class="hidden md:table-cell px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">{{ __('admin.orders') }}</th>
+                            <th class="px-3 sm:px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">{{ __('admin.stock') }}</th>
+                        </tr>
+                    </thead>
+                    <tbody class="bg-white dark:bg-gray-800 divide-y divide-gray-200 dark:divide-gray-700">
+                        @forelse($topSellingProducts as $product)
+                            <tr class="hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors duration-200">
+                                <td class="px-3 sm:px-6 py-4">
+                                    <div class="flex items-center">
+                                        <div class="flex-shrink-0 h-8 w-8 sm:h-10 sm:w-10">
+                                            @if($product->images->first())
+                                                <img class="h-8 w-8 sm:h-10 sm:w-10 rounded-lg object-cover shadow-sm" src="{{ asset('storage/' . $product->images->first()->image_path) }}" alt="{{ $product->sku }}">
+                                            @else
+                                                <div class="h-8 w-8 sm:h-10 sm:w-10 bg-gradient-to-r from-gray-300 to-gray-400 dark:from-gray-600 dark:to-gray-700 rounded-lg flex items-center justify-center shadow-sm">
+                                                    <svg class="w-4 h-4 sm:w-6 sm:h-6 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"></path>
+                                                    </svg>
+                                                </div>
+                                            @endif
+                                        </div>
+                                        <div class="ml-3 sm:ml-4 min-w-0">
+                                            <div class="text-xs sm:text-sm font-medium text-gray-900 dark:text-white truncate">{{ $product->sku }}</div>
+                                            <div class="text-xs text-gray-500 dark:text-gray-400 truncate">{{ $product->barcode ?? 'N/A' }}</div>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td class="hidden sm:table-cell px-6 py-4 text-xs sm:text-sm text-gray-900 dark:text-white">
+                                    {{ $product->category->translations->where('language_id', 1)->first()->name ?? 'N/A' }}
+                                </td>
+                                <td class="px-3 sm:px-6 py-4 text-xs sm:text-sm text-gray-900 dark:text-white">
+                                    <div class="flex flex-col">
+                                        <span class="font-medium">{{ number_format($product->price) }} UZS</span>
+                                        @if($product->sale_price && $product->sale_price < $product->price)
+                                            <span class="text-xs text-red-600">{{ number_format($product->sale_price) }} UZS</span>
+                                        @endif
+                                    </div>
+                                </td>
+                                <td class="hidden md:table-cell px-6 py-4 text-xs sm:text-sm font-medium text-gray-900 dark:text-white">
+                                    {{ number_format($product->order_items_count) }}
+                                </td>
+                                <td class="px-3 sm:px-6 py-4 text-xs sm:text-sm text-gray-900 dark:text-white">
+                                    <span class="inline-flex px-2 py-1 text-xs font-semibold rounded-full
+                                        @if($product->stock_status == 'in_stock') bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200
+                                        @elseif($product->stock_status == 'low_stock') bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-200
+                                        @else bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-200 @endif">
+                                        {{ $product->stock_quantity ?? 0 }}
+                                    </span>
+                                </td>
+                            </tr>
+                        @empty
+                            <tr>
+                                <td colspan="5" class="px-6 py-12 text-center text-gray-500 dark:text-gray-400">
+                                    <div class="flex flex-col items-center">
+                                        <svg class="w-12 h-12 mb-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"></path>
+                                        </svg>
+                                        <p class="text-lg font-medium">{{ __('admin.no_products_found') }}</p>
+                                    </div>
+                                </td>
+                            </tr>
+                        @endforelse
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+@push('scripts')
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+    // Weekly Statistics Chart
+    const ctx = document.getElementById('weeklyChart').getContext('2d');
+    const weeklyChart = new Chart(ctx, {
+        type: 'line',
+        data: {
+            labels: {!! json_encode(collect($weeklyStats)->pluck('date_display')) !!},
+            datasets: [
+                {
+                    label: '{{ __("admin.users") }}',
+                    data: {!! json_encode(collect($weeklyStats)->pluck('users')) !!},
+                    borderColor: 'rgb(59, 130, 246)',
+                    backgroundColor: 'rgba(59, 130, 246, 0.1)',
+                    tension: 0.4
+                },
+                {
+                    label: '{{ __("admin.orders") }}',
+                    data: {!! json_encode(collect($weeklyStats)->pluck('orders')) !!},
+                    borderColor: 'rgb(16, 185, 129)',
+                    backgroundColor: 'rgba(16, 185, 129, 0.1)',
+                    tension: 0.4
+                },
+                {
+                    label: '{{ __("admin.products") }}',
+                    data: {!! json_encode(collect($weeklyStats)->pluck('products')) !!},
+                    borderColor: 'rgb(245, 158, 11)',
+                    backgroundColor: 'rgba(245, 158, 11, 0.1)',
+                    tension: 0.4
+                }
+            ]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+                legend: {
+                    display: true,
+                    position: 'top'
+                }
+            },
+            scales: {
+                y: {
+                    beginAtZero: true,
+                    grid: {
+                        color: 'rgba(156, 163, 175, 0.1)'
+                    }
+                },
+                x: {
+                    grid: {
+                        color: 'rgba(156, 163, 175, 0.1)'
+                    }
+                }
+            }
+        }
+    });
+</script>
+@endpush
+@endsection
