@@ -203,5 +203,5 @@ Route::prefix('notifications')->middleware('auth:sanctum')->group(function () {
     Route::post('/test', [NotificationController::class, 'sendTest']); // Test uchun
 });
 
-// TEST ROUTE
-Route::get('/test-order', [\App\Http\Controllers\TestController::class, 'testOrder']);
+// TEST ROUTE - Commented out as TestController doesn't exist
+// Route::get('/test-order', [\App\Http\Controllers\TestController::class, 'testOrder']);

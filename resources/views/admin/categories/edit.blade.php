@@ -1,6 +1,6 @@
 @extends('admin.layouts.app')
 
-@section('title', __('admin.add_category'))
+@section('title', __('admin.edit_category'))
 
 @push('styles')
 <style>
@@ -52,13 +52,14 @@
     <div class="container-fluid">
         <div class="row mb-2">
             <div class="col-sm-6">
-                <h1 class="m-0">{{ __('admin.add_category') }}</h1>
+                <h1 class="m-0">{{ __('admin.edit_category') }}</h1>
             </div>
             <div class="col-sm-6">
                 <ol class="breadcrumb float-sm-right">
                     <li class="breadcrumb-item"><a href="{{ route('admin.dashboard') }}">{{ __('admin.dashboard') }}</a></li>
                     <li class="breadcrumb-item"><a href="{{ route('admin.categories.index') }}">{{ __('admin.categories') }}</a></li>
-                    <li class="breadcrumb-item active">{{ __('admin.add_category') }}</li>
+                    <li class="breadcrumb-item"><a href="{{ route('admin.categories.show', $category) }}">{{ $category->getName() }}</a></li>
+                    <li class="breadcrumb-item active">{{ __('admin.edit') }}</li>
                 </ol>
             </div>
         </div>
@@ -67,8 +68,10 @@
 
 <section class="content">
     <div class="container-fluid">
-        <form action="{{ route('admin.categories.store') }}" method="POST" enctype="multipart/form-data">
+        <form action="{{ route('admin.categories.update', $category) }}" method="POST" enctype="multipart/form-data">
             @csrf
+            @method('PUT')
+
             <div class="row">
         <!-- Main Information -->
         <div class="col-md-8">
@@ -86,7 +89,8 @@
                                         id="parent_id" name="parent_id">
                                     <option value="">{{ __('admin.select_parent_category') }}</option>
                                     @foreach($parentCategories as $parent)
-                                        <option value="{{ $parent->id }}" {{ old('parent_id') == $parent->id ? 'selected' : '' }}>
+                                        <option value="{{ $parent->id }}"
+                                                {{ old('parent_id', $category->parent_id) == $parent->id ? 'selected' : '' }}>
                                             {{ $parent->getName() }}
                                         </option>
                                     @endforeach
@@ -100,7 +104,8 @@
                             <div class="form-group">
                                 <label for="sort_order">{{ __('admin.sort_order') }}</label>
                                 <input type="number" class="form-control @error('sort_order') is-invalid @enderror"
-                                       id="sort_order" name="sort_order" value="{{ old('sort_order', 0) }}" min="0">
+                                       id="sort_order" name="sort_order"
+                                       value="{{ old('sort_order', $category->sort_order ?? 0) }}" min="0">
                                 @error('sort_order')
                                     <span class="invalid-feedback">{{ $message }}</span>
                                 @enderror
@@ -112,7 +117,7 @@
                     <div class="form-group">
                         <label for="icon">{{ __('admin.icon') }}</label>
                         <input type="text" class="form-control @error('icon') is-invalid @enderror"
-                               id="icon" name="icon" value="{{ old('icon') }}"
+                               id="icon" name="icon" value="{{ old('icon', $category->icon) }}"
                                placeholder="{{ __('admin.icon_placeholder') }}">
                         @error('icon')
                             <span class="invalid-feedback">{{ $message }}</span>
@@ -123,7 +128,8 @@
                     <div class="form-group">
                         <div class="custom-control custom-switch">
                             <input type="checkbox" class="custom-control-input" id="is_active"
-                                   name="is_active" value="1" {{ old('is_active', true) ? 'checked' : '' }}>
+                                   name="is_active" value="1"
+                                   {{ old('is_active', $category->is_active) ? 'checked' : '' }}>
                             <label class="custom-control-label" for="is_active">{{ __('admin.active') }}</label>
                         </div>
                     </div>
@@ -140,6 +146,9 @@
                         <div class="col-12">
                             <ul class="nav nav-tabs" id="languageTabs" role="tablist">
                                 @foreach($languages as $index => $language)
+                                    @php
+                                        $translation = $category->translations->where('language_id', $language->id)->first();
+                                    @endphp
                                     <li class="nav-item">
                                         <a class="nav-link {{ $index === 0 ? 'active' : '' }}"
                                            id="tab-{{ $language->code }}" data-toggle="tab"
@@ -150,12 +159,20 @@
                                             @if($language->is_default)
                                                 <span class="badge badge-primary badge-sm ml-1">{{ __('admin.default') }}</span>
                                             @endif
+                                            @if($translation)
+                                                <i class="fas fa-check text-success ml-1"></i>
+                                            @else
+                                                <i class="fas fa-times text-danger ml-1"></i>
+                                            @endif
                                         </a>
                                     </li>
                                 @endforeach
                             </ul>
                             <div class="tab-content mt-3">
                                 @foreach($languages as $index => $language)
+                                    @php
+                                        $translation = $category->translations->where('language_id', $language->id)->first();
+                                    @endphp
                                     <div class="tab-pane fade {{ $index === 0 ? 'show active' : '' }}"
                                          id="lang-{{ $language->code }}" role="tabpanel">
                                         <div class="form-group">
@@ -169,7 +186,7 @@
                                                    class="form-control @error('translations.' . $language->code . '.name') is-invalid @enderror"
                                                    id="name_{{ $language->code }}"
                                                    name="translations[{{ $language->code }}][name]"
-                                                   value="{{ old('translations.' . $language->code . '.name') }}"
+                                                   value="{{ old('translations.' . $language->code . '.name', $translation->name ?? '') }}"
                                                    {{ $language->is_default ? 'required' : '' }}>
                                             @error('translations.' . $language->code . '.name')
                                                 <span class="invalid-feedback">{{ $message }}</span>
@@ -183,7 +200,7 @@
                                             <textarea class="form-control @error('translations.' . $language->code . '.description') is-invalid @enderror"
                                                       id="description_{{ $language->code }}"
                                                       name="translations[{{ $language->code }}][description]"
-                                                      rows="4">{{ old('translations.' . $language->code . '.description') }}</textarea>
+                                                      rows="4">{{ old('translations.' . $language->code . '.description', $translation->description ?? '') }}</textarea>
                                             @error('translations.' . $language->code . '.description')
                                                 <span class="invalid-feedback">{{ $message }}</span>
                                             @enderror
@@ -197,7 +214,7 @@
                                                    class="form-control @error('translations.' . $language->code . '.slug') is-invalid @enderror"
                                                    id="slug_{{ $language->code }}"
                                                    name="translations[{{ $language->code }}][slug]"
-                                                   value="{{ old('translations.' . $language->code . '.slug') }}">
+                                                   value="{{ old('translations.' . $language->code . '.slug', $translation->slug ?? '') }}">
                                             @error('translations.' . $language->code . '.slug')
                                                 <span class="invalid-feedback">{{ $message }}</span>
                                             @enderror
@@ -214,14 +231,19 @@
 
         <!-- Sidebar -->
         <div class="col-md-4">
-            <!-- Image Upload -->
+            <!-- Current Image -->
             <div class="card card-secondary">
                 <div class="card-header">
-                    <h3 class="card-title">{{ __('admin.category_image') }}</h3>
+                    <h3 class="card-title">{{ __('admin.current_image') }}</h3>
                 </div>
-                <div class="card-body">
+                <div class="card-body text-center">
+                    <img src="{{ $category->getImageUrl('medium') }}"
+                         alt="{{ $category->getName() }}"
+                         class="img-fluid rounded current-image mb-3"
+                         style="max-height: 200px;">
+
                     <div class="form-group">
-                        <label for="image">{{ __('admin.upload_image') }}</label>
+                        <label for="image">{{ __('admin.upload_new_image') }}</label>
                         <div class="input-group">
                             <div class="custom-file">
                                 <input type="file" class="custom-file-input @error('image') is-invalid @enderror"
@@ -235,15 +257,11 @@
                         <small class="form-text text-muted">{{ __('admin.category_image_upload_hint') }}</small>
                     </div>
 
-                    <div id="image-preview" class="text-center">
-                        <img id="preview-img" src="#" alt="Preview" class="img-fluid rounded"
-                             style="display: none; max-height: 200px;">
-                        <div id="no-image" class="bg-light d-flex align-items-center justify-content-center rounded"
-                             style="height: 200px;">
-                            <div class="text-center">
-                                <i class="fas fa-image fa-3x text-muted mb-2"></i>
-                                <p class="text-muted">{{ __('admin.no_image_selected') }}</p>
-                            </div>
+                    <div id="image-preview" class="mt-3" style="display: none;">
+                        <label>{{ __('admin.new_image_preview') }}:</label>
+                        <div>
+                            <img id="preview-img" src="#" alt="Preview" class="img-fluid rounded"
+                                 style="max-height: 200px;">
                         </div>
                     </div>
                 </div>
@@ -257,28 +275,63 @@
                 <div class="card-body">
                     <div class="category-preview-card">
                         <div class="text-center mb-3">
-                            <div id="preview-icon" class="category-icon mb-2" style="display: none;">
-                                <i class="fas fa-folder fa-2x text-primary"></i>
+                            <div id="preview-icon" class="category-icon mb-2"
+                                 style="{{ $category->icon ? '' : 'display: none;' }}">
+                                <i class="{{ $category->icon ?? 'fas fa-folder' }} fa-2x text-primary"></i>
                             </div>
                         </div>
-                        <h5 id="preview-name" class="text-center text-muted">{{ __('admin.category_name') }}</h5>
-                        <p id="preview-description" class="text-center text-muted small">{{ __('admin.category_description') }}</p>
+                        <h5 id="preview-name" class="text-center">{{ $category->getName() }}</h5>
+                        <p id="preview-description" class="text-center text-muted small">
+                            {{ $category->translations->first()->description ?? __('admin.category_description') }}
+                        </p>
                         <div class="text-center">
-                            <span id="preview-status" class="badge badge-success">{{ __('admin.active') }}</span>
-                            <span id="preview-parent" class="badge badge-info ml-1" style="display: none;"></span>
+                            <span id="preview-status" class="badge {{ $category->is_active ? 'badge-success' : 'badge-danger' }}">
+                                {{ $category->is_active ? __('admin.active') : __('admin.inactive') }}
+                            </span>
+                            <span id="preview-parent" class="badge badge-info ml-1"
+                                  style="{{ $category->parent ? '' : 'display: none;' }}">
+                                {{ $category->parent ? __('admin.child_of') . ': ' . $category->parent->getName() : '' }}
+                            </span>
                         </div>
                     </div>
                 </div>
             </div>
 
+            <!-- Category Info -->
+            @if($category->children->count() > 0 || $category->products->count() > 0)
+            <div class="card card-warning">
+                <div class="card-header">
+                    <h3 class="card-title">{{ __('admin.important_info') }}</h3>
+                </div>
+                <div class="card-body">
+                    @if($category->children->count() > 0)
+                        <div class="alert alert-info">
+                            <i class="fas fa-info-circle"></i>
+                            {{ __('admin.category_has_children_warning', ['count' => $category->children->count()]) }}
+                        </div>
+                    @endif
+
+                    @if($category->products->count() > 0)
+                        <div class="alert alert-warning">
+                            <i class="fas fa-exclamation-triangle"></i>
+                            {{ __('admin.category_has_products_warning', ['count' => $category->products->count()]) }}
+                        </div>
+                    @endif
+                </div>
+            </div>
+            @endif
+
             <!-- Action Buttons -->
             <div class="card">
                 <div class="card-body">
                     <button type="submit" class="btn btn-primary btn-block">
-                        <i class="fas fa-save"></i> {{ __('admin.create_category') }}
+                        <i class="fas fa-save"></i> {{ __('admin.update_category') }}
                     </button>
+                    <a href="{{ route('admin.categories.show', $category) }}" class="btn btn-info btn-block">
+                        <i class="fas fa-eye"></i> {{ __('admin.view_category') }}
+                    </a>
                     <a href="{{ route('admin.categories.index') }}" class="btn btn-secondary btn-block">
-                        <i class="fas fa-times"></i> {{ __('admin.cancel') }}
+                        <i class="fas fa-arrow-left"></i> {{ __('admin.back_to_list') }}
                     </a>
                 </div>
             </div>
@@ -305,6 +358,9 @@
 .category-icon {
     display: inline-block;
 }
+.current-image {
+    border: 1px solid #dee2e6;
+}
 </style>
 @endpush
 
@@ -317,13 +373,15 @@ $(document).ready(function() {
         if (file) {
             const reader = new FileReader();
             reader.onload = function(e) {
-                $('#preview-img').attr('src', e.target.result).show();
-                $('#no-image').hide();
+                $('#preview-img').attr('src', e.target.result);
+                $('#image-preview').show();
             }
             reader.readAsDataURL(file);
 
             // Update custom file label
             $('.custom-file-label').text(file.name);
+        } else {
+            $('#image-preview').hide();
         }
     });
 
@@ -400,8 +458,13 @@ $(document).ready(function() {
         }
     });
 
-    // Initialize preview
-    $('#preview-status').text($('#is_active').is(':checked') ? '{{ __('admin.active') }}' : '{{ __('admin.inactive') }}');
+    // Initialize preview with current values
+    const currentLang = $('.nav-link.active').attr('href').replace('#lang-', '');
+    const currentName = $(`input[name="translations[${currentLang}][name]"]`).val();
+    const currentDescription = $(`textarea[name="translations[${currentLang}][description]"]`).val();
+
+    if (currentName) $('#preview-name').text(currentName);
+    if (currentDescription) $('#preview-description').text(currentDescription);
 });
 </script>
 @endpush

@@ -22,13 +22,15 @@ class UserController extends Controller
      */
     public function index(Request $request)
     {
-        $query = User::with('roles');
+        $query = User::query();
 
         // Qidirish
         if ($request->filled('search')) {
             $search = $request->search;
             $query->where(function($q) use ($search) {
                 $q->where('name', 'like', "%{$search}%")
+                  ->orWhere('first_name', 'like', "%{$search}%")
+                  ->orWhere('last_name', 'like', "%{$search}%")
                   ->orWhere('email', 'like', "%{$search}%")
                   ->orWhere('phone', 'like', "%{$search}%");
             });
@@ -36,17 +38,15 @@ class UserController extends Controller
 
         // Rol bo'yicha filtrlash
         if ($request->filled('role')) {
-            $query->whereHas('roles', function($q) use ($request) {
-                $q->where('name', $request->role);
-            });
+            $query->where('role', $request->role);
         }
 
         // Status bo'yicha filtrlash
         if ($request->filled('status')) {
             if ($request->status === 'active') {
-                $query->whereNotNull('email_verified_at');
+                $query->where('is_active', true);
             } elseif ($request->status === 'inactive') {
-                $query->whereNull('email_verified_at');
+                $query->where('is_active', false);
             }
         }
 
@@ -60,9 +60,8 @@ class UserController extends Controller
         }
 
         $users = $query->paginate(15)->withQueryString();
-        $roles = Role::all();
 
-        return view('admin.users.index', compact('users', 'roles'));
+        return view('admin.users.index', compact('users'));
     }
 
     /**
@@ -70,8 +69,7 @@ class UserController extends Controller
      */
     public function create()
     {
-        $roles = Role::all();
-        return view('admin.users.create', compact('roles'));
+        return view('admin.users.create');
     }
 
     /**
@@ -81,33 +79,37 @@ class UserController extends Controller
     {
         $request->validate([
             'name' => 'required|string|max:255',
+            'first_name' => 'nullable|string|max:100',
+            'last_name' => 'nullable|string|max:100',
             'email' => 'required|string|email|max:255|unique:users',
             'phone' => 'nullable|string|max:20|unique:users',
             'password' => 'required|string|min:8|confirmed',
-            'roles' => 'required|array',
-            'roles.*' => 'exists:roles,id',
+            'role' => 'required|in:admin,manager,employee,customer',
             'avatar' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
             'birth_date' => 'nullable|date|before:today',
-            'gender' => 'nullable|in:male,female',
+            'gender' => 'nullable|in:male,female,other',
             'address' => 'nullable|string|max:500',
+            'city' => 'nullable|string|max:100',
+            'district' => 'nullable|string|max:100',
         ]);
 
         $data = $request->only([
-            'name', 'email', 'phone', 'birth_date', 'gender', 'address'
+            'name', 'first_name', 'last_name', 'email', 'phone', 'birth_date',
+            'gender', 'address', 'city', 'district', 'role'
         ]);
 
         $data['password'] = Hash::make($request->password);
-        $data['email_verified_at'] = now(); // Admin tomonidan yaratilgan foydalanuvchilar avtomatik tasdiqlangan
+        $data['email_verified_at'] = $request->has('email_verified') ? now() : null;
+        $data['phone_verified'] = $request->boolean('phone_verified');
+        $data['is_active'] = $request->boolean('is_active', true);
 
         // Avatar yuklash
         if ($request->hasFile('avatar')) {
-            $data['avatar'] = $request->file('avatar')->store('avatars', 'public');
+            $avatarPath = $request->file('avatar')->store('avatars', 'public');
+            $data['avatar'] = $avatarPath;
         }
 
         $user = User::create($data);
-
-        // Rollarni biriktiris
-        $user->roles()->sync($request->roles);
 
         return redirect()->route('admin.users.index')
                         ->with('success', __('admin.user_created_successfully'));
@@ -118,15 +120,13 @@ class UserController extends Controller
      */
     public function show(User $user)
     {
-        $user->load(['roles', 'orders', 'productViews', 'ratings']);
-
         // Foydalanuvchi statistikasi
         $stats = [
             'orders_count' => $user->orders()->count(),
             'total_spent' => $user->orders()->where('status', 'completed')->sum('total_amount'),
-            'products_viewed' => $user->productViews()->count(),
-            'ratings_given' => $user->ratings()->count(),
-            'average_rating' => $user->ratings()->avg('rating'),
+            'products_viewed' => 0, // Bu yerda ProductView modeli bo'lsa ishlatiladi
+            'ratings_given' => 0, // Bu yerda Rating modeli bo'lsa ishlatiladi
+            'average_rating' => 0,
         ];
 
         return view('admin.users.show', compact('user', 'stats'));
@@ -137,9 +137,7 @@ class UserController extends Controller
      */
     public function edit(User $user)
     {
-        $roles = Role::all();
-        $user->load('roles');
-        return view('admin.users.edit', compact('user', 'roles'));
+        return view('admin.users.edit', compact('user'));
     }
 
     /**
@@ -149,25 +147,34 @@ class UserController extends Controller
     {
         $request->validate([
             'name' => 'required|string|max:255',
+            'first_name' => 'nullable|string|max:100',
+            'last_name' => 'nullable|string|max:100',
             'email' => ['required', 'string', 'email', 'max:255', Rule::unique('users')->ignore($user->id)],
             'phone' => ['nullable', 'string', 'max:20', Rule::unique('users')->ignore($user->id)],
             'password' => 'nullable|string|min:8|confirmed',
-            'roles' => 'required|array',
-            'roles.*' => 'exists:roles,id',
+            'role' => 'required|in:admin,manager,employee,customer',
             'avatar' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
             'birth_date' => 'nullable|date|before:today',
-            'gender' => 'nullable|in:male,female',
+            'gender' => 'nullable|in:male,female,other',
             'address' => 'nullable|string|max:500',
+            'city' => 'nullable|string|max:100',
+            'district' => 'nullable|string|max:100',
         ]);
 
         $data = $request->only([
-            'name', 'email', 'phone', 'birth_date', 'gender', 'address'
+            'name', 'first_name', 'last_name', 'email', 'phone', 'birth_date',
+            'gender', 'address', 'city', 'district', 'role'
         ]);
 
         // Parol yangilash (agar berilgan bo'lsa)
         if ($request->filled('password')) {
             $data['password'] = Hash::make($request->password);
         }
+
+        // Status yangilash
+        $data['email_verified_at'] = $request->has('email_verified') ? now() : null;
+        $data['phone_verified'] = $request->boolean('phone_verified');
+        $data['is_active'] = $request->boolean('is_active');
 
         // Avatar yangilash
         if ($request->hasFile('avatar')) {
@@ -176,14 +183,17 @@ class UserController extends Controller
                 Storage::disk('public')->delete($user->avatar);
             }
             $data['avatar'] = $request->file('avatar')->store('avatars', 'public');
+        } elseif ($request->has('remove_avatar') && $request->remove_avatar == '1') {
+            // Avatarni o'chirish
+            if ($user->avatar) {
+                Storage::disk('public')->delete($user->avatar);
+            }
+            $data['avatar'] = null;
         }
 
         $user->update($data);
 
-        // Rollarni yangilash
-        $user->roles()->sync($request->roles);
-
-        return redirect()->route('admin.users.index')
+        return redirect()->route('admin.users.show', $user)
                         ->with('success', __('admin.user_updated_successfully'));
     }
 
@@ -200,7 +210,7 @@ class UserController extends Controller
 
         // Agar foydalanuvchida buyurtmalar bo'lsa, o'chirish o'rniga nofaol qilish
         if ($user->orders()->exists()) {
-            $user->update(['email_verified_at' => null]);
+            $user->update(['is_active' => false]);
             return redirect()->route('admin.users.index')
                             ->with('warning', __('admin.user_deactivated_has_orders'));
         }
@@ -221,11 +231,11 @@ class UserController extends Controller
      */
     public function toggleStatus(User $user)
     {
-        if ($user->email_verified_at) {
-            $user->update(['email_verified_at' => null]);
+        if ($user->is_active) {
+            $user->update(['is_active' => false]);
             $message = __('admin.user_deactivated');
         } else {
-            $user->update(['email_verified_at' => now()]);
+            $user->update(['is_active' => true]);
             $message = __('admin.user_activated');
         }
 
@@ -264,12 +274,12 @@ class UserController extends Controller
 
         switch ($request->action) {
             case 'activate':
-                $users->update(['email_verified_at' => now()]);
+                $users->update(['is_active' => true]);
                 $message = __('admin.users_activated', ['count' => $count]);
                 break;
 
             case 'deactivate':
-                $users->update(['email_verified_at' => null]);
+                $users->update(['is_active' => false]);
                 $message = __('admin.users_deactivated', ['count' => $count]);
                 break;
 

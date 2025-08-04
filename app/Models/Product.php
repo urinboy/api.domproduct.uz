@@ -245,4 +245,27 @@ class Product extends Model
     {
         $this->increment('view_count');
     }
+
+    /**
+     * Get image URL with fallback to default
+     */
+    public function getImageUrl($size = 'original')
+    {
+        // If product has image
+        if ($this->image && file_exists(storage_path('app/public/products/' . $this->image))) {
+            return asset('storage/products/' . $this->image);
+        }
+
+        // Return default image
+        return asset('images/default-image.png');
+    }
+
+    /**
+     * Get product name from translations or fallback to name field
+     */
+    public function getName($locale = null)
+    {
+        // Simple fallback to direct attributes
+        return $this->name ?? $this->sku ?? 'Product #' . ($this->id ?? 'Unknown');
+    }
 }

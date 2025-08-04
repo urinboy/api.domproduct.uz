@@ -43,7 +43,7 @@
         <ul class="navbar-nav ml-auto">
             <!-- Language Dropdown -->
             <li class="nav-item dropdown">
-                <a class="nav-link" data-toggle="dropdown" href="#" aria-expanded="false">
+                <a class="nav-link d-flex align-items-center" data-toggle="dropdown" href="#" aria-expanded="false">
                     @php
                         $currentLocale = app()->getLocale();
                         $languages = [

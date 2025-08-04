@@ -1,0 +1,9 @@
+<!-- Default Product Image Placeholder -->
+<svg width="300" height="300" xmlns="http://www.w3.org/2000/svg">
+  <rect width="100%" height="100%" fill="#f8f9fa"/>
+  <text x="50%" y="45%" font-family="Arial, sans-serif" font-size="18" text-anchor="middle" fill="#6c757d">Mahsulot rasmi</text>
+  <text x="50%" y="55%" font-family="Arial, sans-serif" font-size="14" text-anchor="middle" fill="#6c757d">mavjud emas</text>
+  <circle cx="150" cy="120" r="30" fill="#dee2e6"/>
+  <path d="M135 115 L165 115 L165 125 L135 125 Z" fill="#6c757d"/>
+  <circle cx="142" cy="108" r="3" fill="#6c757d"/>
+</svg>

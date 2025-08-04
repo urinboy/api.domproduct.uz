@@ -248,6 +248,14 @@ class User extends Authenticatable
     }
 
     /**
+     * Check if user has a custom avatar
+     */
+    public function hasAvatar()
+    {
+        return $this->avatar_original || $this->avatar_large || $this->avatar_medium || $this->avatar_small || $this->avatar_thumbnail || $this->avatar;
+    }
+
+    /**
      * Get all avatar sizes
      */
     public function getAvatarSizes()

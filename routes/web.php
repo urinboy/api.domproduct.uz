@@ -1,11 +1,11 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\DocsController;
+// use App\Http\Controllers\DocsController; // Disabled - controller doesn't exist
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\Admin\AuthController;
-use App\Http\Controllers\LanguageController;
+use App\Http\Controllers\Admin\LanguageController;
 
 /*
 |--------------------------------------------------------------------------
@@ -76,10 +76,10 @@ Route::prefix('admin')->name('admin.')->group(function () {
 
 /*
 |--------------------------------------------------------------------------
-| Authentication Routes
+| Authentication Routes - DISABLED (Controllers don't exist)
 |--------------------------------------------------------------------------
 */
-require __DIR__.'/auth.php';
+// require __DIR__.'/auth.php';
 
 /*
 |--------------------------------------------------------------------------
@@ -94,12 +94,13 @@ Route::prefix('admin')->name('admin.')->middleware(['auth', 'admin'])->group(fun
     // User Management
     Route::resource('users', UserController::class);
     Route::patch('users/{user}/toggle-status', [UserController::class, 'toggleStatus'])->name('users.toggle-status');
-    Route::post('users/{user}/reset-password', [UserController::class, 'resetPassword'])->name('users.reset-password');
-    Route::post('users/bulk-action', [UserController::class, 'bulkAction'])->name('users.bulk-action');
+    Route::patch('users/{user}/reset-password', [UserController::class, 'resetPassword'])->name('users.reset-password');
+    Route::post('users/bulk-action', [UserController::class, 'bulkAction'])->name('users.bulk');
 
     // Category Management
     Route::resource('categories', \App\Http\Controllers\Admin\CategoryController::class);
     Route::post('categories/{category}/upload-image', [\App\Http\Controllers\Admin\CategoryController::class, 'uploadImage'])->name('categories.upload-image');
+    Route::post('categories/{category}/toggle-status', [\App\Http\Controllers\Admin\CategoryController::class, 'toggleStatus'])->name('categories.toggle-status');
 
     // Product Management
     Route::resource('products', \App\Http\Controllers\Admin\ProductController::class);
@@ -125,9 +126,10 @@ Route::prefix('admin')->name('admin.')->middleware(['auth', 'admin'])->group(fun
 
 /*
 |--------------------------------------------------------------------------
-| API Documentation Routes
+| API Documentation Routes - DISABLED (Controller doesn't exist)
 |--------------------------------------------------------------------------
 */
+/*
 Route::prefix('docs')->name('docs.')->group(function () {
     Route::get('/', [DocsController::class, 'index'])->name('index');
     Route::get('/getting-started', [DocsController::class, 'gettingStarted'])->name('getting-started');
@@ -135,3 +137,4 @@ Route::prefix('docs')->name('docs.')->group(function () {
     Route::get('/endpoints/{section}', [DocsController::class, 'endpoints'])->name('endpoints');
     Route::get('/api-tester', [DocsController::class, 'apiTester'])->name('api-tester');
 });
+*/
