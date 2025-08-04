@@ -111,7 +111,7 @@ class Order extends Model
         });
 
         static::created(function ($order) {
-            $order->addStatusHistory($order->status, 'Order created');
+            $order->addStatusHistory($order->status, __('admin.orders_module.order_created'));
         });
     }
 
@@ -197,7 +197,10 @@ class Order extends Model
 
         $this->addStatusHistory(
             $newStatus,
-            $notes ?? "Status changed from {$oldStatus} to {$newStatus}",
+            $notes ?? __('admin.orders_module.status_changed_from_to', [
+                'old_status' => __('admin.orders_module.status_' . $oldStatus),
+                'new_status' => __('admin.orders_module.status_' . $newStatus)
+            ]),
             $notifyCustomer
         );
 
@@ -216,7 +219,9 @@ class Order extends Model
 
         $this->addStatusHistory(
             $this->status,
-            "Payment status updated to {$paymentStatus}"
+            __('admin.orders_module.payment_status_updated_to', [
+                'payment_status' => __('admin.orders_module.payment_' . $paymentStatus)
+            ])
         );
 
         return $this;

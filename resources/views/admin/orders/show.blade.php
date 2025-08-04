@@ -1,6 +1,6 @@
 @extends('admin.layouts.app')
 
-@section('title', 'Buyurtma #' . $order->order_number)
+@section('title', __('admin.orders_module.view_order') . ' #' . $order->order_number)
 
 @section('content')
 <style>
@@ -57,13 +57,13 @@
     <div class="container-fluid">
         <div class="row mb-2">
             <div class="col-sm-6">
-                <h1 class="m-0">Buyurtma #{{ $order->order_number }}</h1>
+                <h1 class="m-0">{{ __('admin.orders_module.view_order') }} #{{ $order->order_number }}</h1>
             </div>
             <div class="col-sm-6">
                 <ol class="breadcrumb float-sm-right">
-                    <li class="breadcrumb-item"><a href="{{ route('admin.dashboard') }}">Bosh sahifa</a></li>
-                    <li class="breadcrumb-item"><a href="{{ route('admin.orders.index') }}">Buyurtmalar</a></li>
-                    <li class="breadcrumb-item active">Buyurtma #{{ $order->order_number }}</li>
+                    <li class="breadcrumb-item"><a href="{{ route('admin.dashboard') }}">{{ __('admin.home') }}</a></li>
+                    <li class="breadcrumb-item"><a href="{{ route('admin.orders.index') }}">{{ __('admin.orders') }}</a></li>
+                    <li class="breadcrumb-item active">{{ __('admin.orders_module.view_order') }} #{{ $order->order_number }}</li>
                 </ol>
             </div>
         </div>
@@ -78,13 +78,13 @@
             <div class="col-12">
                 <div class="btn-group" role="group">
                     <a href="{{ route('admin.orders.edit', $order) }}" class="btn btn-primary">
-                        <i class="fas fa-edit"></i> Tahrirlash
+                        <i class="fas fa-edit"></i> {{ __('admin.orders_module.edit_order') }}
                     </a>
                     <a href="{{ route('admin.orders.index') }}" class="btn btn-secondary">
-                        <i class="fas fa-arrow-left"></i> Orqaga
+                        <i class="fas fa-arrow-left"></i> {{ __('admin.orders_module.back_to_list') }}
                     </a>
                     <button type="button" class="btn btn-info" onclick="window.print()">
-                        <i class="fas fa-print"></i> Chop etish
+                        <i class="fas fa-print"></i> {{ __('admin.orders_module.print_order') }}
                     </button>
                 </div>
             </div>
@@ -97,24 +97,25 @@
                 <div class="card mb-3">
                     <div class="card-header">
                         <h3 class="card-title">
-                            <i class="fas fa-info-circle"></i> Buyurtma holati
+                            <i class="fas fa-info-circle"></i> {{ __('admin.orders_module.order_information') }}
+                        </h3>
                         </h3>
                     </div>
                     <div class="card-body">
                         <div class="row">
                             <div class="col-md-6">
                                 <div class="mb-3">
-                                    <label class="form-label font-weight-bold">Joriy holat</label>
+                                    <label class="form-label font-weight-bold">{{ __('admin.orders_module.current_status') }}</label>
                                     <div>
                                         @php
                                             switch($order->status) {
-                                                case 'pending': $statusClass = 'order-status-pending'; $statusText = 'Kutilmoqda'; break;
-                                                case 'confirmed': $statusClass = 'order-status-confirmed'; $statusText = 'Tasdiqlangan'; break;
-                                                case 'processing': $statusClass = 'order-status-processing'; $statusText = 'Jarayonda'; break;
-                                                case 'shipped': $statusClass = 'order-status-shipped'; $statusText = 'Yuborilgan'; break;
-                                                case 'delivered': $statusClass = 'order-status-delivered'; $statusText = 'Yetkazilgan'; break;
-                                                case 'cancelled': $statusClass = 'order-status-cancelled'; $statusText = 'Bekor qilingan'; break;
-                                                case 'refunded': $statusClass = 'order-status-refunded'; $statusText = 'Qaytarilgan'; break;
+                                                case 'pending': $statusClass = 'order-status-pending'; $statusText = __('admin.orders_module.status_pending'); break;
+                                                case 'confirmed': $statusClass = 'order-status-confirmed'; $statusText = __('admin.orders_module.status_confirmed'); break;
+                                                case 'processing': $statusClass = 'order-status-processing'; $statusText = __('admin.orders_module.status_processing'); break;
+                                                case 'shipped': $statusClass = 'order-status-shipped'; $statusText = __('admin.orders_module.status_shipped'); break;
+                                                case 'delivered': $statusClass = 'order-status-delivered'; $statusText = __('admin.orders_module.status_delivered'); break;
+                                                case 'cancelled': $statusClass = 'order-status-cancelled'; $statusText = __('admin.orders_module.status_cancelled'); break;
+                                                case 'refunded': $statusClass = 'order-status-refunded'; $statusText = __('admin.orders_module.status_refunded'); break;
                                                 default: $statusClass = 'order-status-pending'; $statusText = $order->status; break;
                                             }
                                         @endphp
@@ -124,14 +125,14 @@
                             </div>
                             <div class="col-md-6">
                                 <div class="mb-3">
-                                    <label class="form-label font-weight-bold">To'lov holati</label>
+                                    <label class="form-label font-weight-bold">{{ __('admin.orders_module.payment_status') }}</label>
                                     <div>
                                         @php
                                             switch($order->payment_status) {
-                                                case 'pending': $paymentClass = 'payment-status-pending'; $paymentText = 'Kutilmoqda'; break;
-                                                case 'paid': $paymentClass = 'payment-status-paid'; $paymentText = 'To\'langan'; break;
-                                                case 'failed': $paymentClass = 'payment-status-failed'; $paymentText = 'Muvaffaqiyatsiz'; break;
-                                                case 'refunded': $paymentClass = 'payment-status-refunded'; $paymentText = 'Qaytarilgan'; break;
+                                                case 'pending': $paymentClass = 'payment-status-pending'; $paymentText = __('admin.orders_module.payment_pending'); break;
+                                                case 'paid': $paymentClass = 'payment-status-paid'; $paymentText = __('admin.orders_module.paid'); break;
+                                                case 'failed': $paymentClass = 'payment-status-failed'; $paymentText = __('admin.orders_module.payment_failed'); break;
+                                                case 'refunded': $paymentClass = 'payment-status-refunded'; $paymentText = __('admin.orders_module.payment_refunded'); break;
                                                 default: $paymentClass = 'payment-status-pending'; $paymentText = $order->payment_status; break;
                                             }
                                         @endphp
@@ -147,7 +148,7 @@
                 <div class="card mb-3">
                     <div class="card-header">
                         <h3 class="card-title">
-                            <i class="fas fa-box"></i> Buyurtma mahsulotlari
+                            <i class="fas fa-box"></i> {{ __('admin.orders_module.order_items') }}
                         </h3>
                     </div>
                     <div class="card-body">
@@ -155,10 +156,10 @@
                             <table class="table table-striped">
                                 <thead>
                                     <tr>
-                                        <th>Mahsulot</th>
-                                        <th>Miqdor</th>
-                                        <th>Narx</th>
-                                        <th>Jami</th>
+                                        <th>{{ __('admin.orders_module.product_name') }}</th>
+                                        <th>{{ __('admin.orders_module.quantity') }}</th>
+                                        <th>{{ __('admin.orders_module.unit_price') }}</th>
+                                        <th>{{ __('admin.orders_module.total') }}</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -185,7 +186,7 @@
                                 </tbody>
                                 <tfoot>
                                     <tr class="table-active">
-                                        <th colspan="3" class="text-right">Jami summa:</th>
+                                        <th colspan="3" class="text-right">{{ __('admin.orders_module.grand_total') }}:</th>
                                         <th><strong>{{ number_format($order->total_amount, 0, '.', ' ') }} UZS</strong></th>
                                     </tr>
                                 </tfoot>
@@ -198,7 +199,7 @@
                 <div class="card mb-3">
                     <div class="card-header">
                         <h3 class="card-title">
-                            <i class="fas fa-history"></i> Holat tarixi
+                            <i class="fas fa-history"></i> {{ __('admin.orders_module.status_timeline') }}
                         </h3>
                     </div>
                     <div class="card-body">
@@ -218,13 +219,13 @@
                                             <strong>
                                                 @php
                                                     switch($history->status) {
-                                                        case 'pending': echo 'Kutilmoqda'; break;
-                                                        case 'confirmed': echo 'Tasdiqlangan'; break;
-                                                        case 'processing': echo 'Jarayonda'; break;
-                                                        case 'shipped': echo 'Yuborilgan'; break;
-                                                        case 'delivered': echo 'Yetkazilgan'; break;
-                                                        case 'cancelled': echo 'Bekor qilingan'; break;
-                                                        case 'refunded': echo 'Qaytarilgan'; break;
+                                                        case 'pending': echo __('admin.orders_module.status_pending'); break;
+                                                        case 'confirmed': echo __('admin.orders_module.status_confirmed'); break;
+                                                        case 'processing': echo __('admin.orders_module.status_processing'); break;
+                                                        case 'shipped': echo __('admin.orders_module.status_shipped'); break;
+                                                        case 'delivered': echo __('admin.orders_module.status_delivered'); break;
+                                                        case 'cancelled': echo __('admin.orders_module.status_cancelled'); break;
+                                                        case 'refunded': echo __('admin.orders_module.status_refunded'); break;
                                                         default: echo $history->status; break;
                                                     }
                                                 @endphp
@@ -238,7 +239,7 @@
                                 </div>
                             @endforeach
                         @else
-                            <p class="text-muted">Holat tarixi mavjud emas.</p>
+                            <p class="text-muted">{{ __('admin.orders_module.status_timeline') }} {{ __('admin.orders_module.not_specified') }}.</p>
                         @endif
                     </div>
                 </div>
@@ -250,23 +251,23 @@
                 <div class="card mb-3">
                     <div class="card-header">
                         <h3 class="card-title">
-                            <i class="fas fa-user"></i> Mijoz ma'lumotlari
+                            <i class="fas fa-user"></i> {{ __('admin.orders_module.customer_information') }}
                         </h3>
                     </div>
                     <div class="card-body">
                         @if($order->user)
                             <dl class="row">
-                                <dt class="col-sm-4">Ism:</dt>
+                                <dt class="col-sm-4">{{ __('admin.name') }}:</dt>
                                 <dd class="col-sm-8">{{ $order->user->name }}</dd>
 
-                                <dt class="col-sm-4">Email:</dt>
+                                <dt class="col-sm-4">{{ __('admin.email') }}:</dt>
                                 <dd class="col-sm-8">{{ $order->user->email }}</dd>
 
-                                <dt class="col-sm-4">Telefon:</dt>
-                                <dd class="col-sm-8">{{ $order->user->phone ?? 'Ko\'rsatilmagan' }}</dd>
+                                <dt class="col-sm-4">{{ __('admin.phone') }}:</dt>
+                                <dd class="col-sm-8">{{ $order->user->phone ?? __('admin.orders_module.not_specified') }}</dd>
                             </dl>
                         @else
-                            <p class="text-muted">Mijoz ma'lumotlari topilmadi</p>
+                            <p class="text-muted">{{ __('admin.orders_module.customer_information') }} {{ __('admin.orders_module.not_specified') }}</p>
                         @endif
                     </div>
                 </div>
@@ -275,12 +276,12 @@
                 <div class="card mb-3">
                     <div class="card-header">
                         <h3 class="card-title">
-                            <i class="fas fa-shipping-fast"></i> Yetkazib berish
+                            <i class="fas fa-shipping-fast"></i> {{ __('admin.orders_module.delivery_information') }}
                         </h3>
                     </div>
                     <div class="card-body">
                         <dl class="row">
-                            <dt class="col-sm-5">Manzil:</dt>
+                            <dt class="col-sm-5">{{ __('admin.address') }}:</dt>
                             <dd class="col-sm-7">
                                 @if($order->delivery_address)
                                     @php
@@ -295,18 +296,18 @@
                                         {{ $order->delivery_address }}
                                     @endif
                                 @else
-                                    Ko'rsatilmagan
+                                    {{ __('admin.orders_module.not_specified') }}
                                 @endif
                             </dd>
 
-                            {{-- <dt class="col-sm-5">Telefon:</dt>
-                            <dd class="col-sm-7">{{ $order->delivery_phone ?? 'Ko\'rsatilmagan' }}</dd> --}}
+                            {{-- <dt class="col-sm-5">{{ __('admin.phone') }}:</dt>
+                            <dd class="col-sm-7">{{ $order->delivery_phone ?? __('admin.orders_module.not_specified') }}</dd> --}}
 
-                            <dt class="col-sm-5">Vaqt:</dt>
-                            <dd class="col-sm-7">{{ $order->delivery_time_slot ?? 'Ko\'rsatilmagan' }}</dd>
+                            <dt class="col-sm-5">{{ __('admin.orders_module.delivery_time') }}:</dt>
+                            <dd class="col-sm-7">{{ $order->delivery_time_slot ?? __('admin.orders_module.not_specified') }}</dd>
 
-                            <dt class="col-sm-5">Eslatma:</dt>
-                            <dd class="col-sm-7">{{ $order->delivery_notes ?? 'Yo\'q' }}</dd>
+                            <dt class="col-sm-5">{{ __('admin.orders_module.delivery_notes') }}:</dt>
+                            <dd class="col-sm-7">{{ $order->delivery_notes ?? __('admin.orders_module.no_notes') }}</dd>
                         </dl>
                     </div>
                 </div>
@@ -315,41 +316,41 @@
                 <div class="card mb-3">
                     <div class="card-header">
                         <h3 class="card-title">
-                            <i class="fas fa-file-alt"></i> Buyurtma tafsilotlari
+                            <i class="fas fa-file-alt"></i> {{ __('admin.orders_module.order_details') }}
                         </h3>
                     </div>
                     <div class="card-body">
                         <dl class="row">
-                            <dt class="col-sm-6">Buyurtma raqami:</dt>
+                            <dt class="col-sm-6">{{ __('admin.orders_module.order_number') }}:</dt>
                             <dd class="col-sm-6">#{{ $order->order_number }}</dd>
 
-                            <dt class="col-sm-6">Sana:</dt>
+                            <dt class="col-sm-6">{{ __('admin.orders_module.order_date') }}:</dt>
                             <dd class="col-sm-6">{{ $order->created_at->format('d.m.Y H:i') }}</dd>
 
-                            <dt class="col-sm-6">To'lov turi:</dt>
+                            <dt class="col-sm-6">{{ __('admin.orders_module.payment_method') }}:</dt>
                             <dd class="col-sm-6">
                                 @switch($order->payment_method)
                                     @case('cash')
-                                        Naqd pul
+                                        {{ __('admin.orders_module.cash') }}
                                         @break
                                     @case('card')
-                                        Plastik karta
+                                        {{ __('admin.orders_module.card') }}
                                         @break
                                     @case('online')
-                                        Onlayn to'lov
+                                        {{ __('admin.orders_module.online') }}
                                         @break
                                     @default
                                         {{ $order->payment_method }}
                                 @endswitch
                             </dd>
 
-                            <dt class="col-sm-6">Jami summa:</dt>
+                            <dt class="col-sm-6">{{ __('admin.orders_module.total_amount') }}:</dt>
                             <dd class="col-sm-6"><strong>{{ number_format($order->total_amount, 0, '.', ' ') }} UZS</strong></dd>
                         </dl>
 
                         @if($order->notes)
                             <hr>
-                            <dt>Qo'shimcha eslatmalar:</dt>
+                            <dt>{{ __('admin.orders_module.additional_notes') }}:</dt>
                             <dd class="text-muted">{{ $order->notes }}</dd>
                         @endif
                     </div>

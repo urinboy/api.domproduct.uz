@@ -40,13 +40,13 @@ class OrderStatusHistory extends Model
     public function getStatusDisplayAttribute()
     {
         $statusNames = [
-            'pending' => 'Kutilmoqda',
-            'confirmed' => 'Tasdiqlandi',
-            'processing' => 'Jarayonda',
-            'shipped' => 'Jo\'natildi',
-            'delivered' => 'Yetkazildi',
-            'cancelled' => 'Bekor qilindi',
-            'refunded' => 'Qaytarildi',
+            'pending' => __('admin.orders_module.pending'),
+            'confirmed' => __('admin.orders_module.confirmed'),
+            'processing' => __('admin.orders_module.preparing'),
+            'shipped' => __('admin.orders_module.out_for_delivery'),
+            'delivered' => __('admin.orders_module.delivered'),
+            'cancelled' => __('admin.orders_module.cancelled'),
+            'refunded' => __('admin.orders_module.refunded'),
         ];
 
         return $statusNames[$this->status] ?? ucfirst($this->status);

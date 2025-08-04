@@ -606,4 +606,252 @@ return [
     'upload_image' => 'Загрузить изображение',
     'parent' => 'Родитель',
     'slug' => 'Слаг',
+
+    // Orders module
+    'orders_module' => [
+        // Main navigation and titles
+        'menu_title' => 'Заказы',
+        'title' => 'Управление заказами',
+        'list' => 'Список заказов',
+        'view' => 'Просмотр заказа',
+        'edit' => 'Редактировать заказ',
+        'delete' => 'Удалить заказ',
+        'create' => 'Создать заказ',
+        'add_new' => 'Добавить новый заказ',
+        'search' => 'Поиск заказов',
+        'filter' => 'Фильтр заказов',
+        'clear_filter' => 'Очистить фильтр',
+        'export' => 'Экспорт заказов',
+        'import' => 'Импорт заказов',
+
+        // Statistics cards
+        'total_orders' => 'Всего заказов',
+        'pending_orders' => 'Ожидающие заказы',
+        'confirmed_orders' => 'Подтвержденные заказы',
+        'delivered_orders' => 'Доставленные заказы',
+        'cancelled_orders' => 'Отмененные заказы',
+        'today_orders' => 'Заказы сегодня',
+        'yesterday_orders' => 'Заказы вчера',
+        'this_week_orders' => 'Заказы на этой неделе',
+        'this_month_orders' => 'Заказы в этом месяце',
+        'total_revenue' => 'Общая выручка',
+        'average_order_value' => 'Средняя стоимость заказа',
+
+        // Table headers
+        'order_id' => 'ID заказа',
+        'order_number' => 'Номер заказа',
+        'customer' => 'Клиент',
+        'customer_name' => 'Имя клиента',
+        'customer_email' => 'Email клиента',
+        'customer_phone' => 'Телефон клиента',
+        'total_amount' => 'Общая сумма',
+        'order_date' => 'Дата заказа',
+        'delivery_date' => 'Дата доставки',
+        'delivery_time' => 'Время доставки',
+        'delivery_address' => 'Адрес доставки',
+        'status' => 'Статус',
+        'payment_status' => 'Статус оплаты',
+        'payment_method' => 'Способ оплаты',
+        'notes' => 'Примечания',
+        'created_at' => 'Создан',
+        'updated_at' => 'Обновлен',
+        'actions' => 'Действия',
+
+        // Status labels
+        'pending' => 'Ожидает',
+        'confirmed' => 'Подтвержден',
+        'preparing' => 'Готовится',
+        'ready' => 'Готов',
+        'out_for_delivery' => 'В доставке',
+        'delivered' => 'Доставлен',
+        'cancelled' => 'Отменен',
+        'refunded' => 'Возвращен',
+
+        // Action buttons
+        'view_order' => 'Просмотр заказа',
+        'edit_order' => 'Редактировать заказ',
+        'delete_order' => 'Удалить заказ',
+        'print_order' => 'Печать заказа',
+        'update_status' => 'Обновить статус',
+        'mark_as_confirmed' => 'Отметить как подтвержденный',
+        'mark_as_delivered' => 'Отметить как доставленный',
+        'mark_as_cancelled' => 'Отметить как отмененный',
+        'send_notification' => 'Отправить уведомление',
+        'back_to_list' => 'Назад к списку',
+
+        // Form labels and sections
+        'order_details' => 'Детали заказа',
+        'customer_information' => 'Информация о клиенте',
+        'delivery_information' => 'Информация о доставке',
+        'payment_information' => 'Информация об оплате',
+        'order_items' => 'Товары в заказе',
+        'product_name' => 'Название товара',
+        'quantity' => 'Количество',
+        'unit_price' => 'Цена за единицу',
+        'subtotal' => 'Промежуточный итог',
+        'total' => 'Итого',
+        'discount' => 'Скидка',
+        'shipping_cost' => 'Стоимость доставки',
+        'tax' => 'Налог',
+        'grand_total' => 'Общая сумма',
+        'payment_method' => 'Способ оплаты',
+        'payment_status' => 'Статус оплаты',
+        'delivery_method' => 'Способ доставки',
+        'delivery_address' => 'Адрес доставки',
+        'delivery_date' => 'Дата доставки',
+        'delivery_time' => 'Время доставки',
+        'delivery_phone' => 'Телефон доставки',
+        'special_instructions' => 'Особые инструкции',
+        'status_change_notes' => 'Примечания к изменению статуса',
+        'additional_notes' => 'Дополнительные примечания',
+        'order_information' => 'Информация о заказе',
+        'order_summary' => 'Сводка заказа',
+        'shipping_details' => 'Детали доставки',
+        'billing_details' => 'Платежные данные',
+
+        // Messages and notifications
+        'no_orders_found' => 'Заказы не найдены',
+        'order_created_successfully' => 'Заказ успешно создан',
+        'order_updated_successfully' => 'Заказ успешно обновлен',
+        'order_deleted_successfully' => 'Заказ успешно удален',
+        'status_updated_successfully' => 'Статус успешно обновлен',
+        'confirm_delete' => 'Вы уверены, что хотите удалить этот заказ?',
+        'delete_warning' => 'Это действие нельзя отменить!',
+
+        // Order status descriptions
+        'status_descriptions' => [
+            'pending' => 'Заказ ожидает подтверждения',
+            'confirmed' => 'Заказ подтвержден и принят в обработку',
+            'preparing' => 'Заказ готовится к отправке',
+            'ready' => 'Заказ готов к доставке',
+            'out_for_delivery' => 'Заказ в пути к клиенту',
+            'delivered' => 'Заказ успешно доставлен',
+            'cancelled' => 'Заказ отменен',
+            'refunded' => 'Оплата за заказ возвращена',
+        ],
+
+        // Payment status labels
+        'payment_pending' => 'Ожидается оплата',
+        'paid' => 'Оплачено',
+        'partially_paid' => 'Частично оплачено',
+        'payment_failed' => 'Оплата не прошла',
+        'payment_refunded' => 'Оплата возвращена',
+
+        // Payment methods
+        'cash' => 'Наличные',
+        'card' => 'Карта',
+        'online' => 'Онлайн оплата',
+        'bank_transfer' => 'Банковский перевод',
+        'payment_on_delivery' => 'Оплата при доставке',
+
+        // Delivery methods
+        'pickup' => 'Самовывоз',
+        'home_delivery' => 'Доставка на дом',
+        'express_delivery' => 'Экспресс доставка',
+
+        // Status change messages
+        'order_status_changed' => 'Статус заказа изменен',
+        'status_changed_to' => 'Статус изменен на: :status',
+        'confirm_status_change' => 'Хотите изменить статус заказа?',
+        'order_cannot_be_cancelled' => 'Этот заказ нельзя отменить',
+        'status_change_reason' => 'Причина изменения статуса',
+
+        // Form placeholders
+        'search_placeholder' => 'Поиск по номеру заказа, имени клиента или email...',
+        'change_status_note' => 'Дополнительная информация об изменении статуса...',
+        'guest_customer' => 'Гость',
+        'registered_customer' => 'Зарегистрированный клиент',
+        'not_specified' => 'Не указано',
+        'no_delivery_info' => 'Нет информации о доставке',
+        'no_notes' => 'Нет примечаний',
+
+        // Buttons and controls
+        'refresh' => 'Обновить',
+        'apply_filter' => 'Применить фильтр',
+        'save_changes' => 'Сохранить изменения',
+        'cancel' => 'Отмена',
+        'submit' => 'Отправить',
+        'close' => 'Закрыть',
+        'print' => 'Печать',
+
+        // Additional information sections
+        'order_history' => 'История заказа',
+        'payment_details' => 'Детали оплаты',
+        'order_timeline' => 'Временная шкала заказа',
+        'status_timeline' => 'История статусов',
+        'customer_notes' => 'Примечания клиента',
+        'admin_notes' => 'Примечания администратора',
+        'delivery_notes' => 'Примечания к доставке',
+        'internal_notes' => 'Внутренние примечания',
+
+        // Date and time formats
+        'order_placed_at' => 'Заказ размещен',
+        'last_updated' => 'Последнее обновление',
+        'estimated_delivery' => 'Ожидаемая доставка',
+        'actual_delivery' => 'Фактическая доставка',
+
+        // Statistics and reports
+        'daily_orders' => 'Ежедневные заказы',
+        'weekly_orders' => 'Еженедельные заказы',
+        'monthly_orders' => 'Ежемесячные заказы',
+        'order_trends' => 'Тенденции заказов',
+        'popular_products' => 'Популярные товары',
+        'revenue_report' => 'Отчет о доходах',
+        'order_analytics' => 'Аналитика заказов',
+
+        // Error messages
+        'order_not_found' => 'Заказ не найден',
+        'invalid_order_id' => 'Неверный ID заказа',
+        'access_denied' => 'Доступ запрещен',
+        'operation_failed' => 'Операция не выполнена',
+        'validation_error' => 'Ошибка валидации',
+        'database_error' => 'Ошибка базы данных',
+        'delivery_time_placeholder' => 'Например: 14:00-16:00',
+        'select' => 'Выберите',
+        'current_information' => 'Текущая информация',
+        'customer_not_found' => 'Информация о клиенте не найдена',
+        'order_about_notes' => 'Примечания о заказе',
+        'name' => 'Имя',
+        'phone' => 'Телефон',
+        'not_specified' => 'Не указано',
+        'date' => 'Дата',
+        'amount' => 'Сумма',
+        'products' => 'Товары',
+        'order_created' => 'Заказ создан',
+        'initial_status' => 'Начальный статус',
+        'order' => 'Заказ',
+        'products' => 'Товары',
+
+        // Status History Messages
+        'status_changed_from_to' => 'Статус изменён с :old_status на :new_status',
+        'payment_status_updated_to' => 'Статус оплаты изменён на :payment_status',
+        'order_status_changed' => 'Статус заказа изменён',
+        'order_status_change_notification' => 'Статус вашего заказа #:order_number изменён на \':status\'',
+
+        // Payment Status Labels
+        'payment_pending' => 'ожидает оплаты',
+        'payment_paid' => 'оплачен',
+        'payment_failed' => 'ошибка оплаты',
+        'payment_refunded' => 'возврат',
+        'payment_partial_refund' => 'частичный возврат',
+
+        // Order Status Labels
+        'status_pending' => 'ожидает',
+        'status_confirmed' => 'подтверждён',
+        'status_processing' => 'обрабатывается',
+        'status_shipped' => 'отправлен',
+        'status_delivered' => 'доставлен',
+        'status_cancelled' => 'отменён',
+        'status_refunded' => 'возврат',
+    ],
+
+    // Form validation
+    'validation' => [
+        'required' => 'Это поле обязательно',
+        'email_format' => 'Неправильный формат email',
+        'min_length' => 'Минимальная длина',
+        'max_length' => 'Максимальная длина',
+        'numeric' => 'Введите только цифры',
+        'unique' => 'Это значение уже существует',
+    ],
 ];

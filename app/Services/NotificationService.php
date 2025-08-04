@@ -215,8 +215,11 @@ class NotificationService
             'cancelled' => 'Bekor qilindi',
         ];
 
-        $title = 'Buyurtma holati o\'zgardi';
-        $message = "Sizning #{$order->order_number} buyurtmangiz holati '{$statusLabels[$newStatus]}' ga o'zgartirildi.";
+        $title = __('admin.orders_module.order_status_changed');
+        $message = __('admin.orders_module.order_status_change_notification', [
+            'order_number' => $order->order_number,
+            'status' => $statusLabels[$newStatus]
+        ]);
 
         $data = [
             'order_id' => $order->id,

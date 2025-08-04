@@ -1,6 +1,6 @@
 @extends('admin.layouts.app')
 
-@section('title', 'Buyurtmalar')
+@section('title', __('admin.orders_module.title'))
 
 @section('content')
 <style>
@@ -59,12 +59,12 @@
     <div class="container-fluid">
         <div class="row mb-2">
             <div class="col-sm-6">
-                <h1 class="m-0">Buyurtmalar boshqaruvi</h1>
+                <h1 class="m-0">{{ __('admin.orders_module.title') }}</h1>
             </div>
             <div class="col-sm-6">
                 <ol class="breadcrumb float-sm-right">
-                    <li class="breadcrumb-item"><a href="{{ route('admin.dashboard') }}">Bosh sahifa</a></li>
-                    <li class="breadcrumb-item active">Buyurtmalar</li>
+                    <li class="breadcrumb-item"><a href="{{ route('admin.dashboard') }}">{{ __('admin.home') }}</a></li>
+                    <li class="breadcrumb-item active">{{ __('admin.orders') }}</li>
                 </ol>
             </div>
         </div>
@@ -80,7 +80,7 @@
                 <div class="small-box bg-info stats-card">
                     <div class="inner">
                         <h3>{{ \App\Models\Order::count() }}</h3>
-                        <p>Jami buyurtmalar</p>
+                        <p>{{ __('admin.orders_module.total_orders') }}</p>
                     </div>
                     <div class="icon">
                         <i class="fas fa-shopping-cart"></i>
@@ -91,7 +91,7 @@
                 <div class="small-box bg-warning stats-card">
                     <div class="inner">
                         <h3>{{ \App\Models\Order::where('status', 'pending')->count() }}</h3>
-                        <p>Kutilmoqda</p>
+                        <p>{{ __('admin.orders_module.pending_orders') }}</p>
                     </div>
                     <div class="icon">
                         <i class="fas fa-clock"></i>
@@ -102,7 +102,7 @@
                 <div class="small-box bg-success stats-card">
                     <div class="inner">
                         <h3>{{ \App\Models\Order::where('status', 'delivered')->count() }}</h3>
-                        <p>Yetkazilgan</p>
+                        <p>{{ __('admin.orders_module.delivered_orders') }}</p>
                     </div>
                     <div class="icon">
                         <i class="fas fa-check-circle"></i>
@@ -113,7 +113,7 @@
                 <div class="small-box bg-gradient-purple stats-card">
                     <div class="inner">
                         <h3>{{ number_format(\App\Models\Order::where('payment_status', 'paid')->sum('total_amount'), 0, '.', ' ') }}</h3>
-                        <p>Jami daromad (UZS)</p>
+                        <p>{{ __('admin.orders_module.total_revenue') }}</p>
                     </div>
                     <div class="icon">
                         <i class="fas fa-dollar-sign"></i>
@@ -126,10 +126,10 @@
             <div class="col-12">
                 <div class="card">
                     <div class="card-header">
-                        <h3 class="card-title">Buyurtmalar ro'yxati</h3>
+                        <h3 class="card-title">{{ __('admin.orders_module.list') }}</h3>
                         <div class="card-tools">
                             <a href="{{ route('admin.orders.export') }}" class="btn btn-outline-secondary btn-sm">
-                                <i class="fas fa-download"></i> CSV ga eksport
+                                <i class="fas fa-download"></i> {{ __('admin.orders_module.export') }}
                             </a>
                         </div>
                     </div>
@@ -140,34 +140,34 @@
                             <div class="row">
                                 <div class="col-md-3">
                                     <div class="form-group">
-                                        <label>Status</label>
+                                        <label>{{ __('admin.orders_module.status') }}</label>
                                         <select name="status" class="form-control">
-                                            <option value="">Barchasi</option>
-                                            <option value="pending" {{ request('status') == 'pending' ? 'selected' : '' }}>Kutilmoqda</option>
-                                            <option value="confirmed" {{ request('status') == 'confirmed' ? 'selected' : '' }}>Tasdiqlangan</option>
-                                            <option value="processing" {{ request('status') == 'processing' ? 'selected' : '' }}>Jarayonda</option>
-                                            <option value="shipped" {{ request('status') == 'shipped' ? 'selected' : '' }}>Yuborilgan</option>
-                                            <option value="delivered" {{ request('status') == 'delivered' ? 'selected' : '' }}>Yetkazilgan</option>
-                                            <option value="cancelled" {{ request('status') == 'cancelled' ? 'selected' : '' }}>Bekor qilingan</option>
+                                            <option value="">{{ __('admin.all') }}</option>
+                                            <option value="pending" {{ request('status') == 'pending' ? 'selected' : '' }}>{{ __('admin.orders_module.pending') }}</option>
+                                            <option value="confirmed" {{ request('status') == 'confirmed' ? 'selected' : '' }}>{{ __('admin.orders_module.confirmed') }}</option>
+                                            <option value="processing" {{ request('status') == 'processing' ? 'selected' : '' }}>{{ __('admin.orders_module.preparing') }}</option>
+                                            <option value="shipped" {{ request('status') == 'shipped' ? 'selected' : '' }}>{{ __('admin.orders_module.out_for_delivery') }}</option>
+                                            <option value="delivered" {{ request('status') == 'delivered' ? 'selected' : '' }}>{{ __('admin.orders_module.delivered') }}</option>
+                                            <option value="cancelled" {{ request('status') == 'cancelled' ? 'selected' : '' }}>{{ __('admin.orders_module.cancelled') }}</option>
                                         </select>
                                     </div>
                                 </div>
                                 <div class="col-md-3">
                                     <div class="form-group">
-                                        <label>To'lov holati</label>
+                                        <label>{{ __('admin.orders_module.payment_status') }}</label>
                                         <select name="payment_status" class="form-control">
-                                            <option value="">Barchasi</option>
-                                            <option value="pending" {{ request('payment_status') == 'pending' ? 'selected' : '' }}>Kutilmoqda</option>
-                                            <option value="paid" {{ request('payment_status') == 'paid' ? 'selected' : '' }}>To'langan</option>
-                                            <option value="failed" {{ request('payment_status') == 'failed' ? 'selected' : '' }}>Muvaffaqiyatsiz</option>
-                                            <option value="refunded" {{ request('payment_status') == 'refunded' ? 'selected' : '' }}>Qaytarilgan</option>
+                                            <option value="">{{ __('admin.all') }}</option>
+                                            <option value="pending" {{ request('payment_status') == 'pending' ? 'selected' : '' }}>{{ __('admin.orders_module.payment_pending') }}</option>
+                                            <option value="paid" {{ request('payment_status') == 'paid' ? 'selected' : '' }}>{{ __('admin.orders_module.paid') }}</option>
+                                            <option value="failed" {{ request('payment_status') == 'failed' ? 'selected' : '' }}>{{ __('admin.orders_module.payment_failed') }}</option>
+                                            <option value="refunded" {{ request('payment_status') == 'refunded' ? 'selected' : '' }}>{{ __('admin.orders_module.payment_refunded') }}</option>
                                         </select>
                                     </div>
                                 </div>
                                 <div class="col-md-4">
                                     <div class="form-group">
-                                        <label>Qidiruv</label>
-                                        <input type="text" name="search" class="form-control" placeholder="Buyurtma raqami, mijoz nomi..." value="{{ request('search') }}">
+                                        <label>{{ __('admin.orders_module.search') }}</label>
+                                        <input type="text" name="search" class="form-control" placeholder="{{ __('admin.orders_module.search_placeholder') }}" value="{{ request('search') }}">
                                     </div>
                                 </div>
                                 <div class="col-md-2">
@@ -184,7 +184,7 @@
                             <div class="row">
                                 <div class="col-md-12 text-right">
                                     <a href="{{ route('admin.orders.index') }}" class="btn btn-outline-secondary btn-sm">
-                                        <i class="fas fa-times"></i> Tozalash
+                                        <i class="fas fa-times"></i> {{ __('admin.orders_module.clear_filter') }}
                                     </a>
                                 </div>
                             </div>
@@ -198,13 +198,13 @@
                                 <thead>
                                     <tr>
                                         <th style="width: 10px">#</th>
-                                        <th>Buyurtma</th>
-                                        <th>Mijoz</th>
-                                        <th>Status</th>
-                                        <th>To'lov</th>
-                                        <th>Summa</th>
-                                        <th>Sana</th>
-                                        <th class="table-actions">Amallar</th>
+                                        <th>{{ __('admin.orders_module.order_number') }}</th>
+                                        <th>{{ __('admin.orders_module.customer') }}</th>
+                                        <th>{{ __('admin.orders_module.status') }}</th>
+                                        <th>{{ __('admin.orders_module.payment_status') }}</th>
+                                        <th>{{ __('admin.orders_module.total_amount') }}</th>
+                                        <th>{{ __('admin.orders_module.order_date') }}</th>
+                                        <th class="table-actions">{{ __('admin.orders_module.actions') }}</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -215,7 +215,7 @@
                                                 <div>
                                                     <strong>#{{ $order->order_number }}</strong>
                                                     <br>
-                                                    <small class="text-muted">{{ $order->items ? $order->items->count() : 0 }} mahsulot</small>
+                                                    <small class="text-muted">{{ $order->items ? $order->items->count() : 0 }} {{ __('admin.orders_module.order_items') }}</small>
                                                 </div>
                                             </td>
                                             <td>
@@ -268,36 +268,36 @@
                                             </td>
                                             <td class="table-actions">
                                                 <div class="btn-group btn-group-sm" role="group">
-                                                    <a href="{{ route('admin.orders.show', $order) }}" class="btn btn-outline-primary" title="Ko'rish">
+                                                    <a href="{{ route('admin.orders.show', $order) }}" class="btn btn-outline-primary" title="{{ __('admin.orders_module.view_order') }}">
                                                         <i class="fas fa-eye"></i>
                                                     </a>
-                                                    <a href="{{ route('admin.orders.edit', $order) }}" class="btn btn-outline-secondary" title="Tahrirlash">
+                                                    <a href="{{ route('admin.orders.edit', $order) }}" class="btn btn-outline-secondary" title="{{ __('admin.orders_module.edit_order') }}">
                                                         <i class="fas fa-edit"></i>
                                                     </a>
                                                     <div class="btn-group btn-group-sm" role="group">
-                                                        <button type="button" class="btn btn-outline-success dropdown-toggle" data-toggle="dropdown" title="Tez amallar">
+                                                        <button type="button" class="btn btn-outline-success dropdown-toggle" data-toggle="dropdown" title="{{ __('admin.orders_module.update_status') }}">
                                                             <i class="fas fa-cog"></i>
                                                         </button>
                                                         <div class="dropdown-menu">
                                                             @if($order->status === 'pending')
                                                                 <a class="dropdown-item text-success" href="#" onclick="updateStatus({{ $order->id }}, 'confirmed')">
-                                                                    <i class="fas fa-check"></i> Tasdiqlash
+                                                                    <i class="fas fa-check"></i> {{ __('admin.orders_module.mark_as_confirmed') }}
                                                                 </a>
                                                             @endif
                                                             @if(in_array($order->status, ['confirmed', 'processing']))
                                                                 <a class="dropdown-item text-primary" href="#" onclick="updateStatus({{ $order->id }}, 'shipped')">
-                                                                    <i class="fas fa-shipping-fast"></i> Yuborish
+                                                                    <i class="fas fa-shipping-fast"></i> {{ __('admin.orders_module.out_for_delivery') }}
                                                                 </a>
                                                             @endif
                                                             @if($order->status === 'shipped')
                                                                 <a class="dropdown-item text-success" href="#" onclick="updateStatus({{ $order->id }}, 'delivered')">
-                                                                    <i class="fas fa-check-circle"></i> Yetkazildi
+                                                                    <i class="fas fa-check-circle"></i> {{ __('admin.orders_module.mark_as_delivered') }}
                                                                 </a>
                                                             @endif
                                                             @if(in_array($order->status, ['pending', 'confirmed']))
                                                                 <div class="dropdown-divider"></div>
                                                                 <a class="dropdown-item text-danger" href="#" onclick="updateStatus({{ $order->id }}, 'cancelled')">
-                                                                    <i class="fas fa-times"></i> Bekor qilish
+                                                                    <i class="fas fa-times"></i> {{ __('admin.orders_module.mark_as_cancelled') }}
                                                                 </a>
                                                             @endif
                                                         </div>
@@ -310,8 +310,8 @@
                                             <td colspan="8" class="text-center py-4">
                                                 <div class="text-center">
                                                     <i class="fas fa-shopping-cart fa-3x text-muted mb-3"></i>
-                                                    <h5 class="text-muted">Buyurtmalar topilmadi</h5>
-                                                    <p class="text-muted">Hech qanday buyurtma topilmadi. Filtrlarni o'zgartirib ko'ring.</p>
+                                                    <h5 class="text-muted">{{ __('admin.orders_module.no_orders_found') }}</h5>
+                                                    <p class="text-muted">{{ __('admin.orders_module.no_orders_found') }}</p>
                                                 </div>
                                             </td>
                                         </tr>
@@ -327,7 +327,7 @@
                             <div class="row align-items-center">
                                 <div class="col-md-6">
                                     <small class="text-muted">
-                                        {{ $orders->firstItem() }} dan {{ $orders->lastItem() }} gacha, jami {{ $orders->total() }} ta natija
+                                        {{ __('admin.showing') }} {{ $orders->firstItem() }} {{ __('admin.to') }} {{ $orders->lastItem() }} {{ __('admin.of') }} {{ $orders->total() }} {{ __('admin.orders_module.total_orders') }}
                                     </small>
                                 </div>
                                 <div class="col-md-6">
