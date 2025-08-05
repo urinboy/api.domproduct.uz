@@ -51,27 +51,46 @@ class AuthController extends Controller
 
             $user = Auth::user();
 
-            // Redirect to intended page or profile
-            $redirectTo = $request->input('redirect_to', route('web.profile'));
+            // Get intended URL from multiple sources
+            $intendedUrl = $request->input('intended_url') ?:
+                          session('url.intended') ?:
+                          $request->get('intended') ?:
+                          route('web.home');
 
-            return response()->json([
-                'success' => true,
-                'message' => 'Muvaffaqiyatli tizimga kirdingiz',
-                'redirect' => $redirectTo,
-                'user' => [
-                    'name' => $user->name,
-                    'email' => $user->email,
-                ]
-            ]);
+            // Clear the intended URL from session
+            session()->forget('url.intended');
+
+            // If this is an AJAX request, return JSON
+            if ($request->expectsJson()) {
+                return response()->json([
+                    'success' => true,
+                    'message' => 'Muvaffaqiyatli tizimga kirdingiz',
+                    'redirect' => $intendedUrl,
+                    'user' => [
+                        'name' => $user->name,
+                        'email' => $user->email,
+                    ]
+                ]);
+            }
+
+            // For regular requests, redirect directly
+            return redirect()->to($intendedUrl);
         }
 
-        return response()->json([
-            'success' => false,
-            'message' => 'Email yoki parol noto\'g\'ri',
-            'errors' => [
-                'email' => ['Email yoki parol noto\'g\'ri']
-            ]
-        ], 422);
+        // Login failed
+        if ($request->expectsJson()) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Email yoki parol noto\'g\'ri',
+                'errors' => [
+                    'email' => ['Email yoki parol noto\'g\'ri']
+                ]
+            ], 422);
+        }
+
+        return back()->withErrors([
+            'email' => 'Email yoki parol noto\'g\'ri',
+        ])->withInput();
     }
 
     /**

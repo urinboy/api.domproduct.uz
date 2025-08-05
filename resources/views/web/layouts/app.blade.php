@@ -135,11 +135,58 @@
                     <span>🕒 24/7 xizmat</span>
                 </div>
                 <div class="flex items-center space-x-4">
-                    <select class="bg-transparent text-white text-sm" onchange="changeLanguage(this.value)">
-                        <option value="uz" {{ app()->getLocale() == 'uz' ? 'selected' : '' }}>🇺🇿 O'zbek</option>
-                        <option value="ru" {{ app()->getLocale() == 'ru' ? 'selected' : '' }}>🇷🇺 Русский</option>
-                        <option value="en" {{ app()->getLocale() == 'en' ? 'selected' : '' }}>🇺🇸 English</option>
-                    </select>
+                    <!-- Language Selector (Desktop) -->
+                    <div class="relative">
+                        <button id="language-dropdown-btn" class="flex items-center space-x-2 px-3 py-1 rounded-lg bg-white/10 hover:bg-white/20 transition-colors text-white">
+                            @if(app()->getLocale() == 'uz')
+                                <span class="text-lg">🇺🇿</span>
+                                <span class="text-sm">O'zbek</span>
+                            @elseif(app()->getLocale() == 'ru')
+                                <span class="text-lg">🇷🇺</span>
+                                <span class="text-sm">Русский</span>
+                            @else
+                                <span class="text-lg">🇺🇸</span>
+                                <span class="text-sm">English</span>
+                            @endif
+                            <svg class="w-4 h-4 transition-transform" id="language-dropdown-arrow" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                            </svg>
+                        </button>
+
+                        <!-- Dropdown Menu -->
+                        <div id="language-dropdown" class="absolute right-0 top-full mt-2 w-48 bg-white rounded-lg shadow-lg border border-gray-200 hidden z-50">
+                            <div class="py-1">
+                                <button onclick="changeLanguage('uz')" class="flex items-center w-full px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 transition-colors {{ app()->getLocale() == 'uz' ? 'bg-blue-50 text-blue-600' : '' }}">
+                                    <span class="text-lg mr-3">🇺🇿</span>
+                                    <span>O'zbek</span>
+                                    @if(app()->getLocale() == 'uz')
+                                        <svg class="w-4 h-4 ml-auto text-blue-600" fill="currentColor" viewBox="0 0 20 20">
+                                            <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path>
+                                        </svg>
+                                    @endif
+                                </button>
+                                <button onclick="changeLanguage('ru')" class="flex items-center w-full px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 transition-colors {{ app()->getLocale() == 'ru' ? 'bg-blue-50 text-blue-600' : '' }}">
+                                    <span class="text-lg mr-3">🇷🇺</span>
+                                    <span>Русский</span>
+                                    @if(app()->getLocale() == 'ru')
+                                        <svg class="w-4 h-4 ml-auto text-blue-600" fill="currentColor" viewBox="0 0 20 20">
+                                            <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path>
+                                        </svg>
+                                    @endif
+                                </button>
+                                <button onclick="changeLanguage('en')" class="flex items-center w-full px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 transition-colors {{ app()->getLocale() == 'en' ? 'bg-blue-50 text-blue-600' : '' }}">
+                                    <span class="text-lg mr-3">🇺🇸</span>
+                                    <span>English</span>
+                                    @if(app()->getLocale() == 'en')
+                                        <svg class="w-4 h-4 ml-auto text-blue-600" fill="currentColor" viewBox="0 0 20 20">
+                                            <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path>
+                                        </svg>
+                                    @endif
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
                     @auth
                         <a href="{{ route('web.profile') }}" class="hover:text-green-200">{{ auth()->user()->name }}</a>
                         <form action="{{ route('web.auth.logout') }}" method="POST" class="inline">
@@ -274,6 +321,40 @@
                 <a href="{{ route('web.products.index') }}" class="block py-3 text-gray-700 hover:text-primary">Mahsulotlar</a>
                 <a href="{{ route('web.about') }}" class="block py-3 text-gray-700 hover:text-primary">Biz haqimizda</a>
                 <a href="{{ route('web.contact') }}" class="block py-3 text-gray-700 hover:text-primary">Bog'lanish</a>
+
+                <!-- Language Selector (Mobile) -->
+                <div class="pt-4 border-t border-gray-200 mt-4">
+                    <h3 class="text-sm font-semibold text-gray-500 mb-3">Til tanlash</h3>
+                    <div class="space-y-2">
+                        <button onclick="changeLanguage('uz')" class="flex items-center w-full px-3 py-2 text-sm text-gray-700 hover:bg-gray-100 rounded-lg transition-colors {{ app()->getLocale() == 'uz' ? 'bg-blue-50 text-blue-600 ring-2 ring-blue-200' : '' }}">
+                            <span class="text-lg mr-3">🇺🇿</span>
+                            <span>O'zbek tili</span>
+                            @if(app()->getLocale() == 'uz')
+                                <svg class="w-4 h-4 ml-auto text-blue-600" fill="currentColor" viewBox="0 0 20 20">
+                                    <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path>
+                                </svg>
+                            @endif
+                        </button>
+                        <button onclick="changeLanguage('ru')" class="flex items-center w-full px-3 py-2 text-sm text-gray-700 hover:bg-gray-100 rounded-lg transition-colors {{ app()->getLocale() == 'ru' ? 'bg-blue-50 text-blue-600 ring-2 ring-blue-200' : '' }}">
+                            <span class="text-lg mr-3">🇷🇺</span>
+                            <span>Русский язык</span>
+                            @if(app()->getLocale() == 'ru')
+                                <svg class="w-4 h-4 ml-auto text-blue-600" fill="currentColor" viewBox="0 0 20 20">
+                                    <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path>
+                                </svg>
+                            @endif
+                        </button>
+                        <button onclick="changeLanguage('en')" class="flex items-center w-full px-3 py-2 text-sm text-gray-700 hover:bg-gray-100 rounded-lg transition-colors {{ app()->getLocale() == 'en' ? 'bg-blue-50 text-blue-600 ring-2 ring-blue-200' : '' }}">
+                            <span class="text-lg mr-3">🇺🇸</span>
+                            <span>English</span>
+                            @if(app()->getLocale() == 'en')
+                                <svg class="w-4 h-4 ml-auto text-blue-600" fill="currentColor" viewBox="0 0 20 20">
+                                    <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path>
+                                </svg>
+                            @endif
+                        </button>
+                    </div>
+                </div>
             </nav>
         </div>
     </div>
@@ -448,10 +529,27 @@
             profileDropdown.classList.toggle('hidden');
         });
 
-        // Close dropdown when clicking outside
+        // Language dropdown functionality
+        const languageDropdownBtn = document.getElementById('language-dropdown-btn');
+        const languageDropdown = document.getElementById('language-dropdown');
+        const languageDropdownArrow = document.getElementById('language-dropdown-arrow');
+
+        languageDropdownBtn?.addEventListener('click', () => {
+            languageDropdown.classList.toggle('hidden');
+            languageDropdownArrow.classList.toggle('rotate-180');
+        });
+
+        // Close dropdowns when clicking outside
         document.addEventListener('click', (e) => {
+            // Profile dropdown
             if (!profileMenuBtn?.contains(e.target) && !profileDropdown?.contains(e.target)) {
                 profileDropdown?.classList.add('hidden');
+            }
+
+            // Language dropdown
+            if (!languageDropdownBtn?.contains(e.target) && !languageDropdown?.contains(e.target)) {
+                languageDropdown?.classList.add('hidden');
+                languageDropdownArrow?.classList.remove('rotate-180');
             }
         });
 
@@ -512,6 +610,15 @@
                 clearTimeout(timeout);
                 timeout = setTimeout(later, wait);
             };
+        }
+
+        // Language switching function
+        function changeLanguage(locale) {
+            // Show loading
+            showLoading();
+
+            // Redirect to language switch route
+            window.location.href = `/language/switch/${locale}`;
         }
     </script>
 

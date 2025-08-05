@@ -258,16 +258,30 @@ class CartController extends Controller
     private function calculateTotals($cartItems)
     {
         $subtotal = $cartItems->sum('total');
-        $shipping = 0; // Bu yerda shipping logikasi bo'ladi
-        $tax = 0; // Bu yerda tax logikasi bo'ladi
-        $total = $subtotal + $shipping + $tax;
+
+        // Calculate discount (if any)
+        $discount = 0;
+        foreach ($cartItems as $item) {
+            $product = $item['product'];
+            if (isset($product['sale_price']) && $product['sale_price'] > 0) {
+                $originalPrice = $product['price'] * $item['quantity'];
+                $salePrice = $product['sale_price'] * $item['quantity'];
+                $discount += ($originalPrice - $salePrice);
+            }
+        }
+
+        $shipping = $subtotal >= 100000 ? 0 : 25000; // Free shipping over 100,000
+        $tax = 0; // Tax calculation if needed
+        $total = $subtotal + $shipping;
 
         return [
             'subtotal' => $subtotal,
+            'discount' => $discount,
             'shipping' => $shipping,
             'tax' => $tax,
             'total' => $total,
             'formatted_subtotal' => number_format($subtotal, 0, '.', ' ') . ' so\'m',
+            'formatted_discount' => number_format($discount, 0, '.', ' ') . ' so\'m',
             'formatted_shipping' => number_format($shipping, 0, '.', ' ') . ' so\'m',
             'formatted_tax' => number_format($tax, 0, '.', ' ') . ' so\'m',
             'formatted_total' => number_format($total, 0, '.', ' ') . ' so\'m',

@@ -57,7 +57,7 @@ class ProfileController extends Controller
 
         $user->update($data);
 
-        return redirect()->route('web.profile.index')
+        return redirect()->route('web.profile')
                         ->with('success', 'Профиль успешно обновлен!');
     }
 
@@ -83,7 +83,7 @@ class ProfileController extends Controller
             'password' => Hash::make($request->new_password)
         ]);
 
-        return redirect()->route('web.profile.index')
+        return redirect()->route('web.profile')
                         ->with('success', 'Пароль успешно изменен!');
     }
 

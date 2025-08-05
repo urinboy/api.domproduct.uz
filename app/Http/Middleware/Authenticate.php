@@ -20,8 +20,8 @@ class Authenticate extends Middleware
                 return route('admin.login');
             }
 
-            // Boshqa barcha holatlar uchun ham admin login ga yo'naltirish
-            return route('admin.login');
+            // Web qismi uchun web.auth.login ga yo'naltirish
+            return route('web.auth.login');
         }
     }
 }
