@@ -58,66 +58,116 @@
                                 </div>
                             </div>
 
-                            <!-- Translations -->
+                            <!-- Multilingual Fields -->
                             <div class="form-group">
-                                <label>{{ __('admin.translations') }} <span class="text-danger">*</span></label>
-
-                                <!-- Nav tabs -->
-                                <ul class="nav nav-tabs" id="translationTabs" role="tablist">
-                                    @foreach($languages ?? [['id' => 1, 'code' => 'uz', 'name' => 'O\'zbek'], ['id' => 2, 'code' => 'en', 'name' => 'English'], ['id' => 3, 'code' => 'ru', 'name' => 'Русский']] as $index => $language)
-                                    <li class="nav-item">
-                                        <a class="nav-link {{ $index == 0 ? 'active' : '' }}"
-                                           id="tab-{{ $language['code'] }}"
-                                           data-toggle="tab"
-                                           href="#translation-{{ $language['code'] }}"
-                                           role="tab">
-                                            {{ $language['name'] }}
-                                        </a>
-                                    </li>
-                                    @endforeach
-                                </ul>
-
-                                <!-- Tab content -->
-                                <div class="tab-content border border-top-0 p-3">
-                                    @foreach($languages ?? [['id' => 1, 'code' => 'uz', 'name' => 'O\'zbek'], ['id' => 2, 'code' => 'en', 'name' => 'English'], ['id' => 3, 'code' => 'ru', 'name' => 'Русский']] as $index => $language)
-                                    <div class="tab-pane fade {{ $index == 0 ? 'show active' : '' }}"
-                                         id="translation-{{ $language['code'] }}"
-                                         role="tabpanel">
-                                        <input type="hidden" name="translations[{{ $index }}][language_id]" value="{{ $language['id'] }}">
-
-                                        <div class="form-group">
-                                            <label for="name_{{ $language['code'] }}">{{ __('admin.name') }} ({{ $language['name'] }})
-                                                @if($index == 0)<span class="text-danger">*</span>@endif
-                                            </label>
-                                            <input type="text"
-                                                   name="translations[{{ $index }}][name]"
-                                                   id="name_{{ $language['code'] }}"
-                                                   class="form-control @error('translations.'.$index.'.name') is-invalid @enderror"
-                                                   value="{{ old('translations.'.$index.'.name') }}"
-                                                   {{ $index == 0 ? 'required' : '' }}>
-                                            @error('translations.'.$index.'.name')
-                                            <div class="invalid-feedback">{{ $message }}</div>
-                                            @enderror
-                                        </div>
-
-                                        <div class="form-group">
-                                            <label for="description_{{ $language['code'] }}">{{ __('admin.description') }} ({{ $language['name'] }})</label>
-                                            <textarea name="translations[{{ $index }}][description]"
-                                                      id="description_{{ $language['code'] }}"
-                                                      class="form-control @error('translations.'.$index.'.description') is-invalid @enderror"
-                                                      rows="3">{{ old('translations.'.$index.'.description') }}</textarea>
-                                            @error('translations.'.$index.'.description')
-                                            <div class="invalid-feedback">{{ $message }}</div>
-                                            @enderror
+                                <label>{{ __('admin.product_translations') }} <span class="text-danger">*</span></label>
+                                <div class="card">
+                                    <div class="card-header p-2">
+                                        <ul class="nav nav-pills" id="language-pills" role="tablist">
+                                            @foreach($languages as $index => $language)
+                                                <li class="nav-item">
+                                                    <a class="nav-link {{ $index === 0 ? 'active' : '' }}"
+                                                       id="lang-{{ $language->code }}-tab"
+                                                       data-toggle="pill"
+                                                       href="#lang-{{ $language->code }}"
+                                                       role="tab"
+                                                       aria-controls="lang-{{ $language->code }}"
+                                                       aria-selected="{{ $index === 0 ? 'true' : 'false' }}">
+                                                        <span class="flag-icon mr-1">{{ $language->flag ?? '🇺🇿' }}</span>
+                                                        {{ $language->name }}
+                                                        @if($language->is_default)
+                                                            <span class="badge badge-primary badge-sm ml-1">{{ __('admin.default') }}</span>
+                                                        @endif
+                                                    </a>
+                                                </li>
+                                            @endforeach
+                                        </ul>
+                                    </div>
+                                    <div class="card-body">
+                                        <div class="tab-content" id="language-content">
+                                            @foreach($languages as $index => $language)
+                                                <div class="tab-pane fade {{ $index === 0 ? 'show active' : '' }}"
+                                                     id="lang-{{ $language->code }}"
+                                                     role="tabpanel"
+                                                     aria-labelledby="lang-{{ $language->code }}-tab">
+                                                    <div class="row">
+                                                        <div class="col-md-6">
+                                                            <div class="form-group">
+                                                                <label for="translations[{{ $language->id }}][name]">
+                                                                    {{ __('admin.product_name') }}
+                                                                    @if($language->is_default)
+                                                                        <span class="text-danger">*</span>
+                                                                    @endif
+                                                                </label>
+                                                                <input type="text"
+                                                                       name="translations[{{ $language->id }}][name]"
+                                                                       id="translations[{{ $language->id }}][name]"
+                                                                       class="form-control @error('translations.'.$language->id.'.name') is-invalid @enderror"
+                                                                       value="{{ old('translations.'.$language->id.'.name') }}"
+                                                                       placeholder="{{ __('admin.enter_product_name') }}"
+                                                                       {{ $language->is_default ? 'required' : '' }}>
+                                                                @error('translations.'.$language->id.'.name')
+                                                                <div class="invalid-feedback">{{ $message }}</div>
+                                                                @enderror
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-md-6">
+                                                            <div class="form-group">
+                                                                <label for="translations[{{ $language->id }}][slug]">
+                                                                    {{ __('admin.slug') }}
+                                                                </label>
+                                                                <input type="text"
+                                                                       name="translations[{{ $language->id }}][slug]"
+                                                                       id="translations[{{ $language->id }}][slug]"
+                                                                       class="form-control @error('translations.'.$language->id.'.slug') is-invalid @enderror"
+                                                                       value="{{ old('translations.'.$language->id.'.slug') }}"
+                                                                       placeholder="{{ __('admin.auto_generated') }}">
+                                                                @error('translations.'.$language->id.'.slug')
+                                                                <div class="invalid-feedback">{{ $message }}</div>
+                                                                @enderror
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <label for="translations[{{ $language->id }}][description]">
+                                                            {{ __('admin.description') }}
+                                                        </label>
+                                                        <textarea name="translations[{{ $language->id }}][description]"
+                                                                  id="translations[{{ $language->id }}][description]"
+                                                                  class="form-control @error('translations.'.$language->id.'.description') is-invalid @enderror"
+                                                                  rows="4"
+                                                                  placeholder="{{ __('admin.enter_product_description') }}">{{ old('translations.'.$language->id.'.description') }}</textarea>
+                                                        @error('translations.'.$language->id.'.description')
+                                                        <div class="invalid-feedback">{{ $message }}</div>
+                                                        @enderror
+                                                    </div>
+                                                </div>
+                                            @endforeach
                                         </div>
                                     </div>
-                                    @endforeach
                                 </div>
                             </div>
 
                             <!-- Pricing -->
                             <div class="row">
-                                <div class="col-md-6">
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label for="cost_price">{{ __('admin.cost_price') }}</label>
+                                        <div class="input-group">
+                                            <input type="number" name="cost_price" id="cost_price"
+                                                   class="form-control @error('cost_price') is-invalid @enderror"
+                                                   value="{{ old('cost_price') }}" step="0.01" min="0">
+                                            <div class="input-group-append">
+                                                <span class="input-group-text">UZS</span>
+                                            </div>
+                                        </div>
+                                        @error('cost_price')
+                                        <div class="invalid-feedback">{{ $message }}</div>
+                                        @enderror
+                                        <small class="form-text text-muted">{{ __('admin.cost_price_hint') }}</small>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
                                     <div class="form-group">
                                         <label for="price">{{ __('admin.price') }} <span class="text-danger">*</span></label>
                                         <div class="input-group">
@@ -133,7 +183,7 @@
                                         @enderror
                                     </div>
                                 </div>
-                                <div class="col-md-6">
+                                <div class="col-md-4">
                                     <div class="form-group">
                                         <label for="sale_price">{{ __('admin.sale_price') }}</label>
                                         <div class="input-group">
@@ -147,6 +197,39 @@
                                         @error('sale_price')
                                         <div class="invalid-feedback">{{ $message }}</div>
                                         @enderror
+                                        <small class="form-text text-muted">{{ __('admin.sale_price_hint') }}</small>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Unit Information -->
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="unit_type">{{ __('admin.unit_type') }} <span class="text-danger">*</span></label>
+                                        <select name="unit_type" id="unit_type" class="form-control @error('unit_type') is-invalid @enderror" required>
+                                            <option value="">{{ __('admin.select_unit_type') }}</option>
+                                            @foreach(\App\Models\Product::getUnitTypes() as $key => $label)
+                                                <option value="{{ $key }}" {{ old('unit_type') == $key ? 'selected' : '' }}>
+                                                    {{ $label }}
+                                                </option>
+                                            @endforeach
+                                        </select>
+                                        @error('unit_type')
+                                        <div class="invalid-feedback">{{ $message }}</div>
+                                        @enderror
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="unit_value">{{ __('admin.unit_value') }}</label>
+                                        <input type="number" name="unit_value" id="unit_value"
+                                               class="form-control @error('unit_value') is-invalid @enderror"
+                                               value="{{ old('unit_value', 1) }}" step="0.001" min="0.001">
+                                        @error('unit_value')
+                                        <div class="invalid-feedback">{{ $message }}</div>
+                                        @enderror
+                                        <small class="form-text text-muted">{{ __('admin.unit_value_hint') }}</small>
                                     </div>
                                 </div>
                             </div>
@@ -180,36 +263,43 @@
                             </div>
                         </div>
                     </div>
+                </div>
 
-                    <!-- Product Images -->
-                    <div class="card">
+                <!-- Product Images Section -->
+                <div class="col-md-4">
+                    <div class="card card-secondary">
                         <div class="card-header">
                             <h3 class="card-title">{{ __('admin.product_images') }}</h3>
                         </div>
                         <div class="card-body">
                             <div class="form-group">
-                                <label for="images">{{ __('admin.images') }}</label>
-                                <input type="file" name="images[]" id="images"
-                                       class="form-control @error('images') is-invalid @enderror"
-                                       multiple accept="image/*">
-                                <small class="form-text text-muted">
-                                    {{ __('admin.images_help') }}
-                                </small>
+                                <label for="images">{{ __('admin.upload_images') }}</label>
+                                <div class="input-group">
+                                    <div class="custom-file">
+                                        <input type="file" name="images[]" id="images"
+                                               class="custom-file-input @error('images') is-invalid @enderror"
+                                               multiple accept="image/*">
+                                        <label class="custom-file-label" for="images">{{ __('admin.choose_files') }}</label>
+                                    </div>
+                                </div>
                                 @error('images')
-                                <div class="invalid-feedback">{{ $message }}</div>
+                                <span class="invalid-feedback d-block">{{ $message }}</span>
                                 @enderror
+                                <small class="form-text text-muted">{{ __('admin.images_help') }}</small>
                             </div>
 
                             <!-- Image Preview -->
-                            <div id="imagePreview" class="row" style="display: none;">
-                                <!-- Images will be dynamically added here -->
+                            <div id="imagePreview" class="row">
+                                <div id="no-images" class="col-12 bg-light d-flex align-items-center justify-content-center rounded" style="height: 200px;">
+                                    <div class="text-center">
+                                        <i class="fas fa-images fa-3x text-muted mb-2"></i>
+                                        <p class="text-muted">{{ __('admin.no_images_selected') }}</p>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
-                </div>
 
-                <!-- Sidebar -->
-                <div class="col-md-4">
                     <!-- Category & Status -->
                     <div class="card">
                         <div class="card-header">
@@ -266,6 +356,7 @@
                         </div>
                     </div>
                 </div>
+
             </div>
         </form>
     </div>
@@ -275,26 +366,53 @@
 @push('scripts')
 <script>
 $(document).ready(function() {
-    // Image preview functionality
-    $('#images').change(function() {
+    // Custom file label update
+    $('#images').on('change', function() {
         const files = this.files;
+        const label = $(this).next('.custom-file-label');
+
+        if (files.length === 0) {
+            label.text('{{ __("admin.choose_files") }}');
+            $('#imagePreview').html(`
+                <div id="no-images" class="col-12 bg-light d-flex align-items-center justify-content-center rounded" style="height: 200px;">
+                    <div class="text-center">
+                        <i class="fas fa-images fa-3x text-muted mb-2"></i>
+                        <p class="text-muted">{{ __('admin.no_images_selected') }}</p>
+                    </div>
+                </div>
+            `);
+        } else if (files.length === 1) {
+            label.text(files[0].name);
+            showImagePreviews(files);
+        } else {
+            label.text(files.length + ' {{ __("admin.files_selected") }}');
+            showImagePreviews(files);
+        }
+    });
+
+    function showImagePreviews(files) {
         const preview = $('#imagePreview');
         preview.empty();
 
-        if (files.length > 0) {
-            preview.show();
-
-            Array.from(files).forEach((file, index) => {
-                if (file.type.startsWith('image/')) {
-                    const reader = new FileReader();
-                    reader.onload = function(e) {
-                        preview.append(`
-                            <div class="col-md-3 mb-3">
-                                <div class="card">
-                                    <img src="${e.target.result}" class="card-img-top" style="height: 150px; object-fit: cover;">
-                                    <div class="card-body p-2">
-                                        <small class="text-muted">${file.name}</small>
-                                    </div>
+        Array.from(files).forEach((file, index) => {
+            if (file.type.startsWith('image/')) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    preview.append(`
+                        <div class="col-6 mb-2">
+                            <div class="card">
+                                <img src="${e.target.result}" class="card-img-top" style="height: 120px; object-fit: cover;">
+                                <div class="card-body p-2">
+                                    <small class="text-muted text-truncate d-block">${file.name}</small>
+                                </div>
+                            </div>
+                        </div>
+                    `);
+                };
+                reader.readAsDataURL(file);
+            }
+        });
+    }
                                 </div>
                             </div>
                         `);
@@ -328,6 +446,26 @@ $(document).ready(function() {
             alert('{{ __("admin.sale_price_validation") }}');
             $(this).val('');
         }
+    });
+
+    // Auto-generate slug from name
+    $('input[name*="[name]"]').on('input', function() {
+        const nameInput = $(this);
+        const languageId = nameInput.attr('name').match(/\[(\d+)\]/)[1];
+        const slugInput = $('input[name="translations[' + languageId + '][slug]"]');
+
+        if (nameInput.val() && !slugInput.data('manually-changed')) {
+            const slug = nameInput.val()
+                .toLowerCase()
+                .replace(/[^a-z0-9\u0400-\u04FF\u0100-\u017F]+/g, '-') // Cyrillic and Latin support
+                .replace(/^-+|-+$/g, '');
+            slugInput.val(slug);
+        }
+    });
+
+    // Mark slug as manually changed when user types in it
+    $('input[name*="[slug]"]').on('input', function() {
+        $(this).data('manually-changed', true);
     });
 });
 </script>

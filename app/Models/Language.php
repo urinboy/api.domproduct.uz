@@ -20,9 +20,14 @@ class Language extends Model
     ];
 
     // Tarjimalar bilan bog'lanish
-    public function translations()
+    public function categoryTranslations()
     {
-        return $this->hasMany(Translation::class);
+        return $this->hasMany(CategoryTranslation::class);
+    }
+
+    public function productTranslations()
+    {
+        return $this->hasMany(ProductTranslation::class);
     }
 
     // Foydalanuvchilar bilan bog'lanish

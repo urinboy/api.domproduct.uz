@@ -82,6 +82,8 @@
                                         <th style="width: 80px;">{{ __('admin.image') }}</th>
                                         <th>{{ __('admin.sku') }}</th>
                                         <th>{{ __('admin.category') }}</th>
+                                        <th>{{ __('admin.unit_type') }}</th>
+                                        <th>{{ __('admin.cost_price') }}</th>
                                         <th>{{ __('admin.price') }}</th>
                                         <th>{{ __('admin.stock') }}</th>
                                         <th>{{ __('admin.status') }}</th>
@@ -118,6 +120,22 @@
                                                 @endforeach
                                             @else
                                                 <span class="text-muted">{{ __('admin.no_category') }}</span>
+                                            @endif
+                                        </td>
+                                        <td>
+                                            <span class="badge badge-info">{{ $product->getFormattedUnit() }}</span>
+                                        </td>
+                                        <td>
+                                            @if($product->cost_price)
+                                                <span class="text-muted">{{ number_format($product->cost_price) }} UZS</span>
+                                                @if($product->getProfitAmount())
+                                                    <br><small class="text-success">
+                                                        +{{ number_format($product->getProfitAmount()) }} UZS
+                                                        ({{ number_format($product->getProfitMargin(), 1) }}%)
+                                                    </small>
+                                                @endif
+                                            @else
+                                                <span class="text-muted">{{ __('admin.not_set') }}</span>
                                             @endif
                                         </td>
                                         <td>

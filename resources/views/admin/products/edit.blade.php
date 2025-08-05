@@ -79,6 +79,7 @@
                                            data-toggle="tab"
                                            href="#translation-{{ $language['code'] }}"
                                            role="tab">
+                                            <span class="flag-icon mr-1">{{ $language->flag ?? '🇺🇿' }}</span>
                                             {{ $language['name'] }}
                                         </a>
                                     </li>
@@ -131,7 +132,24 @@
 
                             <!-- Pricing -->
                             <div class="row">
-                                <div class="col-md-6">
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label for="cost_price">{{ __('admin.cost_price') }}</label>
+                                        <div class="input-group">
+                                            <input type="number" name="cost_price" id="cost_price"
+                                                   class="form-control @error('cost_price') is-invalid @enderror"
+                                                   value="{{ old('cost_price', $product->cost_price) }}" step="0.01" min="0">
+                                            <div class="input-group-append">
+                                                <span class="input-group-text">UZS</span>
+                                            </div>
+                                        </div>
+                                        @error('cost_price')
+                                        <div class="invalid-feedback">{{ $message }}</div>
+                                        @enderror
+                                        <small class="form-text text-muted">{{ __('admin.cost_price_hint') }}</small>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
                                     <div class="form-group">
                                         <label for="price">{{ __('admin.price') }} <span class="text-danger">*</span></label>
                                         <div class="input-group">
@@ -147,7 +165,7 @@
                                         @enderror
                                     </div>
                                 </div>
-                                <div class="col-md-6">
+                                <div class="col-md-4">
                                     <div class="form-group">
                                         <label for="sale_price">{{ __('admin.sale_price') }}</label>
                                         <div class="input-group">
@@ -161,6 +179,39 @@
                                         @error('sale_price')
                                         <div class="invalid-feedback">{{ $message }}</div>
                                         @enderror
+                                        <small class="form-text text-muted">{{ __('admin.sale_price_hint') }}</small>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Unit Information -->
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="unit_type">{{ __('admin.unit_type') }} <span class="text-danger">*</span></label>
+                                        <select name="unit_type" id="unit_type" class="form-control @error('unit_type') is-invalid @enderror" required>
+                                            <option value="">{{ __('admin.select_unit_type') }}</option>
+                                            @foreach(\App\Models\Product::getUnitTypes() as $key => $label)
+                                                <option value="{{ $key }}" {{ old('unit_type', $product->unit_type) == $key ? 'selected' : '' }}>
+                                                    {{ $label }}
+                                                </option>
+                                            @endforeach
+                                        </select>
+                                        @error('unit_type')
+                                        <div class="invalid-feedback">{{ $message }}</div>
+                                        @enderror
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="unit_value">{{ __('admin.unit_value') }}</label>
+                                        <input type="number" name="unit_value" id="unit_value"
+                                               class="form-control @error('unit_value') is-invalid @enderror"
+                                               value="{{ old('unit_value', $product->unit_value) }}" step="0.001" min="0.001">
+                                        @error('unit_value')
+                                        <div class="invalid-feedback">{{ $message }}</div>
+                                        @enderror
+                                        <small class="form-text text-muted">{{ __('admin.unit_value_hint') }}</small>
                                     </div>
                                 </div>
                             </div>
@@ -194,9 +245,12 @@
                             </div>
                         </div>
                     </div>
+                </div>
 
+                <!-- Sidebar -->
+                <div class="col-md-4">
                     <!-- Product Images -->
-                    <div class="card">
+                    <div class="card card-secondary">
                         <div class="card-header">
                             <h3 class="card-title">{{ __('admin.product_images') }}</h3>
                         </div>
@@ -207,10 +261,10 @@
                                 <label>{{ __('admin.existing_images') }}</label>
                                 <div class="row" id="existingImages">
                                     @foreach($product->images as $image)
-                                    <div class="col-md-3 mb-3" id="image-{{ $image->id }}">
+                                    <div class="col-6 mb-2" id="image-{{ $image->id }}">
                                         <div class="card">
-                                            <img src="{{ Storage::url($image->path) }}" class="card-img-top" style="height: 150px; object-fit: cover;">
-                                            <div class="card-body p-2">
+                                            <img src="{{ Storage::url($image->path) }}" class="card-img-top" style="height: 100px; object-fit: cover;">
+                                            <div class="card-body p-1">
                                                 <div class="d-flex justify-content-between align-items-center">
                                                     <div class="custom-control custom-checkbox">
                                                         <input type="checkbox" name="main_image" value="{{ $image->id }}"
@@ -232,32 +286,39 @@
                                     @endforeach
                                 </div>
                             </div>
+                            @else
+                            <div id="no-images" class="bg-light d-flex align-items-center justify-content-center rounded mb-3" style="height: 120px;">
+                                <div class="text-center">
+                                    <i class="fas fa-images fa-2x text-muted mb-1"></i>
+                                    <p class="text-muted small">{{ __('admin.no_images_found') }}</p>
+                                </div>
+                            </div>
                             @endif
 
                             <!-- New Images Upload -->
                             <div class="form-group">
                                 <label for="images">{{ __('admin.add_new_images') }}</label>
-                                <input type="file" name="images[]" id="images"
-                                       class="form-control @error('images') is-invalid @enderror"
-                                       multiple accept="image/*">
-                                <small class="form-text text-muted">
-                                    {{ __('admin.images_help') }}
-                                </small>
+                                <div class="input-group">
+                                    <div class="custom-file">
+                                        <input type="file" name="images[]" id="images"
+                                               class="custom-file-input @error('images') is-invalid @enderror"
+                                               multiple accept="image/*">
+                                        <label class="custom-file-label" for="images">{{ __('admin.choose_files') }}</label>
+                                    </div>
+                                </div>
                                 @error('images')
-                                <div class="invalid-feedback">{{ $message }}</div>
+                                <span class="invalid-feedback d-block">{{ $message }}</span>
                                 @enderror
+                                <small class="form-text text-muted">{{ __('admin.images_help') }}</small>
                             </div>
 
                             <!-- New Image Preview -->
-                            <div id="imagePreview" class="row" style="display: none;">
-                                <!-- Images will be dynamically added here -->
+                            <div id="imagePreview" class="row">
+                                <!-- New images will be dynamically added here -->
                             </div>
                         </div>
                     </div>
-                </div>
 
-                <!-- Sidebar -->
-                <div class="col-md-4">
                     <!-- Category & Status -->
                     <div class="card">
                         <div class="card-header">
@@ -347,31 +408,46 @@
 @push('scripts')
 <script>
 $(document).ready(function() {
-    // Image preview functionality for new images
-    $('#images').change(function() {
+    // Custom file label update
+    $('#images').on('change', function() {
         const files = this.files;
+        const label = $(this).next('.custom-file-label');
+
+        if (files.length === 0) {
+            label.text('{{ __("admin.choose_files") }}');
+            $('#imagePreview').empty();
+        } else if (files.length === 1) {
+            label.text(files[0].name);
+            showImagePreviews(files);
+        } else {
+            label.text(files.length + ' {{ __("admin.files_selected") }}');
+            showImagePreviews(files);
+        }
+    });
+
+    function showImagePreviews(files) {
         const preview = $('#imagePreview');
         preview.empty();
 
-        if (files.length > 0) {
-            preview.show();
-
-            Array.from(files).forEach((file, index) => {
-                if (file.type.startsWith('image/')) {
-                    const reader = new FileReader();
-                    reader.onload = function(e) {
-                        preview.append(`
-                            <div class="col-md-3 mb-3">
-                                <div class="card">
-                                    <img src="${e.target.result}" class="card-img-top" style="height: 150px; object-fit: cover;">
-                                    <div class="card-body p-2">
-                                        <small class="text-muted">${file.name}</small>
-                                    </div>
+        Array.from(files).forEach((file, index) => {
+            if (file.type.startsWith('image/')) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    preview.append(`
+                        <div class="col-6 mb-2">
+                            <div class="card">
+                                <img src="${e.target.result}" class="card-img-top" style="height: 100px; object-fit: cover;">
+                                <div class="card-body p-1">
+                                    <small class="text-muted text-truncate d-block">${file.name}</small>
                                 </div>
                             </div>
-                        `);
-                    };
-                    reader.readAsDataURL(file);
+                        </div>
+                    `);
+                };
+                reader.readAsDataURL(file);
+            }
+        });
+    }
                 }
             });
         } else {
@@ -410,6 +486,26 @@ $(document).ready(function() {
             alert('{{ __("admin.sale_price_validation") }}');
             $(this).val('');
         }
+    });
+
+    // Auto-generate slug from name
+    $('input[name*="[name]"]').on('input', function() {
+        const nameInput = $(this);
+        const languageId = nameInput.attr('name').match(/\[(\d+)\]/)[1];
+        const slugInput = $('input[name="translations[' + languageId + '][slug]"]');
+
+        if (nameInput.val() && !slugInput.data('manually-changed')) {
+            const slug = nameInput.val()
+                .toLowerCase()
+                .replace(/[^a-z0-9\u0400-\u04FF\u0100-\u017F]+/g, '-') // Cyrillic and Latin support
+                .replace(/^-+|-+$/g, '');
+            slugInput.val(slug);
+        }
+    });
+
+    // Mark slug as manually changed when user types in it
+    $('input[name*="[slug]"]').on('input', function() {
+        $(this).data('manually-changed', true);
     });
 });
 </script>

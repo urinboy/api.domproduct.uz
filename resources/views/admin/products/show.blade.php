@@ -77,6 +77,14 @@
                             </div>
                             <div class="col-md-6">
                                 <table class="table table-borderless">
+                                    @if($product->cost_price)
+                                    <tr>
+                                        <th width="30%">{{ __('admin.cost_price') }}:</th>
+                                        <td>
+                                            <span class="text-muted">{{ number_format($product->cost_price, 0, '.', ' ') }} UZS</span>
+                                        </td>
+                                    </tr>
+                                    @endif
                                     <tr>
                                         <th width="30%">{{ __('admin.price') }}:</th>
                                         <td>
@@ -94,6 +102,21 @@
                                         </td>
                                     </tr>
                                     @endif
+                                    @if($product->cost_price && $product->getProfitAmount())
+                                    <tr>
+                                        <th>{{ __('admin.profit_amount') }}:</th>
+                                        <td>
+                                            <strong class="text-success">+{{ number_format($product->getProfitAmount(), 0, '.', ' ') }} UZS</strong>
+                                            <small class="text-muted">({{ number_format($product->getProfitMargin(), 1) }}%)</small>
+                                        </td>
+                                    </tr>
+                                    @endif
+                                    <tr>
+                                        <th>{{ __('admin.unit_type') }}:</th>
+                                        <td>
+                                            <span class="badge badge-info">{{ $product->getFormattedUnit() }}</span>
+                                        </td>
+                                    </tr>
                                     <tr>
                                         <th>{{ __('admin.stock_quantity') }}:</th>
                                         <td>
@@ -103,7 +126,7 @@
                                                 @else badge-danger
                                                 @endif
                                             ">
-                                                {{ $product->stock_quantity }} {{ __('admin.items') }}
+                                                {{ $product->stock_quantity }} {{ $product->getUnitTypeLabel() }}
                                             </span>
                                         </td>
                                     </tr>

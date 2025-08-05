@@ -68,7 +68,6 @@ class Kernel extends HttpKernel
         'signed' => \Illuminate\Routing\Middleware\ValidateSignature::class,
         'throttle' => \Illuminate\Routing\Middleware\ThrottleRequests::class,
         'verified' => \Illuminate\Auth\Middleware\EnsureEmailIsVerified::class,
-        'role' => \App\Http\Middleware\CheckRole::class,
         'rate_limit' => \App\Http\Middleware\RateLimitMiddleware::class, // Custom rate limiting
         'admin' => \App\Http\Middleware\AdminMiddleware::class, // Admin panel middleware
         'redirect.if.admin' => \App\Http\Middleware\RedirectIfAdmin::class, // Redirect authenticated admin

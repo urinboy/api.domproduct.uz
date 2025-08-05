@@ -18,14 +18,18 @@ class Product extends Model
         'price',
         'sale_price',
         'cost_price',
+        'unit_type',
+        'unit_value',
         'stock_quantity',
         'min_stock_level',
         'track_stock',
         'stock_status',
         'weight',
+        'weight_unit',
         'length',
         'width',
         'height',
+        'dimension_unit',
         'is_active',
         'is_featured',
         'is_digital',
@@ -40,6 +44,7 @@ class Product extends Model
         'price' => 'decimal:2',
         'sale_price' => 'decimal:2',
         'cost_price' => 'decimal:2',
+        'unit_value' => 'decimal:3',
         'weight' => 'decimal:3',
         'length' => 'decimal:3',
         'width' => 'decimal:3',
@@ -267,5 +272,135 @@ class Product extends Model
     {
         // Simple fallback to direct attributes
         return $this->name ?? $this->sku ?? 'Product #' . ($this->id ?? 'Unknown');
+    }
+
+    /**
+     * Get available unit types
+     */
+    public static function getUnitTypes()
+    {
+        return [
+            'piece' => __('admin.unit_piece'), // dona
+            'kg' => __('admin.unit_kg'), // kilogram
+            'g' => __('admin.unit_g'), // gram
+            'liter' => __('admin.unit_liter'), // litr
+            'meter' => __('admin.unit_meter'), // metr
+            'box' => __('admin.unit_box'), // quti/karobka
+            'pack' => __('admin.unit_pack'), // o'ram
+            'bottle' => __('admin.unit_bottle'), // shisha
+            'can' => __('admin.unit_can'), // banka
+            'bag' => __('admin.unit_bag'), // qop/yashik
+        ];
+    }
+
+    /**
+     * Get unit type label
+     */
+    public function getUnitTypeLabel()
+    {
+        $units = self::getUnitTypes();
+        return $units[$this->unit_type] ?? $this->unit_type;
+    }
+
+    /**
+     * Get formatted unit display
+     */
+    public function getFormattedUnit()
+    {
+        if ($this->unit_value == 1) {
+            return $this->getUnitTypeLabel();
+        }
+
+        return $this->unit_value . ' ' . $this->getUnitTypeLabel();
+    }
+
+    /**
+     * Get weight units
+     */
+    public static function getWeightUnits()
+    {
+        return [
+            'kg' => __('admin.weight_kg'),
+            'g' => __('admin.weight_g'),
+            'lb' => __('admin.weight_lb'),
+        ];
+    }
+
+    /**
+     * Get dimension units
+     */
+    public static function getDimensionUnits()
+    {
+        return [
+            'cm' => __('admin.dimension_cm'),
+            'mm' => __('admin.dimension_mm'),
+            'm' => __('admin.dimension_m'),
+            'in' => __('admin.dimension_in'),
+        ];
+    }
+
+    /**
+     * Get formatted weight
+     */
+    public function getFormattedWeight()
+    {
+        if (!$this->weight) {
+            return null;
+        }
+
+        return $this->weight . ' ' . ($this->weight_unit ?? 'kg');
+    }
+
+    /**
+     * Get formatted dimensions
+     */
+    public function getFormattedDimensions()
+    {
+        if (!$this->length && !$this->width && !$this->height) {
+            return null;
+        }
+
+        $unit = $this->dimension_unit ?? 'cm';
+        $dimensions = [];
+
+        if ($this->length) $dimensions[] = $this->length;
+        if ($this->width) $dimensions[] = $this->width;
+        if ($this->height) $dimensions[] = $this->height;
+
+        return implode(' × ', $dimensions) . ' ' . $unit;
+    }
+
+    /**
+     * Calculate profit margin
+     */
+    public function getProfitMargin()
+    {
+        if (!$this->cost_price || $this->cost_price <= 0) {
+            return null;
+        }
+
+        $selling_price = $this->sale_price ?? $this->price;
+        if (!$selling_price || $selling_price <= 0) {
+            return null;
+        }
+
+        return (($selling_price - $this->cost_price) / $this->cost_price) * 100;
+    }
+
+    /**
+     * Calculate profit amount
+     */
+    public function getProfitAmount()
+    {
+        if (!$this->cost_price || $this->cost_price <= 0) {
+            return null;
+        }
+
+        $selling_price = $this->sale_price ?? $this->price;
+        if (!$selling_price || $selling_price <= 0) {
+            return null;
+        }
+
+        return $selling_price - $this->cost_price;
     }
 }
