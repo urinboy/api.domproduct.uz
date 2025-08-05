@@ -2,8 +2,7 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\API\LanguageController;
-use App\Http\Controllers\API\TranslationController;
+use App\Http\Controllers\Admin\LanguageController;
 use App\Http\Controllers\Api\Auth\AuthController;
 use App\Http\Controllers\Api\UserController;
 use App\Http\Controllers\Api\Admin\UserController as AdminUserController;
@@ -66,10 +65,6 @@ Route::prefix('v1')->middleware('rate_limit:60,1')->group(function () {
     Route::get('/languages/default', [LanguageController::class, 'getDefault']);
     Route::get('/languages/{id}', [LanguageController::class, 'show']);
 
-    // Tarjimalarni olish (frontend uchun)
-    Route::get('/translations/{languageCode}', [TranslationController::class, 'getByLanguage']);
-    Route::get('/translations/{languageCode}/{group}', [TranslationController::class, 'getByGroup']);
-
     // CATEGORIES (public access)
     Route::prefix('categories')->group(function () {
         Route::get('/', [CategoryController::class, 'index']);
@@ -94,10 +89,6 @@ Route::prefix('v1')->middleware('rate_limit:60,1')->group(function () {
 Route::prefix('admin')->middleware(['auth:sanctum', 'role:admin,manager'])->group(function () {
     // Tillarni boshqarish (CRUD)
     Route::apiResource('languages', LanguageController::class)->except(['index', 'show']);
-
-    // Tarjimalarni boshqarish (CRUD)
-    Route::apiResource('translations', TranslationController::class);
-    Route::post('translations/bulk-upsert', [TranslationController::class, 'bulkUpsert']);
 
     // USER MANAGEMENT - Admin/Manager only
     Route::prefix('users')->group(function () {

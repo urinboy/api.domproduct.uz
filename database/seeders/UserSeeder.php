@@ -34,6 +34,7 @@ class UserSeeder extends Seeder
                 'phone_verified' => true,
                 'is_active' => true,
                 'preferred_language_id' => $uzLanguage->id ?? 1,
+                'email_verified_at' => now(),
             ],
 
             // 2. MANAGER - Menejer/Rahbar
@@ -51,6 +52,7 @@ class UserSeeder extends Seeder
                 'city' => 'Toshkent',
                 'district' => 'Yunusobod',
                 'preferred_language_id' => $uzLanguage->id ?? 1,
+                'email_verified_at' => now(),
             ],
 
             // 3. EMPLOYEE - Ishchi/Xodim
@@ -68,6 +70,7 @@ class UserSeeder extends Seeder
                 'city' => 'Samarqand',
                 'district' => 'Markaz',
                 'preferred_language_id' => $uzLanguage->id ?? 1,
+                'email_verified_at' => now(),
             ],
 
             // 4. CUSTOMER - Oddiy foydalanuvchi (Test)
@@ -87,6 +90,7 @@ class UserSeeder extends Seeder
                 'district' => 'Chilonzor',
                 'postal_code' => '100115',
                 'preferred_language_id' => $uzLanguage->id ?? 1,
+                'email_verified_at' => now(),
             ],
 
             // 5. CUSTOMER - Oddiy foydalanuvchi 2
@@ -107,6 +111,7 @@ class UserSeeder extends Seeder
                 'birth_date' => '1995-06-15',
                 'gender' => 'female',
                 'preferred_language_id' => $uzLanguage->id ?? 1,
+                'email_verified_at' => now(),
             ]
         ];
 

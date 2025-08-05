@@ -16,5 +16,14 @@ mix.js('resources/js/admin.js', 'public/js')
     .css('resources/css/admin.css', 'public/css')
     .options({
         processCssUrls: false // AdminLTE CDN orqali yuklanadi
-    })
-    .version(); // Cache busting uchun
+    });
+
+// Web Frontend Assets
+mix.js('resources/js/web.js', 'public/js')
+    .css('resources/css/web.css', 'public/css')
+    .options({
+        processCssUrls: false // Tailwind CDN orqali yuklanadi
+    });
+
+// Version for cache busting
+mix.version();

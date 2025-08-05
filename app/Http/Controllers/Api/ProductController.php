@@ -112,15 +112,17 @@ class ProductController extends Controller
 
             // Cache for 5 minutes
             $products = Cache::remember($cacheKey, 300, function () use ($request, $language, $perPage) {
+                // Language ID ni topish
+                $languageId = $this->getLanguageId($language);
+
                 $query = Product::with([
-                    'translations' => function($q) use ($language) {
-                        $q->where('language', $language);
+                    'translations' => function($q) use ($languageId) {
+                        $q->where('language_id', $languageId);
                     },
                     'images' => function($q) {
                         $q->orderBy('sort_order')->limit(3);
                     },
-                    'category.translations' => function($q) use ($language) {
-                        $languageId = $this->getLanguageId($language);
+                    'category.translations' => function($q) use ($languageId) {
                         $q->where('language_id', $languageId);
                     }
                 ])->where('is_active', true);
@@ -611,12 +613,13 @@ class ProductController extends Controller
      */
     private function getLanguageId(string $languageCode): int
     {
-        $languageMap = [
-            'uz' => 1,
-            'ru' => 2,
-            'en' => 3,
-        ];
+        static $languageCache = [];
 
-        return $languageMap[$languageCode] ?? 1;
+        if (!isset($languageCache[$languageCode])) {
+            $language = \App\Models\Language::where('code', $languageCode)->first();
+            $languageCache[$languageCode] = $language ? $language->id : 1; // Default to 1 if not found
+        }
+
+        return $languageCache[$languageCode];
     }
 }

@@ -102,6 +102,13 @@ class User extends Authenticatable
         return $this->hasMany(Address::class);
     }
 
+    // Favorite Products relationship
+    public function favoriteProducts(): BelongsToMany
+    {
+        return $this->belongsToMany(Product::class, 'user_favorites', 'user_id', 'product_id')
+                    ->withTimestamps();
+    }
+
     // Active addresses (optimized)
     public function activeAddresses(): HasMany
     {

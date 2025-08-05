@@ -164,6 +164,6 @@ class Handler extends ExceptionHandler
             ], 401);
         }
 
-        return redirect()->guest($exception->redirectTo() ?? route('login'));
+        return redirect()->guest($exception->redirectTo() ?? route('web.login'));
     }
 }

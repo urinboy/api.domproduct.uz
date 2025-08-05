@@ -180,8 +180,8 @@
                         $currentLocale = app()->getLocale();
                         $languages = [
                             'uz' => ['name' => 'O\'zbek', 'flag' => '🇺🇿'],
-                            'en' => ['name' => 'English', 'flag' => '🇺🇸'],
-                            'ru' => ['name' => 'Русский', 'flag' => '🇷🇺']
+                            'ru' => ['name' => 'Русский', 'flag' => '🇷🇺'],
+                            'en' => ['name' => 'English', 'flag' => '🇺🇸']
                         ];
                     @endphp
                     <span class="flag-icon">{{ $languages[$currentLocale]['flag'] ?? '🇺🇿' }}</span>

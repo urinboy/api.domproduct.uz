@@ -7,6 +7,14 @@ use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\Admin\AuthController;
 use App\Http\Controllers\Admin\LanguageController;
 
+// Web Controllers
+use App\Http\Controllers\Web\HomeController;
+use App\Http\Controllers\Web\ProductController;
+use App\Http\Controllers\Web\CategoryController;
+use App\Http\Controllers\Web\AuthController as WebAuthController;
+use App\Http\Controllers\Web\ProfileController;
+use App\Http\Controllers\Web\CartController;
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -20,15 +28,101 @@ use App\Http\Controllers\Admin\LanguageController;
 
 /*
 |--------------------------------------------------------------------------
-| Main Routes
+| Customer-Facing Web Routes
 |--------------------------------------------------------------------------
 */
-Route::get('/', function () {
-    return view('home');
-})->name('home');
+Route::name('web.')->group(function () {
+    // Main pages
+    Route::get('/', [HomeController::class, 'index'])->name('home');
+    Route::get('/search', [HomeController::class, 'search'])->name('search');
+    Route::get('/about', [HomeController::class, 'about'])->name('about');
+    Route::get('/contact', [HomeController::class, 'contact'])->name('contact');
+    Route::get('/terms', [HomeController::class, 'terms'])->name('terms');
+    Route::get('/privacy', [HomeController::class, 'privacy'])->name('privacy');
 
+    // Categories
+    Route::prefix('categories')->name('categories.')->group(function () {
+        Route::get('/', [CategoryController::class, 'index'])->name('index');
+        Route::get('/{id}', [CategoryController::class, 'show'])->name('show');
+        Route::get('/api/tree', [CategoryController::class, 'tree'])->name('tree');
+        Route::get('/api/popular', [CategoryController::class, 'popular'])->name('popular');
+        Route::get('/api/search', [CategoryController::class, 'search'])->name('search');
+    });
+
+    // Products
+    Route::prefix('products')->name('products.')->group(function () {
+        Route::get('/', [ProductController::class, 'index'])->name('index');
+        Route::get('/search', [ProductController::class, 'search'])->name('search');
+        Route::get('/{id}', [ProductController::class, 'show'])->name('show');
+        Route::get('/{id}/quick-view', [ProductController::class, 'quickView'])->name('quick-view');
+        Route::get('/{id}/variants', [ProductController::class, 'getVariants'])->name('variants');
+        Route::post('/{id}/favorites', [ProductController::class, 'addToFavorites'])->name('favorites.toggle');
+    });
+
+    // Authentication
+    Route::prefix('auth')->name('auth.')->group(function () {
+        // Guest routes
+        Route::middleware('guest')->group(function () {
+            Route::get('/login', [WebAuthController::class, 'showLogin'])->name('login.form');
+            Route::post('/login', [WebAuthController::class, 'login'])->name('login');
+            Route::get('/register', [WebAuthController::class, 'showRegister'])->name('register.form');
+            Route::post('/register', [WebAuthController::class, 'register'])->name('register');
+            Route::get('/forgot-password', [WebAuthController::class, 'showForgotPassword'])->name('forgot-password.form');
+            Route::post('/forgot-password', [WebAuthController::class, 'forgotPassword'])->name('forgot-password');
+        });
+
+        // Auth routes
+        Route::post('/logout', [WebAuthController::class, 'logout'])->name('logout');
+        Route::get('/check', [WebAuthController::class, 'checkAuth'])->name('check');
+    });
+
+    // Simplified auth routes
+    Route::get('/login', [WebAuthController::class, 'showLogin'])->name('login');
+    Route::get('/register', [WebAuthController::class, 'showRegister'])->name('register');
+    Route::post('/logout', [WebAuthController::class, 'logout'])->name('logout');
+
+    // Profile (Auth required)
+    Route::middleware('auth')->prefix('profile')->name('profile.')->group(function () {
+        Route::get('/', [ProfileController::class, 'index'])->name('index');
+        Route::put('/update', [ProfileController::class, 'update'])->name('update');
+        Route::put('/change-password', [ProfileController::class, 'changePassword'])->name('change-password');
+        Route::get('/orders', [ProfileController::class, 'orders'])->name('orders');
+        Route::get('/wishlist', [ProfileController::class, 'wishlist'])->name('wishlist');
+        Route::get('/addresses', [ProfileController::class, 'addresses'])->name('addresses');
+    });
+
+    // Cart
+    Route::prefix('cart')->name('cart.')->group(function () {
+        Route::get('/', [CartController::class, 'index'])->name('index');
+        Route::post('/add', [CartController::class, 'add'])->name('add');
+        Route::post('/update', [CartController::class, 'update'])->name('update');
+        Route::post('/remove', [CartController::class, 'remove'])->name('remove');
+        Route::post('/clear', [CartController::class, 'clear'])->name('clear');
+        Route::get('/count', [CartController::class, 'count'])->name('count');
+        Route::get('/contents', [CartController::class, 'contents'])->name('contents');
+    });
+
+    // Newsletter
+    Route::post('/newsletter/subscribe', [HomeController::class, 'subscribeNewsletter'])->name('newsletter.subscribe');
+
+    // Wishlist
+    Route::middleware('auth')->prefix('wishlist')->name('wishlist.')->group(function () {
+        Route::post('/toggle', [ProfileController::class, 'toggleWishlist'])->name('toggle');
+        Route::get('/', [ProfileController::class, 'wishlist'])->name('index');
+    });
+
+    // Profile shortcut
+    Route::get('/profile', [ProfileController::class, 'index'])->name('profile')->middleware('auth');
+    Route::get('/cart', [CartController::class, 'index'])->name('cart');
+});
+
+/*
+|--------------------------------------------------------------------------
+| Admin Redirect Routes
+|--------------------------------------------------------------------------
+*/
 Route::get('/home', function () {
-    return view('home');
+    return redirect()->route('web.home');
 })->name('home.page');
 
 // Global logout route
@@ -52,10 +146,6 @@ Route::prefix('language')->name('language.')->group(function () {
     Route::get('/switch/{locale}', [LanguageController::class, 'switchLanguage'])->name('switch');
     Route::get('/current', [LanguageController::class, 'getCurrentLanguage'])->name('current');
     Route::get('/translations', [LanguageController::class, 'getTranslations'])->name('translations');
-});
-
-Route::get('/about', function () {
-    return view('welcome');
 });
 
 /*

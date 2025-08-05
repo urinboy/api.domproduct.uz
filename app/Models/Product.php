@@ -275,6 +275,15 @@ class Product extends Model
     }
 
     /**
+     * Get product description with locale fallback
+     */
+    public function getDescription($locale = null)
+    {
+        // Simple fallback to direct attributes
+        return $this->description ?? 'No description available.';
+    }
+
+    /**
      * Get available unit types
      */
     public static function getUnitTypes()
