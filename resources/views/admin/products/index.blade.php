@@ -107,7 +107,7 @@
                                         </td>
                                         <td>
                                             <strong>{{ $product->sku }}</strong><br>
-                                            <small class="text-muted">{{ $product->barcode ?? 'N/A' }}</small>
+                                            <small class="text-muted">{{ $product->barcode ?? __('admin.not_specified') }}</small>
                                         </td>
                                         <td>
                                             @if($product->category)
@@ -134,8 +134,8 @@
                                             </span>
                                         </td>
                                         <td>
-                                            <span class="badge badge-{{ $product->status == 'active' ? 'success' : 'secondary' }}">
-                                                {{ $product->status == 'active' ? __('admin.active') : __('admin.inactive') }}
+                                            <span class="badge badge-{{ $product->is_active ? 'success' : 'secondary' }}">
+                                                {{ $product->is_active ? __('admin.active') : __('admin.inactive') }}
                                             </span>
                                         </td>
                                         <td>

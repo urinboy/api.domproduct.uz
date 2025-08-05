@@ -175,8 +175,11 @@ class NotificationService
         // Admin foydalanuvchilarni topish
         $admins = User::where('role', 'admin')->get();
 
-        $title = 'Zaxira kamayib ketdi';
-        $message = "'{$product->name}' mahsuloti zaxirasi kam qoldi. Joriy zaxira: {$product->stock_quantity}";
+        $title = __('admin.low_stock_alert_title');
+        $message = __('admin.low_stock_alert_message', [
+            'product_name' => $product->name,
+            'current_stock' => $product->stock_quantity
+        ]);
 
         $data = [
             'product_id' => $product->id,

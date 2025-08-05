@@ -47,7 +47,7 @@
                                     </tr>
                                     <tr>
                                         <th>{{ __('admin.barcode') }}:</th>
-                                        <td>{{ $product->barcode ?: '-' }}</td>
+                                        <td>{{ $product->barcode ?: __('admin.not_specified') }}</td>
                                     </tr>
                                     <tr>
                                         <th>{{ __('admin.category') }}:</th>
@@ -66,7 +66,7 @@
                                     <tr>
                                         <th>{{ __('admin.status') }}:</th>
                                         <td>
-                                            @if($product->status == 'active')
+                                            @if($product->is_active)
                                                 <span class="badge badge-success">{{ __('admin.active') }}</span>
                                             @else
                                                 <span class="badge badge-danger">{{ __('admin.inactive') }}</span>

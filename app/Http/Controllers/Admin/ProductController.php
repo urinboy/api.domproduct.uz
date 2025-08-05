@@ -46,8 +46,8 @@ class ProductController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'name' => 'required|string|max:255',
-            'description' => 'nullable|string',
+            'sku' => 'required|string|max:255|unique:products',
+            'barcode' => 'nullable|string|max:255',
             'price' => 'required|numeric|min:0',
             'stock_quantity' => 'required|integer|min:0',
             'category_id' => 'required|exists:categories,id',
@@ -56,9 +56,8 @@ class ProductController extends Controller
         ]);
 
         $product = Product::create([
-            'name' => $request->name,
-            'slug' => \Str::slug($request->name),
-            'description' => $request->description,
+            'sku' => $request->sku,
+            'barcode' => $request->barcode,
             'price' => $request->price,
             'stock_quantity' => $request->stock_quantity,
             'category_id' => $request->category_id,
@@ -99,8 +98,8 @@ class ProductController extends Controller
     public function update(Request $request, Product $product)
     {
         $request->validate([
-            'name' => 'required|string|max:255',
-            'description' => 'nullable|string',
+            'sku' => 'required|string|max:255|unique:products,sku,' . $product->id,
+            'barcode' => 'nullable|string|max:255',
             'price' => 'required|numeric|min:0',
             'stock_quantity' => 'required|integer|min:0',
             'category_id' => 'required|exists:categories,id',
@@ -109,9 +108,8 @@ class ProductController extends Controller
         ]);
 
         $product->update([
-            'name' => $request->name,
-            'slug' => \Str::slug($request->name),
-            'description' => $request->description,
+            'sku' => $request->sku,
+            'barcode' => $request->barcode,
             'price' => $request->price,
             'stock_quantity' => $request->stock_quantity,
             'category_id' => $request->category_id,

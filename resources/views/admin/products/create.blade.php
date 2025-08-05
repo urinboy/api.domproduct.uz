@@ -236,12 +236,12 @@
                             </div>
 
                             <div class="form-group">
-                                <label for="status">{{ __('admin.status') }}</label>
-                                <select name="status" id="status" class="form-control @error('status') is-invalid @enderror">
-                                    <option value="active" {{ old('status', 'active') == 'active' ? 'selected' : '' }}>{{ __('admin.active') }}</option>
-                                    <option value="inactive" {{ old('status') == 'inactive' ? 'selected' : '' }}>{{ __('admin.inactive') }}</option>
+                                <label for="is_active">{{ __('admin.status') }}</label>
+                                <select name="is_active" id="is_active" class="form-control @error('is_active') is-invalid @enderror">
+                                    <option value="1" {{ old('is_active', 1) == 1 ? 'selected' : '' }}>{{ __('admin.active') }}</option>
+                                    <option value="0" {{ old('is_active') == 0 ? 'selected' : '' }}>{{ __('admin.inactive') }}</option>
                                 </select>
-                                @error('status')
+                                @error('is_active')
                                 <div class="invalid-feedback">{{ $message }}</div>
                                 @enderror
                             </div>
