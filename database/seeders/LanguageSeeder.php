@@ -24,20 +24,20 @@ class LanguageSeeder extends Seeder
                 'sort_order' => 1
             ],
             [
-                'name' => 'English',
-                'code' => 'en',
-                'flag' => '🇺🇸',
-                'is_active' => true,
-                'is_default' => false,
-                'sort_order' => 2
-            ],
-            [
                 'name' => 'Русский',
                 'code' => 'ru',
                 'flag' => '🇷🇺',
                 'is_active' => true,
                 'is_default' => false,
                 'sort_order' => 3
+            ],
+            [
+                'name' => 'English',
+                'code' => 'en',
+                'flag' => '🇺🇸',
+                'is_active' => true,
+                'is_default' => false,
+                'sort_order' => 2
             ]
         ];
 

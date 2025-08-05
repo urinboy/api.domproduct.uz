@@ -124,6 +124,12 @@ Route::prefix('admin')->name('admin.')->middleware(['auth', 'admin'])->group(fun
     Route::post('settings/optimize', [\App\Http\Controllers\Admin\SettingsController::class, 'optimize'])->name('settings.optimize');
     Route::get('settings/backup', [\App\Http\Controllers\Admin\SettingsController::class, 'backup'])->name('settings.backup');
 
+    // Languages Management
+    Route::resource('languages', \App\Http\Controllers\Admin\LanguagesController::class);
+    Route::patch('languages/{language}/toggle-status', [\App\Http\Controllers\Admin\LanguagesController::class, 'toggleStatus'])->name('languages.toggle-status');
+    Route::patch('languages/{language}/set-default', [\App\Http\Controllers\Admin\LanguagesController::class, 'setDefault'])->name('languages.set-default');
+    Route::post('languages/bulk-action', [\App\Http\Controllers\Admin\LanguagesController::class, 'bulkAction'])->name('languages.bulk-action');
+
     // Language switching
     Route::get('/language/{locale}', [LanguageController::class, 'switchLanguage'])->name('language.switch');
 });

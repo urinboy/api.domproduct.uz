@@ -295,6 +295,14 @@
                         </a>
                     </li>
 
+                    <!-- Languages -->
+                    <li class="nav-item">
+                        <a href="{{ route('admin.languages.index') }}" class="nav-link {{ request()->routeIs('admin.languages.*') ? 'active' : '' }}">
+                            <i class="nav-icon fas fa-language"></i>
+                            <p>{{ __('admin.languages') }}</p>
+                        </a>
+                    </li>
+
                     <!-- Settings -->
                     <li class="nav-item">
                         <a href="{{ route('admin.settings.index') }}" class="nav-link {{ request()->routeIs('admin.settings.*') ? 'active' : '' }}">
