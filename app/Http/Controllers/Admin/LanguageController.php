@@ -48,7 +48,7 @@ class LanguageController extends Controller
         $separator = str_contains($redirectUrl, '?') ? '&' : '?';
         $redirectUrl .= $separator . 'lang=' . $locale;
 
-        return redirect($redirectUrl)->with('success', 'Til muvaffaqiyatli o\'zgartirildi');
+        return redirect($redirectUrl)->with('success', __('admin.language_changed_successfully'));
     }
 
     /**

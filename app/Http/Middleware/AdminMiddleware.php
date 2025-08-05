@@ -22,7 +22,7 @@ class AdminMiddleware
         // Check if user is authenticated
         if (!$request->user()) {
             return redirect()->route('admin.login')
-                ->with('error', 'Iltimos, avval tizimga kiring.');
+                ->with('error', __('admin.please_login_first'));
         }
 
         $user = $request->user();

@@ -516,7 +516,7 @@ window.addEventListener('pageshow', function(e) {
 $(function() {
     $(document).Toasts('create', {
         class: 'bg-success',
-        title: 'Muvaffaqiyat',
+        title: '{{ __("admin.success") }}',
         body: '{{ session('success') }}',
         autohide: true,
         delay: 5000
@@ -530,7 +530,7 @@ $(function() {
 $(function() {
     $(document).Toasts('create', {
         class: 'bg-danger',
-        title: 'Xatolik',
+        title: '{{ __("admin.error") }}',
         body: '{{ session('error') }}',
         autohide: true,
         delay: 5000
@@ -544,7 +544,7 @@ $(function() {
 $(function() {
     $(document).Toasts('create', {
         class: 'bg-warning',
-        title: 'Ogohlantirish',
+        title: '{{ __("admin.warning") }}',
         body: '{{ session('warning') }}',
         autohide: true,
         delay: 5000

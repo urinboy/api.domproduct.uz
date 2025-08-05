@@ -156,7 +156,7 @@ class OrderController extends Controller
         }
 
         return redirect()->route('admin.orders.show', $order)
-            ->with('success', 'Buyurtma muvaffaqiyatli yangilandi!');
+            ->with('success', __('admin.order_updated_successfully'));
     }
 
     /**

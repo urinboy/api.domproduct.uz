@@ -54,4 +54,62 @@ class SettingsController extends Controller
         return redirect()->route('admin.settings.index')
             ->with('success', __('admin.settings_updated_successfully'));
     }
+
+    /**
+     * Clear application cache.
+     */
+    public function clearCache()
+    {
+        try {
+            \Artisan::call('cache:clear');
+            \Artisan::call('config:clear');
+            \Artisan::call('view:clear');
+            \Artisan::call('route:clear');
+
+            return response()->json([
+                'success' => true,
+                'message' => __('admin.cache_cleared_successfully')
+            ]);
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => __('admin.cache_clear_failed')
+            ], 500);
+        }
+    }
+
+    /**
+     * Optimize application.
+     */
+    public function optimize()
+    {
+        try {
+            \Artisan::call('optimize');
+            \Artisan::call('config:cache');
+            \Artisan::call('view:cache');
+            \Artisan::call('route:cache');
+
+            return response()->json([
+                'success' => true,
+                'message' => __('admin.app_optimized_successfully')
+            ]);
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => __('admin.optimization_failed')
+            ], 500);
+        }
+    }
+
+    /**
+     * Backup data.
+     */
+    public function backup()
+    {
+        // This is a placeholder for backup functionality
+        // In a real application, you would implement actual backup logic
+
+        return redirect()->route('admin.settings.index')
+            ->with('info', __('admin.backup_feature_coming_soon'));
+    }
 }
