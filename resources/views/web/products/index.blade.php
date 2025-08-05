@@ -1,16 +1,16 @@
 @extends('web.layouts.app')
 
-@section('title', 'Все товары')
+@section('title', __('web.nav.products'))
 
 @section('content')
 <div class="container mx-auto px-4 py-8">
     <!-- Page Header -->
     <div class="mb-8">
-        <h1 class="text-3xl font-bold text-gray-800 mb-2">Все товары</h1>
+        <h1 class="text-3xl font-bold text-gray-800 mb-2">{{ __('web.nav.products') }}</h1>
         <nav class="text-sm text-gray-600">
-            <a href="{{ route('web.home') }}" class="hover:text-blue-600">Главная</a>
+            <a href="{{ route('web.home') }}" class="hover:text-blue-600">{{ __('web.nav.home') }}</a>
             <span class="mx-2">/</span>
-            <span>Товары</span>
+            <span>{{ __('web.nav.products') }}</span>
         </nav>
     </div>
 
@@ -20,7 +20,7 @@
             <!-- Category Filter -->
             <div class="relative">
                 <select id="categoryFilter" class="border border-gray-300 rounded-lg px-4 py-2 pr-8 focus:outline-none focus:ring-2 focus:ring-blue-500">
-                    <option value="">Все категории</option>
+                    <option value="">{{ __('web.product.all_categories') }}</option>
                     @foreach($categories as $category)
                         <option value="{{ $category->id }}" {{ request('category') == $category->id ? 'selected' : '' }}>
                             {{ $category->getName() }}
@@ -31,15 +31,15 @@
 
             <!-- Price Range -->
             <div class="flex items-center gap-2">
-                <input type="number" id="minPrice" placeholder="От"
+                <input type="number" id="minPrice" placeholder="{{ __('web.common.from') }}"
                        class="border border-gray-300 rounded-lg px-3 py-2 w-20 focus:outline-none focus:ring-2 focus:ring-blue-500"
                        value="{{ request('min_price') }}">
                 <span class="text-gray-500">-</span>
-                <input type="number" id="maxPrice" placeholder="До"
+                <input type="number" id="maxPrice" placeholder="{{ __('web.common.to') }}"
                        class="border border-gray-300 rounded-lg px-3 py-2 w-20 focus:outline-none focus:ring-2 focus:ring-blue-500"
                        value="{{ request('max_price') }}">
                 <button id="applyPriceFilter" class="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700">
-                    Применить
+                    {{ __('web.product.apply_filter') }}
                 </button>
             </div>
         </div>
@@ -47,10 +47,10 @@
         <div class="flex items-center gap-4">
             <!-- Sort Options -->
             <select id="sortBy" class="border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500">
-                <option value="newest" {{ request('sort') == 'newest' ? 'selected' : '' }}>Новые</option>
-                <option value="price_low" {{ request('sort') == 'price_low' ? 'selected' : '' }}>Цена: по возрастанию</option>
-                <option value="price_high" {{ request('sort') == 'price_high' ? 'selected' : '' }}>Цена: по убыванию</option>
-                <option value="popular" {{ request('sort') == 'popular' ? 'selected' : '' }}>Популярные</option>
+                <option value="newest" {{ request('sort') == 'newest' ? 'selected' : '' }}>{{ __('web.product.sort_newest') }}</option>
+                <option value="price_low" {{ request('sort') == 'price_low' ? 'selected' : '' }}>{{ __('web.product.sort_price_low') }}</option>
+                <option value="price_high" {{ request('sort') == 'price_high' ? 'selected' : '' }}>{{ __('web.product.sort_price_high') }}</option>
+                <option value="popular" {{ request('sort') == 'popular' ? 'selected' : '' }}>{{ __('web.product.sort_popular') }}</option>
             </select>
 
             <!-- View Toggle -->
@@ -92,10 +92,10 @@
                             <!-- Badges -->
                             <div class="absolute top-2 left-2 flex flex-col gap-1">
                                 @if($product->is_sale)
-                                    <span class="bg-red-500 text-white text-xs px-2 py-1 rounded">СКИДКА</span>
+                                    <span class="bg-red-500 text-white text-xs px-2 py-1 rounded">{{ __('web.product.sale_badge') }}</span>
                                 @endif
                                 @if($product->is_new)
-                                    <span class="bg-green-500 text-white text-xs px-2 py-1 rounded">НОВИНКА</span>
+                                    <span class="bg-green-500 text-white text-xs px-2 py-1 rounded">{{ __('web.product.new_badge') }}</span>
                                 @endif
                             </div>
 
@@ -151,7 +151,7 @@
 
                             <!-- Add to Cart Button -->
                             <button class="w-full bg-blue-600 text-white py-2 px-4 rounded-lg hover:bg-blue-700 transition-colors duration-300">
-                                В корзину
+                                {{ __('web.home.add_to_cart') }}
                             </button>
                         </div>
                     </div>
@@ -216,7 +216,7 @@
 
                                         <!-- Add to Cart Button -->
                                         <button class="bg-blue-600 text-white py-2 px-6 rounded-lg hover:bg-blue-700 transition-colors duration-300">
-                                            В корзину
+                                            {{ __('web.home.add_to_cart') }}
                                         </button>
                                     </div>
                                 </div>
@@ -236,10 +236,10 @@
                 <svg class="w-24 h-24 text-gray-400 mx-auto mb-4" fill="currentColor" viewBox="0 0 20 20">
                     <path fill-rule="evenodd" d="M10 2L3 7v11a2 2 0 002 2h10a2 2 0 002-2V7l-7-5zM10 18l-7-5V7l7-5 7 5v6l-7 5z" clip-rule="evenodd"/>
                 </svg>
-                <h3 class="text-xl font-semibold text-gray-600 mb-2">Товары не найдены</h3>
-                <p class="text-gray-500 mb-4">Попробуйте изменить параметры поиска или фильтры</p>
+                <h3 class="text-xl font-semibold text-gray-600 mb-2">{{ __('web.product.no_products_found') }}</h3>
+                <p class="text-gray-500 mb-4">{{ __('web.product.try_different_filters') }}</p>
                 <a href="{{ route('web.products.index') }}" class="bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700">
-                    Сбросить фильтры
+                    {{ __('web.product.reset_filters') }}
                 </a>
             </div>
         @endif

@@ -6,9 +6,9 @@
 <div class="container mx-auto px-4 py-8">
     <!-- Breadcrumb -->
     <nav class="text-sm text-gray-600 mb-8">
-        <a href="{{ route('web.home') }}" class="hover:text-blue-600">Главная</a>
+        <a href="{{ route('web.home') }}" class="hover:text-blue-600">{{ __('web.nav.home') }}</a>
         <span class="mx-2">/</span>
-        <a href="{{ route('web.products.index') }}" class="hover:text-blue-600">Товары</a>
+        <a href="{{ route('web.products.index') }}" class="hover:text-blue-600">{{ __('web.nav.products') }}</a>
         @if($product->category)
             <span class="mx-2">/</span>
             <a href="{{ route('web.categories.show', $product->category->id) }}" class="hover:text-blue-600">
@@ -66,23 +66,23 @@
                                 <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/>
                             </svg>
                         @endfor
-                        <span class="ml-2 text-sm text-gray-600">(4.0 из 5)</span>
+                        <span class="ml-2 text-sm text-gray-600">(4.0 {{ __('web.common.of') }} 5)</span>
                     </div>
-                    <span class="text-sm text-gray-500">24 отзыва</span>
+                    <span class="text-sm text-gray-500">24 {{ __('web.product.reviews') }}</span>
                 </div>
 
                 <!-- Badges -->
                 <div class="flex gap-2 mb-4">
                     @if($product->is_sale)
-                        <span class="bg-red-500 text-white text-sm px-3 py-1 rounded-full">СКИДКА</span>
+                        <span class="bg-red-500 text-white text-sm px-3 py-1 rounded-full">{{ __('web.product.sale_badge') }}</span>
                     @endif
                     @if($product->is_new)
-                        <span class="bg-green-500 text-white text-sm px-3 py-1 rounded-full">НОВИНКА</span>
+                        <span class="bg-green-500 text-white text-sm px-3 py-1 rounded-full">{{ __('web.product.new_badge') }}</span>
                     @endif
                     @if($product->quantity > 0)
-                        <span class="bg-blue-500 text-white text-sm px-3 py-1 rounded-full">В НАЛИЧИИ</span>
+                        <span class="bg-blue-500 text-white text-sm px-3 py-1 rounded-full">{{ __('web.product.in_stock') }}</span>
                     @else
-                        <span class="bg-gray-500 text-white text-sm px-3 py-1 rounded-full">НЕТ В НАЛИЧИИ</span>
+                        <span class="bg-gray-500 text-white text-sm px-3 py-1 rounded-full">{{ __('web.product.out_of_stock') }}</span>
                     @endif
                 </div>
             </div>
@@ -104,14 +104,14 @@
 
             <!-- Description -->
             <div>
-                <h3 class="text-lg font-semibold text-gray-800 mb-3">Описание</h3>
+                <h3 class="text-lg font-semibold text-gray-800 mb-3">{{ __('web.product.description') }}</h3>
                 <p class="text-gray-600 leading-relaxed">{{ $product->getDescription() }}</p>
             </div>
 
             <!-- Specifications -->
             @if($product->specifications)
                 <div>
-                    <h3 class="text-lg font-semibold text-gray-800 mb-3">Характеристики</h3>
+                    <h3 class="text-lg font-semibold text-gray-800 mb-3">{{ __('web.product.specifications') }}</h3>
                     <div class="space-y-2">
                         @foreach(json_decode($product->specifications, true) ?? [] as $key => $value)
                             <div class="flex justify-between py-2 border-b border-gray-100">
@@ -127,19 +127,19 @@
             <div class="space-y-4">
                 @if($product->quantity > 0)
                     <div class="flex items-center gap-4">
-                        <label for="quantity" class="text-sm font-medium text-gray-700">Количество:</label>
+                        <label for="quantity" class="text-sm font-medium text-gray-700">{{ __('web.product.quantity') }}:</label>
                         <div class="flex items-center border border-gray-300 rounded-lg">
                             <button type="button" id="decreaseQty" class="px-3 py-2 text-gray-600 hover:text-gray-800">-</button>
                             <input type="number" id="quantity" value="1" min="1" max="{{ $product->quantity }}"
                                    class="w-16 text-center border-0 focus:ring-0 focus:outline-none">
                             <button type="button" id="increaseQty" class="px-3 py-2 text-gray-600 hover:text-gray-800">+</button>
                         </div>
-                        <span class="text-sm text-gray-500">Доступно: {{ $product->quantity }} шт.</span>
+                        <span class="text-sm text-gray-500">{{ __('web.product.available') }}: {{ $product->quantity }} {{ __('web.product.pieces') }}.</span>
                     </div>
 
                     <div class="flex gap-4">
                         <button id="addToCart" class="flex-1 bg-blue-600 text-white py-3 px-6 rounded-lg hover:bg-blue-700 transition-colors duration-300 font-medium">
-                            Добавить в корзину
+                            {{ __('web.home.add_to_cart') }}
                         </button>
                         <button class="bg-gray-100 text-gray-600 py-3 px-6 rounded-lg hover:bg-gray-200 transition-colors duration-300">
                             <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
@@ -149,14 +149,14 @@
                     </div>
                 @else
                     <div class="bg-gray-100 text-gray-600 py-3 px-6 rounded-lg text-center">
-                        Товар временно отсутствует
+                        {{ __('web.product.temporarily_unavailable') }}
                     </div>
                 @endif
             </div>
 
             <!-- Share -->
             <div class="border-t border-gray-200 pt-6">
-                <h3 class="text-sm font-medium text-gray-700 mb-3">Поделиться:</h3>
+                <h3 class="text-sm font-medium text-gray-700 mb-3">{{ __('web.product.share') }}:</h3>
                 <div class="flex gap-3">
                     <button class="bg-blue-600 text-white p-2 rounded-lg hover:bg-blue-700">
                         <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
@@ -181,7 +181,7 @@
     <!-- Related Products -->
     @if($relatedProducts && $relatedProducts->count() > 0)
         <div class="mt-16">
-            <h2 class="text-2xl font-bold text-gray-800 mb-8">Похожие товары</h2>
+            <h2 class="text-2xl font-bold text-gray-800 mb-8">{{ __('web.product.related_products') }}</h2>
             <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
                 @foreach($relatedProducts as $relatedProduct)
                     <div class="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow duration-300">
@@ -202,10 +202,10 @@
                             <!-- Badges -->
                             <div class="absolute top-2 left-2 flex flex-col gap-1">
                                 @if($relatedProduct->is_sale)
-                                    <span class="bg-red-500 text-white text-xs px-2 py-1 rounded">СКИДКА</span>
+                                    <span class="bg-red-500 text-white text-xs px-2 py-1 rounded">{{ __('web.product.sale_badge') }}</span>
                                 @endif
                                 @if($relatedProduct->is_new)
-                                    <span class="bg-green-500 text-white text-xs px-2 py-1 rounded">НОВИНКА</span>
+                                    <span class="bg-green-500 text-white text-xs px-2 py-1 rounded">{{ __('web.product.new_badge') }}</span>
                                 @endif
                             </div>
                         </div>
@@ -232,7 +232,7 @@
 
                             <!-- Add to Cart Button -->
                             <button class="w-full bg-blue-600 text-white py-2 px-4 rounded-lg hover:bg-blue-700 transition-colors duration-300">
-                                В корзину
+                                {{ __('web.home.add_to_cart') }}
                             </button>
                         </div>
                     </div>
@@ -288,7 +288,7 @@
         addToCartBtn.addEventListener('click', function() {
             const quantity = quantityInput ? quantityInput.value : 1;
             // Here you would typically make an AJAX request to add the product to cart
-            alert(`Товар добавлен в корзину! Количество: ${quantity}`);
+            alert(`{{ __('web.product.added_to_cart_message') }} ${quantity}`);
         });
     }
 </script>

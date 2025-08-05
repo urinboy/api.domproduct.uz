@@ -90,14 +90,14 @@ class CategoryController extends Controller
 
         // Bola kategoriyalar
         $childCategories = Category::where('parent_id', $id)
-            ->where('status', 'active')
+            ->where('is_active', true)
             ->withCount(['products' => function($query) {
-                $query->where('status', 'active');
+                $query->where('is_active', true);
             }])
             ->get();
 
         // Narx oralig'i
-        $priceRange = Product::where('status', 'active')
+        $priceRange = Product::where('is_active', true)
             ->whereIn('category_id', $categoryIds)
             ->selectRaw('MIN(price) as min, MAX(price) as max')
             ->first();
@@ -119,16 +119,16 @@ class CategoryController extends Controller
      */
     public function tree()
     {
-        $categories = Category::where('status', 'active')
+        $categories = Category::where('is_active', true)
             ->whereNull('parent_id')
             ->with(['children' => function($query) {
-                $query->where('status', 'active')
+                $query->where('is_active', true)
                       ->withCount(['products' => function($q) {
-                          $q->where('status', 'active');
+                          $q->where('is_active', true);
                       }]);
             }])
             ->withCount(['products' => function($query) {
-                $query->where('status', 'active');
+                $query->where('is_active', true);
             }])
             ->get();
 
@@ -156,9 +156,9 @@ class CategoryController extends Controller
      */
     public function popular()
     {
-        $categories = Category::where('status', 'active')
+        $categories = Category::where('is_active', true)
             ->withCount(['products' => function($query) {
-                $query->where('status', 'active');
+                $query->where('is_active', true);
             }])
             ->orderBy('products_count', 'desc')
             ->limit(8)
@@ -187,10 +187,10 @@ class CategoryController extends Controller
         }
 
         $currentLocale = app()->getLocale();
-        $categories = Category::where('status', 'active')
+        $categories = Category::where('is_active', true)
             ->where("name->{$currentLocale}", 'LIKE', "%{$query}%")
             ->withCount(['products' => function($q) {
-                $q->where('status', 'active');
+                $q->where('is_active', true);
             }])
             ->limit(10)
             ->get();
