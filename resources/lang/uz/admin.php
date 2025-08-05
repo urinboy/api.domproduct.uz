@@ -399,6 +399,18 @@ return [
     'low_stock_alert_title' => 'Zaxira kamayib ketdi',
     'low_stock_alert_message' => ':product_name mahsuloti zaxirasi kam qoldi. Joriy zaxira: :current_stock',
 
+    // Additional Product Fields
+    'product_settings' => 'Mahsulot sozlamalari',
+    'product_information' => 'Mahsulot ma\'lumotlari',
+    'barcode' => 'Barkod',
+    'featured_product' => 'Tavsiya etilgan mahsulot',
+    'sale_price' => 'Chegirma narxi',
+    'select_category' => 'Kategoriyani tanlang',
+    'save_product' => 'Mahsulotni saqlash',
+    'update_product' => 'Mahsulotni yangilash',
+    'images_help' => 'JPEG, PNG, JPG, GIF formatlarida rasmlar yuklang (maksimal 2MB)',
+    'sale_price_validation' => 'Chegirma narxi asosiy narxdan kichik bo\'lishi kerak',
+
     // Orders
     'order' => 'Buyurtma',
     'order_details' => 'Buyurtma tafsilotlari',
@@ -957,4 +969,22 @@ return [
         'numeric' => 'Faqat raqam kiriting',
         'unique' => 'Bu qiymat allaqachon mavjud',
     ],
+
+    // Product Show Page
+    'product_details' => 'Mahsulot ma\'lumotlari',
+    'this_is_featured_product' => 'Bu tavsiya etilgan mahsulot',
+    'recent_activity' => 'So\'nggi faoliyat',
+    'product_created' => 'Mahsulot yaratildi',
+    'product_was_created_at' => 'Mahsulot yaratildi',
+    'total_sold' => 'Jami sotilgan',
+    'created' => 'Yaratilgan',
+    'quick_stats' => 'Tezkor statistika',
+    'duplicate' => 'Nusxa olish',
+    'confirm_duplicate' => 'Mahsulotni nusxalashni xohlaysizmi?',
+    'error_occurred' => 'Xatolik yuz berdi',
+    'items' => 'dona',
+    'confirm_status_change' => 'Buyurtma holatini o\'zgartirishni xohlaysizmi?',
+    'add_new_images' => 'Yangi rasmlar qo\'shish',
+    'existing_images' => 'Mavjud rasmlar',
+    'confirm_delete_image' => 'Rasmni o\'chirishni xohlaysizmi?',
 ];

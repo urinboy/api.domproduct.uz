@@ -352,6 +352,18 @@ return [
     'low_stock_alert_title' => 'Низкий уровень запасов',
     'low_stock_alert_message' => 'Запасы товара :product_name заканчиваются. Текущий запас: :current_stock',
 
+    // Additional Product Fields
+    'product_settings' => 'Настройки товара',
+    'product_information' => 'Информация о товаре',
+    'barcode' => 'Штрихкод',
+    'featured_product' => 'Рекомендуемый товар',
+    'sale_price' => 'Цена со скидкой',
+    'select_category' => 'Выберите категорию',
+    'save_product' => 'Сохранить товар',
+    'update_product' => 'Обновить товар',
+    'images_help' => 'Загрузите изображения в форматах JPEG, PNG, JPG, GIF (максимум 2МБ)',
+    'sale_price_validation' => 'Цена со скидкой должна быть меньше основной цены',
+
     // Orders
     'orders' => 'Заказы',
     'order' => 'Заказ',
@@ -880,4 +892,22 @@ return [
         'numeric' => 'Введите только цифры',
         'unique' => 'Это значение уже существует',
     ],
+
+    // Product Show Page
+    'product_details' => 'Детали товара',
+    'this_is_featured_product' => 'Это рекомендуемый товар',
+    'recent_activity' => 'Недавняя активность',
+    'product_created' => 'Товар создан',
+    'product_was_created_at' => 'Товар был создан в',
+    'total_sold' => 'Всего продано',
+    'created' => 'Создан',
+    'quick_stats' => 'Быстрая статистика',
+    'duplicate' => 'Дублировать',
+    'confirm_duplicate' => 'Хотите дублировать товар?',
+    'error_occurred' => 'Произошла ошибка',
+    'items' => 'шт.',
+    'confirm_status_change' => 'Вы хотите изменить статус заказа?',
+    'add_new_images' => 'Добавить новые изображения',
+    'existing_images' => 'Существующие изображения',
+    'confirm_delete_image' => 'Хотите удалить это изображение?',
 ];

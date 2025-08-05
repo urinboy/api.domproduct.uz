@@ -383,6 +383,18 @@ return [
     'low_stock_alert_title' => 'Low Stock Alert',
     'low_stock_alert_message' => ':product_name is running low on stock. Current stock: :current_stock',
 
+    // Additional Product Fields
+    'product_settings' => 'Product Settings',
+    'product_information' => 'Product Information',
+    'barcode' => 'Barcode',
+    'featured_product' => 'Featured Product',
+    'sale_price' => 'Sale Price',
+    'select_category' => 'Select Category',
+    'save_product' => 'Save Product',
+    'update_product' => 'Update Product',
+    'images_help' => 'Upload images in JPEG, PNG, JPG, GIF formats (maximum 2MB)',
+    'sale_price_validation' => 'Sale price must be less than the regular price',
+
     // Orders
     'orders' => 'Orders',
     'order' => 'Order',
@@ -863,4 +875,22 @@ return [
         'amount' => 'Amount',
         'products' => 'Products',
     ],
+
+    // Product Show Page
+    'product_details' => 'Product Details',
+    'this_is_featured_product' => 'This is a featured product',
+    'recent_activity' => 'Recent Activity',
+    'product_created' => 'Product Created',
+    'product_was_created_at' => 'Product was created at',
+    'total_sold' => 'Total Sold',
+    'created' => 'Created',
+    'quick_stats' => 'Quick Stats',
+    'duplicate' => 'Duplicate',
+    'confirm_duplicate' => 'Do you want to duplicate this product?',
+    'error_occurred' => 'An error occurred',
+    'items' => 'items',
+    'confirm_status_change' => 'Do you want to change order status?',
+    'add_new_images' => 'Add New Images',
+    'existing_images' => 'Existing Images',
+    'confirm_delete_image' => 'Do you want to delete this image?',
 ];

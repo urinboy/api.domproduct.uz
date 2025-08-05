@@ -86,9 +86,19 @@ class AuthController extends Controller
         $request->session()->regenerate();
 
         if ($isAdmin) {
-            // Admin dashboardga yo'naltirish
-            return redirect()->intended('/admin')
-                             ->with('success', __('admin.login_success'));
+            // Foydalanuvchi avval qaysi admin sahifasiga borishga harakat qilgan bo'lsa,
+            // o'sha yerga yo'naltirish. Aks holda dashboard ga yo'naltirish
+            $intendedUrl = session()->pull('url.intended', route('admin.dashboard'));
+
+            // Agar intended URL admin panelga tegishli bo'lsa
+            if (str_contains($intendedUrl, '/admin')) {
+                return redirect()->to($intendedUrl)
+                                 ->with('success', __('admin.login_success'));
+            } else {
+                // Aks holda dashboard ga yo'naltirish
+                return redirect()->route('admin.dashboard')
+                                 ->with('success', __('admin.login_success'));
+            }
         } else {
             // Oddiy foydalanuvchilarni home sahifasiga yo'naltirish
             return redirect()->intended('/home')
