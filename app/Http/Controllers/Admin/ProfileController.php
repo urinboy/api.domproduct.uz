@@ -43,7 +43,7 @@ class ProfileController extends Controller
             'email' => 'required|string|email|max:255|unique:users,email,' . $user->id,
             'phone' => 'nullable|string|max:20|unique:users,phone,' . $user->id,
             'current_password' => 'nullable|required_with:password',
-            'password' => 'nullable|confirmed|' . Rules\Password::defaults(),
+            'password' => ['nullable', 'confirmed', Rules\Password::defaults()],
             'avatar' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
         ]);
 

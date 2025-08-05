@@ -22,9 +22,141 @@
     <!-- Custom Admin CSS -->
     <link rel="stylesheet" href="{{ mix('css/admin.css') }}">
 
+    <!-- Enhanced sidebar and page loading styles -->
+    <style>
+        /* Page loading overlay */
+        .page-loader {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(255, 255, 255, 0.9);
+            z-index: 9999;
+            display: none;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .page-loader.active {
+            display: flex;
+        }
+
+        .loader-spinner {
+            width: 50px;
+            height: 50px;
+            border: 5px solid #f3f3f3;
+            border-top: 5px solid #007bff;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* Mobile sidebar overlay */
+        .sidebar-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            z-index: 1039;
+            display: none;
+        }
+
+        /* Enhanced mobile sidebar */
+        @media (max-width: 767px) {
+            .main-sidebar {
+                position: fixed !important;
+                height: 100vh !important;
+                z-index: 1040;
+                transform: translateX(-250px);
+                transition: transform 0.3s ease-in-out;
+            }
+
+            .sidebar-open .main-sidebar {
+                transform: translateX(0);
+            }
+
+            .sidebar-open .sidebar-overlay {
+                display: block !important;
+            }
+
+            .content-wrapper {
+                margin-left: 0 !important;
+            }
+
+            .navbar {
+                margin-left: 0 !important;
+            }
+
+            .main-footer {
+                margin-left: 0 !important;
+            }
+        }
+
+        /* Desktop - Keep AdminLTE default behavior */
+        @media (min-width: 768px) {
+            .sidebar-overlay {
+                display: none !important;
+            }
+
+            /* Let AdminLTE handle desktop sidebar positioning */
+        }
+
+        /* Improve pushmenu button */
+        .navbar-nav .nav-link[data-widget="pushmenu"] {
+            cursor: pointer;
+            padding: 0.5rem 1rem;
+            border-radius: 0.25rem;
+            transition: background-color 0.15s ease-in-out;
+        }
+
+        .navbar-nav .nav-link[data-widget="pushmenu"]:hover {
+            background-color: rgba(0, 0, 0, 0.1);
+        }
+
+        /* Page transition effects */
+        .content-wrapper {
+            opacity: 1;
+            transition: opacity 0.2s ease-in-out;
+        }
+
+        .page-loading .content-wrapper {
+            opacity: 0.7;
+        }
+
+        /* Smooth treeview toggle - compatible with AdminLTE */
+        .nav-treeview {
+            transition: all 0.3s ease;
+        }
+
+        /* Ensure AdminLTE sidebar animations work properly */
+        .main-sidebar {
+            transition: margin-left 0.3s ease-in-out;
+        }
+
+        /* Fix any transition conflicts */
+        .sidebar-collapse .main-sidebar {
+            margin-left: -250px;
+        }
+    </style>
+
     @stack('styles')
 </head>
 <body class="hold-transition sidebar-mini layout-fixed">
+<!-- Page Loader -->
+<div class="page-loader" id="pageLoader">
+    <div class="loader-spinner"></div>
+</div>
+
+<!-- Sidebar Overlay for Mobile -->
+<div class="sidebar-overlay" id="sidebarOverlay"></div>
+
 <div class="wrapper">
 
     <!-- Navbar -->
@@ -81,7 +213,7 @@
                 <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right">
                     <span class="dropdown-item dropdown-header">{{ Auth::user()->name }}</span>
                     <div class="dropdown-divider"></div>
-                    <a href="{{ route('admin.profile.edit') }}" class="dropdown-item">
+                    <a href="{{ route('admin.profile.show') }}" class="dropdown-item">
                         <i class="fas fa-user mr-2"></i> {{ __('admin.profile') }}
                     </a>
                     <div class="dropdown-divider"></div>
@@ -116,7 +248,7 @@
                     <img src="{{ Auth::user()->avatar ?? asset('images/default-avatar.png') }}" class="img-circle elevation-2" alt="User Image">
                 </div>
                 <div class="info">
-                    <a href="{{ route('admin.profile.edit') }}" class="d-block">{{ Auth::user()->name }}</a>
+                    <a href="{{ route('admin.profile.show') }}" class="d-block">{{ Auth::user()->name }}</a>
                 </div>
             </div>
 
@@ -207,6 +339,174 @@
 <script src="https://cdn.jsdelivr.net/npm/admin-lte@3.2/dist/js/adminlte.min.js"></script>
 <!-- Custom Admin JS -->
 <script src="{{ mix('js/admin.js') }}"></script>
+
+<!-- Enhanced Sidebar and Page Loading -->
+<script>
+$(document).ready(function() {
+    // Wait for AdminLTE to be fully loaded
+    setTimeout(function() {
+        // Initialize AdminLTE components first
+        if (typeof $.AdminLTE !== 'undefined') {
+            // Initialize all AdminLTE components
+            $.AdminLTE.layout.activate();
+
+            if ($.AdminLTE.pushMenu) {
+                $.AdminLTE.pushMenu.options.autoCollapseSize = false;
+            }
+
+            // Initialize treeview
+            if ($.AdminLTE.treeview) {
+                $.AdminLTE.treeview.activate();
+            }
+        }
+
+        // Then initialize our custom functionality
+    // Page loading functionality
+    const pageLoader = $('#pageLoader');
+
+    // Show loader on page load
+    function showLoader() {
+        pageLoader.addClass('active');
+    }
+
+    // Hide loader
+    function hideLoader() {
+        pageLoader.removeClass('active');
+    }
+
+    // Page loaded
+    $(window).on('load', function() {
+        hideLoader();
+    });
+
+    // Show loader on form submissions
+    $('form').on('submit', function() {
+        showLoader();
+    });
+
+    // Show loader on navigation links (except javascript links and anchors)
+    $('a[href]').not('[href^="javascript:"]').not('[href^="#"]').not('[target="_blank"]').on('click', function(e) {
+        const href = $(this).attr('href');
+        const currentUrl = window.location.href;
+
+        // Don't show loader for same page navigation
+        if (href !== currentUrl && href !== window.location.pathname) {
+            showLoader();
+        }
+    });
+
+    // Enhanced Sidebar functionality
+    function isMobile() {
+        return window.innerWidth <= 767;
+    }
+
+    // Get sidebar overlay and pushmenu elements
+    const sidebarOverlay = $('#sidebarOverlay');
+    const pushMenuBtn = $('[data-widget="pushmenu"]');
+
+    // Enhanced pushmenu click handler - only for mobile
+    pushMenuBtn.off('click.custom').on('click.custom', function(e) {
+        if (isMobile()) {
+            e.preventDefault();
+            e.stopPropagation();
+
+            const body = $('body');
+
+            // Mobile behavior - custom logic
+            if (body.hasClass('sidebar-open')) {
+                body.removeClass('sidebar-open').addClass('sidebar-collapse');
+                sidebarOverlay.fadeOut(200);
+            } else {
+                body.removeClass('sidebar-collapse').addClass('sidebar-open');
+                sidebarOverlay.fadeIn(200);
+            }
+        }
+        // Desktop behavior - let AdminLTE handle it naturally
+    });    // Close sidebar when clicking overlay (mobile only)
+    sidebarOverlay.on('click', function() {
+        if (isMobile()) {
+            $('body').removeClass('sidebar-open').addClass('sidebar-collapse');
+            $(this).fadeOut(200);
+        }
+    });
+
+    // Close sidebar when clicking outside (mobile only)
+    $(document).on('click', function(e) {
+        if (isMobile() && $('body').hasClass('sidebar-open')) {
+            // Check if click is outside sidebar area
+            if (!$(e.target).closest('.main-sidebar').length &&
+                !$(e.target).closest('[data-widget="pushmenu"]').length &&
+                !$(e.target).hasClass('sidebar-overlay')) {
+                $('body').removeClass('sidebar-open').addClass('sidebar-collapse');
+                sidebarOverlay.fadeOut(200);
+            }
+        }
+    });
+
+    // Handle window resize
+    $(window).on('resize', function() {
+        setupSidebar();
+    });
+
+    // Initial sidebar setup
+    function setupSidebar() {
+        const body = $('body');
+
+        if (isMobile()) {
+            // Mobile setup
+            body.addClass('sidebar-collapse').removeClass('sidebar-open');
+            sidebarOverlay.hide();
+        } else {
+            // Desktop setup - restore saved state
+            const isCollapsed = localStorage.getItem('sidebar-collapsed') === 'true';
+            if (isCollapsed) {
+                body.addClass('sidebar-collapse');
+            } else {
+                body.removeClass('sidebar-collapse');
+            }
+            sidebarOverlay.hide();
+        }
+    }
+
+    // Remove custom treeview - let AdminLTE handle it
+    // AdminLTE will automatically handle treeview functionality
+
+    // Auto-hide loader after 10 seconds (fallback)
+    setTimeout(function() {
+        hideLoader();
+    }, 10000);
+
+        // Initialize sidebar
+        setupSidebar();
+
+        // Add desktop-specific behavior for state saving
+        if (!isMobile() && typeof $.AdminLTE !== 'undefined' && $.AdminLTE.pushMenu) {
+            // Add listener for AdminLTE sidebar changes to save state
+            $(document).on('collapsed.lte.pushmenu expanded.lte.pushmenu', function() {
+                const isCollapsed = $('body').hasClass('sidebar-collapse');
+                localStorage.setItem('sidebar-collapsed', isCollapsed);
+            });
+        }
+    }, 100); // Small delay to ensure AdminLTE is loaded
+});
+
+// Handle page visibility change (for back/forward navigation)
+document.addEventListener('visibilitychange', function() {
+    if (!document.hidden) {
+        $('#pageLoader').removeClass('active');
+    }
+});
+
+// Handle back/forward navigation
+window.addEventListener('pageshow', function(e) {
+    $('#pageLoader').removeClass('active');
+
+    if (e.persisted) {
+        // Page restored from bfcache
+        location.reload();
+    }
+});
+</script>
 
 @stack('scripts')
 
