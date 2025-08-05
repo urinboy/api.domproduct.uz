@@ -74,6 +74,39 @@ class Product extends Model
     }
 
     /**
+     * Get the users who favorited this product.
+     */
+    public function favorites(): HasMany
+    {
+        return $this->hasMany(UserFavorite::class);
+    }
+
+    /**
+     * Get the users who favorited this product (many-to-many).
+     */
+    public function favoritedByUsers()
+    {
+        return $this->belongsToMany(User::class, 'user_favorites', 'product_id', 'user_id')
+                    ->withTimestamps();
+    }
+
+    /**
+     * Check if product is favorited by user
+     */
+    public function isFavoritedBy($userId): bool
+    {
+        return $this->favorites()->where('user_id', $userId)->exists();
+    }
+
+    /**
+     * Get favorites count
+     */
+    public function getFavoritesCount(): int
+    {
+        return $this->favorites()->count();
+    }
+
+    /**
      * Get translation for specific language (optimized)
      */
     public function translationForLanguage($language = 'uz')

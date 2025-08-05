@@ -46,15 +46,179 @@ window.webUtils = {
 
     // Add to wishlist function
     addToWishlist: function(productId) {
-        console.log(`Adding product ${productId} to wishlist`);
-        this.showNotification('Товар добавлен в избранное!', 'success');
+        this.toggleWishlist(productId);
+    },
 
-        // Update wishlist badge
-        const wishlistBadge = document.querySelector('.wishlist-badge');
-        if (wishlistBadge) {
-            const currentCount = parseInt(wishlistBadge.textContent) || 0;
-            wishlistBadge.textContent = currentCount + 1;
+    // Toggle wishlist function
+    toggleWishlist: function(productId) {
+        fetch(`/wishlist/toggle/${productId}`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+            }
+        })
+        .then(response => {
+            if (!response.ok) {
+                if (response.status === 401) {
+                    throw new Error('Для добавления в избранное необходимо войти в систему');
+                }
+                throw new Error('Ошибка сервера');
+            }
+            return response.json();
+        })
+        .then(data => {
+            if (data.success) {
+                const action = data.action; // 'added' or 'removed'
+                const message = action === 'added' ?
+                    'Товар добавлен в избранное!' :
+                    'Товар удален из избранного!';
+
+                this.showNotification(message, 'success');
+
+                // Update wishlist badge
+                this.updateWishlistBadge();
+
+                // Update wishlist button appearance
+                this.updateWishlistButton(productId, action === 'added');
+            } else {
+                this.showNotification(data.message || 'Ошибка при обновлении избранного', 'error');
+            }
+        })
+        .catch(error => {
+            console.error('Wishlist error:', error);
+            if (error.message.includes('войти в систему')) {
+                this.showNotification(error.message, 'warning');
+                // Redirect to login after short delay
+                setTimeout(() => {
+                    window.location.href = '/login';
+                }, 2000);
+            } else {
+                this.showNotification('Произошла ошибка. Попробуйте еще раз.', 'error');
+            }
+        });
+    },
+
+    // Remove from wishlist
+    removeFromWishlist: function(productId) {
+        fetch(`/wishlist/remove/${productId}`, {
+            method: 'DELETE',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+            }
+        })
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Ошибка сервера');
+            }
+            return response.json();
+        })
+        .then(data => {
+            if (data.success) {
+                this.showNotification('Товар удален из избранного!', 'success');
+
+                // Update wishlist badge
+                this.updateWishlistBadge();
+
+                // Remove product from wishlist page if we're on it
+                const productElement = document.querySelector(`[data-product-id="${productId}"]`);
+                if (productElement && window.location.pathname.includes('/wishlist')) {
+                    productElement.remove();
+                }
+
+                // Update wishlist button appearance
+                this.updateWishlistButton(productId, false);
+            } else {
+                this.showNotification(data.message || 'Ошибка при удалении из избранного', 'error');
+            }
+        })
+        .catch(error => {
+            console.error('Wishlist removal error:', error);
+            this.showNotification('Произошла ошибка. Попробуйте еще раз.', 'error');
+        });
+    },
+
+    // Update wishlist badge
+    updateWishlistBadge: function() {
+        fetch('/wishlist/count', {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+            }
+        })
+        .then(response => response.json())
+        .then(data => {
+            const wishlistBadge = document.querySelector('.wishlist-badge');
+            if (wishlistBadge && data.count !== undefined) {
+                wishlistBadge.textContent = data.count;
+                wishlistBadge.style.display = data.count > 0 ? 'inline' : 'none';
+            }
+        })
+        .catch(error => {
+            console.error('Error updating wishlist badge:', error);
+        });
+    },
+
+    // Update wishlist button appearance
+    updateWishlistButton: function(productId, isInWishlist) {
+        const buttons = document.querySelectorAll(`[data-wishlist-product="${productId}"]`);
+        buttons.forEach(button => {
+            const icon = button.querySelector('i') || button.querySelector('svg');
+            if (icon) {
+                if (isInWishlist) {
+                    icon.classList.remove('far');
+                    icon.classList.add('fas', 'text-red-500');
+                } else {
+                    icon.classList.remove('fas', 'text-red-500');
+                    icon.classList.add('far');
+                }
+            }
+
+            // Update title
+            button.title = isInWishlist ? 'Удалить из избранного' : 'Добавить в избранное';
+        });
+    },
+
+    // Clear wishlist
+    clearWishlist: function() {
+        if (!confirm('Вы уверены, что хотите очистить список избранного?')) {
+            return;
         }
+
+        fetch('/wishlist/clear', {
+            method: 'DELETE',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+            }
+        })
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Ошибка сервера');
+            }
+            return response.json();
+        })
+        .then(data => {
+            if (data.success) {
+                this.showNotification('Список избранного очищен!', 'success');
+
+                // Update wishlist badge
+                this.updateWishlistBadge();
+
+                // Reload wishlist page if we're on it
+                if (window.location.pathname.includes('/wishlist')) {
+                    window.location.reload();
+                }
+            } else {
+                this.showNotification(data.message || 'Ошибка при очистке списка', 'error');
+            }
+        })
+        .catch(error => {
+            console.error('Clear wishlist error:', error);
+            this.showNotification('Произошла ошибка. Попробуйте еще раз.', 'error');
+        });
     },
 
     // Newsletter subscription
@@ -146,23 +310,42 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     });
 
-    // Add to wishlist buttons
+    // Add to wishlist buttons and wishlist toggle buttons
     document.addEventListener('click', function(e) {
-        if (e.target.matches('.add-to-wishlist-btn') || e.target.closest('.add-to-wishlist-btn')) {
+        // Handle wishlist toggle buttons (with data-wishlist-product attribute)
+        if (e.target.matches('[data-wishlist-product]') || e.target.closest('[data-wishlist-product]')) {
+            e.preventDefault();
+            const button = e.target.matches('[data-wishlist-product]') ? e.target : e.target.closest('[data-wishlist-product]');
+            const productId = button.getAttribute('data-wishlist-product');
+
+            if (productId) {
+                webUtils.toggleWishlist(productId);
+            }
+        }
+        // Handle legacy add to wishlist buttons
+        else if (e.target.matches('.add-to-wishlist-btn') || e.target.closest('.add-to-wishlist-btn')) {
             e.preventDefault();
             const button = e.target.matches('.add-to-wishlist-btn') ? e.target : e.target.closest('.add-to-wishlist-btn');
             const productId = button.getAttribute('data-product-id');
 
             if (productId) {
                 webUtils.addToWishlist(productId);
-
-                // Toggle heart icon
-                const heartIcon = button.querySelector('svg');
-                if (heartIcon) {
-                    heartIcon.classList.toggle('text-gray-600');
-                    heartIcon.classList.toggle('text-red-500');
-                }
             }
+        }
+        // Handle wishlist remove buttons
+        else if (e.target.matches('.remove-from-wishlist-btn') || e.target.closest('.remove-from-wishlist-btn')) {
+            e.preventDefault();
+            const button = e.target.matches('.remove-from-wishlist-btn') ? e.target : e.target.closest('.remove-from-wishlist-btn');
+            const productId = button.getAttribute('data-product-id');
+
+            if (productId) {
+                webUtils.removeFromWishlist(productId);
+            }
+        }
+        // Handle clear wishlist button
+        else if (e.target.matches('.clear-wishlist-btn') || e.target.closest('.clear-wishlist-btn')) {
+            e.preventDefault();
+            webUtils.clearWishlist();
         }
     });
 

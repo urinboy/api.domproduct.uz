@@ -14,6 +14,7 @@ use App\Http\Controllers\Web\CategoryController;
 use App\Http\Controllers\Web\AuthController as WebAuthController;
 use App\Http\Controllers\Web\ProfileController;
 use App\Http\Controllers\Web\CartController;
+use App\Http\Controllers\Web\WishlistController;
 
 /*
 |--------------------------------------------------------------------------
@@ -107,8 +108,12 @@ Route::name('web.')->group(function () {
 
     // Wishlist
     Route::middleware('auth')->prefix('wishlist')->name('wishlist.')->group(function () {
-        Route::post('/toggle', [ProfileController::class, 'toggleWishlist'])->name('toggle');
-        Route::get('/', [ProfileController::class, 'wishlist'])->name('index');
+        Route::get('/', [WishlistController::class, 'index'])->name('index');
+        Route::post('/add/{product}', [WishlistController::class, 'add'])->name('add');
+        Route::delete('/remove/{product}', [WishlistController::class, 'remove'])->name('remove');
+        Route::post('/toggle/{product}', [WishlistController::class, 'toggle'])->name('toggle');
+        Route::get('/count', [WishlistController::class, 'count'])->name('count');
+        Route::delete('/clear', [WishlistController::class, 'clear'])->name('clear');
     });
 
     // Profile shortcut

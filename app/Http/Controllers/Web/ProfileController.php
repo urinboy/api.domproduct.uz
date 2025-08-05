@@ -104,12 +104,7 @@ class ProfileController extends Controller
     public function wishlist()
     {
         $user = Auth::user();
-
-        // For now, return empty collection until wishlist relationship is set up
-        $wishlistItems = collect([]);
-
-        // TODO: When wishlist model is ready, use:
-        // $wishlistItems = $user->wishlist()->with('product.category')->paginate(10);
+        $wishlistItems = $user->getFavoritesWithProducts();
 
         return view('web.profile.wishlist', compact('wishlistItems'));
     }

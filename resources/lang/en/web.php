@@ -7,8 +7,16 @@ return [
         'categories' => 'Categories',
         'products' => 'Products',
         'about' => 'About Us',
-        'contact' => 'Contact',
-        'cart' => 'Cart',
+        'contact' => 'Cont    // Profile
+    'profile' => [
+        'wishlist_description' => 'List of products you liked',
+        'wishlist_empty' => 'Wishlist is Empty',
+        'wishlist_empty_message' => 'You haven\'t added any products to wishlist yet',
+        'wishlist_empty_description' => 'Add your favorite products to wishlist so you don\'t lose them',
+        'added_to_wishlist' => 'Added to Wishlist',
+        'confirm_remove_wishlist' => 'Do you want to remove from wishlist?',
+        'removed_from_wishlist' => 'Removed from Wishlist'
+    ],     'cart' => 'Cart',
         'profile' => 'Profile',
         'login' => 'Login',
         'register' => 'Register',
@@ -191,7 +199,15 @@ return [
         'wishlist' => 'Wishlist',
         'items' => 'items',
         'continue_shopping' => 'Continue Shopping',
-        'remove' => 'Remove'
+        'remove' => 'Remove',
+        'add_to_cart' => 'Add to Cart',
+        'out_of_stock' => 'Out of Stock',
+        'clear_all' => 'Clear All',
+        'remove_from_wishlist' => 'Remove from Wishlist',
+        'added' => 'Added',
+        'start_shopping' => 'Start Shopping',
+        'home' => 'Home',
+        'profile' => 'Profile'
     ],
 
     // Profile

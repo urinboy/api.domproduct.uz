@@ -109,6 +109,40 @@ class User extends Authenticatable
                     ->withTimestamps();
     }
 
+    // User Favorites relationship
+    public function favorites(): HasMany
+    {
+        return $this->hasMany(UserFavorite::class);
+    }
+
+    // Check if product is in favorites
+    public function hasFavorite($productId): bool
+    {
+        return $this->favorites()->where('product_id', $productId)->exists();
+    }
+
+    // Add product to favorites
+    public function addToFavorites($productId): bool
+    {
+        if (!$this->hasFavorite($productId)) {
+            $this->favorites()->create(['product_id' => $productId]);
+            return true;
+        }
+        return false;
+    }
+
+    // Remove product from favorites
+    public function removeFromFavorites($productId): bool
+    {
+        return $this->favorites()->where('product_id', $productId)->delete() > 0;
+    }
+
+    // Get favorites with products
+    public function getFavoritesWithProducts()
+    {
+        return $this->favorites()->with(['product.translations', 'product.images', 'product.category'])->get();
+    }
+
     // Active addresses (optimized)
     public function activeAddresses(): HasMany
     {

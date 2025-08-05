@@ -191,7 +191,15 @@ return [
         'wishlist' => 'Избранное',
         'items' => 'товаров',
         'continue_shopping' => 'Продолжить покупки',
-        'remove' => 'Удалить'
+        'remove' => 'Удалить',
+        'add_to_cart' => 'В корзину',
+        'out_of_stock' => 'Нет в наличии',
+        'clear_all' => 'Очистить все',
+        'remove_from_wishlist' => 'Удалить из избранного',
+        'added' => 'Добавлено',
+        'start_shopping' => 'Начать покупки',
+        'home' => 'Главная',
+        'profile' => 'Профиль'
     ],
 
     // Profile
@@ -199,6 +207,7 @@ return [
         'wishlist_description' => 'Список товаров, которые вам понравились',
         'wishlist_empty' => 'Список избранного пуст',
         'wishlist_empty_message' => 'Пока вы не добавили товары в избранное',
+        'wishlist_empty_description' => 'Добавляйте понравившиеся товары в избранное, чтобы не потерять их',
         'added_to_wishlist' => 'Добавлено в избранное',
         'confirm_remove_wishlist' => 'Вы хотите удалить из избранного?',
         'removed_from_wishlist' => 'Удалено из избранного'
