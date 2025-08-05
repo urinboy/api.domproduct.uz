@@ -323,10 +323,10 @@
 
     <!-- Footer -->
     <footer class="main-footer">
-        <strong>Copyright &copy; {{ date('Y') }} <a href="https://domproduct.uz">DOM Product</a>.</strong>
-        Barcha huquqlar himoyalangan.
+        <strong>{{ __('admin.copyright') }} &copy; {{ date('Y') }} <a href="https://domproduct.uz">{{ config('app.name') }}</a>.</strong>
+        {{ __('admin.all_rights_reserved') }}.
         <div class="float-right d-none d-sm-inline-block">
-            <b>Version</b> 1.0.0
+            <b>{{ __('admin.version') }}</b> {{ config('app.version') }}
         </div>
     </footer>
 </div>

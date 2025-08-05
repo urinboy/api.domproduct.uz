@@ -24,6 +24,7 @@ class SettingsController extends Controller
             'maintenance_mode' => false,
             'allow_registration' => true,
             'email_verification' => false,
+            'app_version' => config('app.version'),
         ];
 
         return view('admin.settings.index', compact('settings'));
@@ -43,16 +44,52 @@ class SettingsController extends Controller
             'currency' => 'required|string|in:UZS,USD,EUR',
             'language' => 'required|string|in:uz,ru,en',
             'timezone' => 'required|string',
+            'app_version' => 'nullable|string|max:20',
             'maintenance_mode' => 'boolean',
             'allow_registration' => 'boolean',
             'email_verification' => 'boolean',
         ]);
+
+        // Update .env file with app version if provided
+        if ($request->filled('app_version')) {
+            $this->updateEnvFile('APP_VERSION', $request->app_version);
+        }
 
         // In a real application, you would save these to a settings table or config files
         // For now, we'll just redirect with success message
 
         return redirect()->route('admin.settings.index')
             ->with('success', __('admin.settings_updated_successfully'));
+    }
+
+    /**
+     * Update .env file with new value
+     */
+    private function updateEnvFile($key, $value)
+    {
+        $envPath = base_path('.env');
+
+        if (file_exists($envPath)) {
+            $envContent = file_get_contents($envPath);
+
+            // Check if key exists
+            if (strpos($envContent, $key . '=') !== false) {
+                // Update existing key
+                $envContent = preg_replace(
+                    '/^' . preg_quote($key) . '=.*$/m',
+                    $key . '=' . $value,
+                    $envContent
+                );
+            } else {
+                // Add new key
+                $envContent .= "\n" . $key . '=' . $value;
+            }
+
+            file_put_contents($envPath, $envContent);
+
+            // Clear config cache to reflect changes
+            \Artisan::call('config:clear');
+        }
     }
 
     /**

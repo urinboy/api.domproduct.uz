@@ -122,6 +122,20 @@
                                     <span class="invalid-feedback">{{ $message }}</span>
                                 @enderror
                             </div>
+
+                            <div class="form-group">
+                                <label for="app_version">{{ __('admin.app_version') }}</label>
+                                <input type="text"
+                                       class="form-control @error('app_version') is-invalid @enderror"
+                                       id="app_version"
+                                       name="app_version"
+                                       value="{{ old('app_version', $settings['app_version']) }}"
+                                       placeholder="1.0.0">
+                                @error('app_version')
+                                    <span class="invalid-feedback">{{ $message }}</span>
+                                @enderror
+                                <small class="text-muted">{{ __('admin.app_version_desc') }}</small>
+                            </div>
                         </div>
                     </div>
 
@@ -270,7 +284,7 @@
                                 <span class="info-box-icon bg-info"><i class="fas fa-server"></i></span>
                                 <div class="info-box-content">
                                     <span class="info-box-text">{{ __('admin.app_version') }}</span>
-                                    <span class="info-box-number">1.0.0</span>
+                                    <span class="info-box-number">{{ $settings['app_version'] ?? config('app.version') }}</span>
                                 </div>
                             </div>
 

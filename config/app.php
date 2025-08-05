@@ -17,6 +17,18 @@ return [
 
     /*
     |--------------------------------------------------------------------------
+    | Application Version
+    |--------------------------------------------------------------------------
+    |
+    | This value is the version of your application. This value is used when
+    | displaying version information in the admin panel or other locations.
+    |
+    */
+
+    'version' => env('APP_VERSION', '1.0.0'),
+
+    /*
+    |--------------------------------------------------------------------------
     | Application Environment
     |--------------------------------------------------------------------------
     |
