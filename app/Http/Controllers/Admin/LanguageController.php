@@ -33,8 +33,22 @@ class LanguageController extends Controller
         // Set application locale
         App::setLocale($locale);
 
-        // Redirect back to admin dashboard
-        return redirect()->route('admin.dashboard')->with('success', 'Language switched successfully');
+        // Get the previous URL or default to dashboard
+        $previousUrl = url()->previous();
+        $dashboardUrl = route('admin.dashboard');
+
+        // If previous URL is login page, go to dashboard
+        if (str_contains($previousUrl, '/login')) {
+            $redirectUrl = $dashboardUrl;
+        } else {
+            $redirectUrl = $previousUrl;
+        }
+
+        // Add lang parameter to ensure middleware picks it up
+        $separator = str_contains($redirectUrl, '?') ? '&' : '?';
+        $redirectUrl .= $separator . 'lang=' . $locale;
+
+        return redirect($redirectUrl)->with('success', 'Til muvaffaqiyatli o\'zgartirildi');
     }
 
     /**

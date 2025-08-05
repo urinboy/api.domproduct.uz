@@ -61,7 +61,7 @@
                     <div class="dropdown-divider"></div>
 
                     @foreach($languages as $code => $language)
-                        <a href="{{ url()->current() }}?lang={{ $code }}"
+                        <a href="{{ route('admin.language.switch', $code) }}"
                            class="dropdown-item {{ $currentLocale == $code ? 'active' : '' }}">
                             <span class="mr-2">{{ $language['flag'] }}</span>
                             {{ $language['name'] }}

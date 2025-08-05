@@ -285,20 +285,22 @@ $(document).ready(function() {
     var areaChartOptions = {
         maintainAspectRatio: false,
         responsive: true,
-        legend: {
-            display: true
+        plugins: {
+            legend: {
+                display: true
+            }
         },
         scales: {
-            xAxes: [{
-                gridLines: {
+            x: {
+                grid: {
                     display: false
                 }
-            }],
-            yAxes: [{
-                gridLines: {
+            },
+            y: {
+                grid: {
                     display: false
                 }
-            }]
+            }
         }
     };
 

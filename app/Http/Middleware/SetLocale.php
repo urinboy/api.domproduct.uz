@@ -24,16 +24,16 @@ class SetLocale
         // Get locale from URL parameter, session, or default
         $locale = null;
 
-        // 1. Check URL parameter
+        // 1. Check URL parameter first (for direct links like ?lang=uz)
         if ($request->has('lang') && in_array($request->lang, $availableLocales)) {
             $locale = $request->lang;
             Session::put('locale', $locale);
         }
-        // 2. Check session
+        // 2. Check session (should have higher priority for normal navigation)
         elseif (Session::has('locale') && in_array(Session::get('locale'), $availableLocales)) {
             $locale = Session::get('locale');
         }
-        // 3. Check Accept-Language header
+        // 3. Check Accept-Language header as fallback
         elseif ($request->hasHeader('Accept-Language')) {
             $browserLang = substr($request->header('Accept-Language'), 0, 2);
             if (in_array($browserLang, $availableLocales)) {
