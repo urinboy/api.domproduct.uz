@@ -157,8 +157,13 @@ class Category extends Model
     /**
      * Get category path (array of parent names)
      */
-    public function getPath($languageCode = 'uz')
+    public function getPath($languageCode = null)
     {
+        // Agar til ko'rsatilmagan bo'lsa, hozirgi tilni olamiz
+        if ($languageCode === null) {
+            $languageCode = app()->getLocale();
+        }
+
         $path = [];
         $current = $this;
 
@@ -187,8 +192,13 @@ class Category extends Model
     /**
      * Ma'lum tildagi nom olish (fallback bilan)
      */
-    public function getName($languageCode = 'uz')
+    public function getName($languageCode = null)
     {
+        // Agar til ko'rsatilmagan bo'lsa, hozirgi tilni olamiz
+        if ($languageCode === null) {
+            $languageCode = app()->getLocale();
+        }
+
         $translation = $this->translations()
             ->whereHas('language', function ($query) use ($languageCode) {
                 $query->where('code', $languageCode);
@@ -208,16 +218,89 @@ class Category extends Model
     }
 
     /**
+     * Ma'lum tildagi tavsif olish (fallback bilan)
+     */
+    public function getDescription($languageCode = null)
+    {
+        // Agar til ko'rsatilmagan bo'lsa, hozirgi tilni olamiz
+        if ($languageCode === null) {
+            $languageCode = app()->getLocale();
+        }
+
+        $translation = $this->translations()
+            ->whereHas('language', function ($query) use ($languageCode) {
+                $query->where('code', $languageCode);
+            })->first();
+
+        if ($translation) {
+            return $translation->description;
+        }
+
+        // Fallback: Default tildan olish
+        $defaultTranslation = $this->translations()
+            ->whereHas('language', function ($query) {
+                $query->where('is_default', true);
+            })->first();
+
+        return $defaultTranslation ? $defaultTranslation->description : '';
+    }
+
+    /**
      * Ma'lum tildagi slug olish
      */
-    public function getSlug($languageCode = 'uz')
+    public function getSlug($languageCode = null)
     {
+        // Agar til ko'rsatilmagan bo'lsa, hozirgi tilni olamiz
+        if ($languageCode === null) {
+            $languageCode = app()->getLocale();
+        }
+
         $translation = $this->translations()
             ->whereHas('language', function ($query) use ($languageCode) {
                 $query->where('code', $languageCode);
             })->first();
 
         return $translation ? $translation->slug : Str::slug($this->getName($languageCode));
+    }
+
+    /**
+     * Get current locale for debugging
+     */
+    public function getCurrentLocale()
+    {
+        return app()->getLocale();
+    }
+
+    /**
+     * Get all available translations for this category
+     */
+    public function getAvailableTranslations()
+    {
+        return $this->translations()->with('language')->get()->mapWithKeys(function ($translation) {
+            return [
+                $translation->language->code => [
+                    'name' => $translation->name,
+                    'description' => $translation->description,
+                    'slug' => $translation->slug,
+                    'language_name' => $translation->language->name
+                ]
+            ];
+        });
+    }
+
+    /**
+     * Check if translation exists for given language
+     */
+    public function hasTranslation($languageCode = null)
+    {
+        if ($languageCode === null) {
+            $languageCode = app()->getLocale();
+        }
+
+        return $this->translations()
+            ->whereHas('language', function ($query) use ($languageCode) {
+                $query->where('code', $languageCode);
+            })->exists();
     }
 
     /**
