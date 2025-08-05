@@ -391,10 +391,7 @@ class CategoryController extends Controller
             return response()->json([
                 'success' => true,
                 'message' => 'Category image uploaded successfully',
-                'data' => [
-                    'image' => $category->getImageUrl('medium'),
-                    'image_sizes' => $category->getImageSizes()
-                ]
+                'data' => $category->getImageData()
             ]);
 
         } catch (\Exception $e) {

@@ -9,13 +9,6 @@
         height: 50px;
         border-radius: 0.375rem;
         object-fit: cover;
-        background-color: #f8f9fa;
-        border: 1px solid #e9ecef;
-        transition: all 0.2s ease;
-    }
-    .category-image:hover {
-        transform: scale(1.1);
-        box-shadow: 0 4px 8px rgba(0,0,0,0.1);
     }
     .category-hierarchy {
         font-size: 0.875rem;
@@ -209,7 +202,9 @@
                                             </div>
                                         </td>
                                         <td>
-                                            {!! $category->getImageTag('thumbnail') !!}
+                                            <img src="{{ $category->getImageUrl('thumbnail') ?? asset('images/no-image.png') }}"
+                                                 alt="{{ $category->getName() }}"
+                                                 class="category-image">
                                         </td>
                                         <td>
                                             <div>
@@ -567,15 +562,6 @@ $(document).ready(function() {
     // Auto-submit filters
     $('select[name="status"], select[name="parent"], select[name="per_page"]').change(function() {
         $(this).closest('form').submit();
-    });
-
-    // Handle image errors for dynamically loaded content
-    $(document).on('error', '.category-image', function() {
-        const defaultImage = this.dataset.default;
-        if (this.src !== defaultImage) {
-            this.src = defaultImage;
-            this.onerror = null; // Prevent infinite loop
-        }
     });
 });
 </script>

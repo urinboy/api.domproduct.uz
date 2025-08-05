@@ -160,6 +160,9 @@ return [
     'apply' => 'Apply',
     'results' => 'results',
 
+    // Common Actions
+    'confirm_delete' => 'Confirm Delete',
+
     // Bulk Actions
     'users_selected' => 'users selected',
     'choose_action' => 'Choose Action',
@@ -986,4 +989,17 @@ return [
     'add_new_images' => 'Add New Images',
     'existing_images' => 'Existing Images',
     'confirm_delete_image' => 'Do you want to delete this image?',
+
+    // Pagination and bulk actions
+    'showing_results' => 'Showing :from to :to of :total results',
+    'per_page' => 'Per page',
+    'items_selected' => 'items selected',
+    'activate_selected' => 'Activate Selected',
+    'deactivate_selected' => 'Deactivate Selected',
+    'delete_selected' => 'Delete Selected',
+    'confirm_bulk_activate' => 'Confirm Bulk Activate',
+    'confirm_bulk_deactivate' => 'Confirm Bulk Deactivate',
+    'confirm_bulk_delete' => 'Confirm Bulk Delete',
+    'bulk_action_warning' => 'This action cannot be undone',
+    'confirm_action' => 'Confirm Action',
 ];

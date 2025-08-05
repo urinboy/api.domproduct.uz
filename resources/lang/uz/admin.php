@@ -131,6 +131,7 @@ return [
     'cancel' => 'Bekor qilish',
     'back' => 'Orqaga',
     'confirm' => 'Tasdiqlash',
+    'confirm_delete' => 'O\'chirishni tasdiqlash',
     'yes' => 'Ha',
     'no' => 'Yo\'q',
     'reset' => 'Tiklash',
@@ -1080,4 +1081,17 @@ return [
     'add_new_images' => 'Yangi rasmlar qo\'shish',
     'existing_images' => 'Mavjud rasmlar',
     'confirm_delete_image' => 'Rasmni o\'chirishni xohlaysizmi?',
+
+    // Pagination and bulk actions
+    'showing_results' => ':from dan :to gacha, jami :total ta natija ko\'rsatilmoqda',
+    'per_page' => 'Sahifada',
+    'items_selected' => 'ta element tanlandi',
+    'activate_selected' => 'Tanlanganlarni faollashtirish',
+    'deactivate_selected' => 'Tanlanganlarni o\'chirish',
+    'delete_selected' => 'Tanlanganlarni o\'chirish',
+    'confirm_bulk_activate' => 'Tanlanganlarni faollashtirishni tasdiqlaysizmi',
+    'confirm_bulk_deactivate' => 'Tanlanganlarni o\'chirishni tasdiqlaysizmi',
+    'confirm_bulk_delete' => 'Tanlanganlarni butunlay o\'chirishni tasdiqlaysizmi',
+    'bulk_action_warning' => 'Bu amalni qaytarib bo\'lmaydi',
+    'confirm_action' => 'Amalni tasdiqlash',
 ];

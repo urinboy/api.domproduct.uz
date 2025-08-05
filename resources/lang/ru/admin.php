@@ -190,6 +190,9 @@ return [
     'none' => 'Нет',
     'all' => 'Все',
 
+    // Common Actions
+    'confirm_delete' => 'Подтвердить удаление',
+
     // Filters & Search
     'filter_by_role' => 'Фильтр по роли',
     'filter_by_status' => 'Фильтр по статусу',
@@ -1003,4 +1006,17 @@ return [
     'add_new_images' => 'Добавить новые изображения',
     'existing_images' => 'Существующие изображения',
     'confirm_delete_image' => 'Хотите удалить это изображение?',
+
+    // Pagination and bulk actions
+    'showing_results' => 'Показано с :from по :to из :total результатов',
+    'per_page' => 'На странице',
+    'items_selected' => 'элементов выбрано',
+    'activate_selected' => 'Активировать выбранные',
+    'deactivate_selected' => 'Деактивировать выбранные',
+    'delete_selected' => 'Удалить выбранные',
+    'confirm_bulk_activate' => 'Подтвердить активацию выбранных',
+    'confirm_bulk_deactivate' => 'Подтвердить деактивацию выбранных',
+    'confirm_bulk_delete' => 'Подтвердить удаление выбранных',
+    'bulk_action_warning' => 'Это действие нельзя отменить',
+    'confirm_action' => 'Подтвердить действие',
 ];

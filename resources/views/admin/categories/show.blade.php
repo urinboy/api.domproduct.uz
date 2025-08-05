@@ -215,10 +215,10 @@
                             <div class="card">
                                 <div class="card-body">
                                     <div class="d-flex align-items-center">
-                                        <img src="{{ $child->getImageUrl('thumbnail') }}"
-                                             alt="{{ $child->getName() }}"
-                                             class="img-circle mr-3"
-                                             style="width: 40px; height: 40px; object-fit: cover;">
+                                        {!! $child->getImageTag('thumbnail', [
+                                            'class' => 'img-circle mr-3',
+                                            'style' => 'width: 40px; height: 40px; object-fit: cover;'
+                                        ]) !!}
                                         <div class="flex-grow-1">
                                             <h6 class="mb-1">
                                                 <a href="{{ route('admin.categories.show', $child) }}">
@@ -323,10 +323,10 @@
                 <h3 class="card-title">{{ __('admin.category_image') }}</h3>
             </div>
             <div class="card-body text-center">
-                <img src="{{ $category->getImageUrl('medium') }}"
-                     alt="{{ $category->getName() }}"
-                     class="img-fluid rounded category-main-image"
-                     style="max-height: 300px;">
+                {!! $category->getImageTag('medium', [
+                    'class' => 'img-fluid rounded category-main-image',
+                    'style' => 'max-height: 300px;'
+                ]) !!}
 
                 <!-- Different sizes -->
                 <div class="mt-3">

@@ -9,13 +9,6 @@
         height: 50px;
         border-radius: 0.375rem;
         object-fit: cover;
-        background-color: #f8f9fa;
-        border: 1px solid #e9ecef;
-        transition: all 0.2s ease;
-    }
-    .category-image:hover {
-        transform: scale(1.1);
-        box-shadow: 0 4px 8px rgba(0,0,0,0.1);
     }
     .category-hierarchy {
         font-size: 0.875rem;
@@ -177,7 +170,7 @@
                     </div>
 
                     <div class="card-body p-0">
-                        @if(isset($categories) && $categories->count() > 0)
+                        @if($categories->count() > 0)
                         <div class="table-responsive">
                             <table class="table table-striped table-hover">
                                 <thead class="thead-light">
@@ -209,7 +202,9 @@
                                             </div>
                                         </td>
                                         <td>
-                                            {!! $category->getImageTag('thumbnail') !!}
+                                            <img src="{{ $category->getImageUrl('thumbnail') ?? asset('images/no-image.png') }}"
+                                                 alt="{{ $category->getName() }}"
+                                                 class="category-image">
                                         </td>
                                         <td>
                                             <div>
@@ -220,7 +215,7 @@
                                                     </span>
                                                 @endif
                                             </div>
-                                            @if(method_exists($category, 'getDepth') && $category->getDepth() > 0)
+                                            @if($category->getDepth() > 0)
                                                 <small class="text-muted category-hierarchy">
                                                     {{ implode(' > ', $category->getPath()) }}
                                                 </small>
@@ -285,18 +280,14 @@
                         <!-- Pagination -->
                         <div class="card-footer d-flex justify-content-between align-items-center">
                             <div class="text-muted">
-                                @if(isset($categories) && method_exists($categories, 'total'))
-                                    {{ __('admin.showing_results', [
-                                        'from' => $categories->firstItem() ?? 0,
-                                        'to' => $categories->lastItem() ?? 0,
-                                        'total' => $categories->total() ?? 0
-                                    ]) }}
-                                @endif
+                                {{ __('admin.showing_results', [
+                                    'from' => $categories->firstItem(),
+                                    'to' => $categories->lastItem(),
+                                    'total' => $categories->total()
+                                ]) }}
                             </div>
                             <div>
-                                @if(isset($categories) && method_exists($categories, 'withQueryString'))
-                                    {{ $categories->withQueryString()->links() }}
-                                @endif
+                                {{ $categories->withQueryString()->links() }}
                             </div>
                         </div>
                         @else
@@ -312,6 +303,159 @@
                     </div>
                 </div>
             </div>
+        </div>
+    </div>
+</section>
+                                    <div class="d-flex">
+                                        <button type="submit" class="btn btn-primary mr-2">
+                                            <i class="fas fa-search"></i> {{ __('admin.search') }}
+                                        </button>
+                                        <a href="{{ route('admin.categories.index') }}" class="btn btn-secondary">
+                                            <i class="fas fa-times"></i> {{ __('admin.clear') }}
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+
+        <!-- Categories List Card -->
+        <div class="card">
+            <div class="card-header">
+                <h3 class="card-title">{{ __('admin.categories_list') }}</h3>
+                <div class="card-tools">
+                    <a href="{{ route('admin.categories.create') }}" class="btn btn-primary btn-sm">
+                        <i class="fas fa-plus"></i> {{ __('admin.add_category') }}
+                    </a>
+                </div>
+            </div>
+            <div class="card-body">
+                @if($categories->count() > 0)
+                <div class="table-responsive">
+                    <table class="table table-bordered table-striped">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>{{ __('admin.image') }}</th>
+                                <th>{{ __('admin.name') }}</th>
+                                <th>{{ __('admin.parent') }}</th>
+                                <th>{{ __('admin.sort_order') }}</th>
+                                <th>{{ __('admin.products_count') }}</th>
+                                <th>{{ __('admin.status') }}</th>
+                                <th>{{ __('admin.created_at') }}</th>
+                                <th>{{ __('admin.actions') }}</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach($categories as $category)
+                            <tr>
+                                <td>{{ $category->id }}</td>
+                                <td>
+                                    <img src="{{ $category->getImageUrl('thumbnail') }}"
+                                         alt="{{ $category->getName() }}"
+                                         class="img-circle category-thumbnail"
+                                         style="width: 40px; height: 40px; object-fit: cover;">
+                                </td>
+                                <td>
+                                    <div>
+                                        <strong>{{ $category->getName() }}</strong>
+                                        @if($category->children()->exists())
+                                            <span class="badge badge-info badge-sm ml-1">
+                                                {{ $category->children()->count() }} {{ __('admin.children') }}
+                                            </span>
+                                        @endif
+                                    </div>
+                                    @if($category->getDepth() > 0)
+                                        <small class="text-muted">
+                                            {{ implode(' > ', $category->getPath()) }}
+                                        </small>
+                                    @endif
+                                </td>
+                                <td>
+                                    @if($category->parent)
+                                        <span class="badge badge-secondary">
+                                            {{ $category->parent->getName() }}
+                                        </span>
+                                    @else
+                                        <span class="text-muted">{{ __('admin.root') }}</span>
+                                    @endif
+                                </td>
+                                <td>
+                                    <span class="badge badge-light">{{ $category->sort_order ?? 0 }}</span>
+                                </td>
+                                <td>
+                                    <span class="badge badge-primary">
+                                        {{ $category->products()->count() }}
+                                    </span>
+                                </td>
+                                <td>
+                                    <div class="custom-control custom-switch">
+                                        <input type="checkbox" class="custom-control-input status-toggle"
+                                               id="status-{{ $category->id }}"
+                                               data-id="{{ $category->id }}"
+                                               {{ $category->is_active ? 'checked' : '' }}>
+                                        <label class="custom-control-label" for="status-{{ $category->id }}"></label>
+                                    </div>
+                                </td>
+                                <td>
+                                    <small class="text-muted">
+                                        {{ $category->created_at->format('d M Y') }}<br>
+                                        {{ $category->created_at->format('H:i') }}
+                                    </small>
+                                </td>
+                                <td>
+                                    <div class="btn-group" role="group">
+                                        <a href="{{ route('admin.categories.show', $category) }}"
+                                           class="btn btn-info btn-sm" title="{{ __('admin.view') }}">
+                                            <i class="fas fa-eye"></i>
+                                        </a>
+                                        <a href="{{ route('admin.categories.edit', $category) }}"
+                                           class="btn btn-warning btn-sm" title="{{ __('admin.edit') }}">
+                                            <i class="fas fa-edit"></i>
+                                        </a>
+                                        <button type="button" class="btn btn-danger btn-sm delete-category"
+                                                data-id="{{ $category->id }}"
+                                                data-name="{{ $category->getName() }}"
+                                                title="{{ __('admin.delete') }}">
+                                            <i class="fas fa-trash"></i>
+                                        </button>
+                                    </div>
+                                </td>
+                            </tr>
+                            @endforeach
+                        </tbody>
+                    </table>
+                </div>
+
+                <!-- Pagination -->
+                <div class="d-flex justify-content-between align-items-center mt-3">
+                    <div>
+                        {{ __('admin.showing_results', [
+                            'from' => $categories->firstItem(),
+                            'to' => $categories->lastItem(),
+                            'total' => $categories->total()
+                        ]) }}
+                    </div>
+                    <div>
+                        {{ $categories->withQueryString()->links() }}
+                    </div>
+                </div>
+                @else
+                <div class="text-center py-5">
+                    <i class="fas fa-th-large fa-3x text-muted mb-3"></i>
+                    <h5 class="text-muted">{{ __('admin.no_categories_found') }}</h5>
+                    <p class="text-muted">{{ __('admin.create_first_category') }}</p>
+                    <a href="{{ route('admin.categories.create') }}" class="btn btn-primary">
+                        <i class="fas fa-plus"></i> {{ __('admin.add_category') }}
+                    </a>
+                </div>
+                @endif
+            </div>
+        </div>
+    </div>
+</div>
+
         </div>
     </div>
 </section>
@@ -567,15 +711,6 @@ $(document).ready(function() {
     // Auto-submit filters
     $('select[name="status"], select[name="parent"], select[name="per_page"]').change(function() {
         $(this).closest('form').submit();
-    });
-
-    // Handle image errors for dynamically loaded content
-    $(document).on('error', '.category-image', function() {
-        const defaultImage = this.dataset.default;
-        if (this.src !== defaultImage) {
-            this.src = defaultImage;
-            this.onerror = null; // Prevent infinite loop
-        }
     });
 });
 </script>

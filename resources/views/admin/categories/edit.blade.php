@@ -237,10 +237,10 @@
                     <h3 class="card-title">{{ __('admin.current_image') }}</h3>
                 </div>
                 <div class="card-body text-center">
-                    <img src="{{ $category->getImageUrl('medium') }}"
-                         alt="{{ $category->getName() }}"
-                         class="img-fluid rounded current-image mb-3"
-                         style="max-height: 200px;">
+                    {!! $category->getImageTag('medium', [
+                        'class' => 'img-fluid rounded current-image mb-3',
+                        'style' => 'max-height: 200px;'
+                    ]) !!}
 
                     <div class="form-group">
                         <label for="image">{{ __('admin.upload_new_image') }}</label>

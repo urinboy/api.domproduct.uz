@@ -263,8 +263,25 @@ class Category extends Model
      */
     public function getDefaultImage()
     {
-        $baseUrl = config('app.url', 'https://api.domproduct.uz');
-        return $baseUrl . '/images/default-category.jpg';
+        return asset('images/default-image.png');
+    }
+
+    /**
+     * Get safe image URL with fallback to default image
+     * This method handles cases where image URL might return 404
+     */
+    public function getSafeImageUrl($size = 'medium')
+    {
+        $imageUrl = $this->getImageUrl($size);
+
+        // If getImageUrl already returns default image, return it
+        if ($imageUrl === $this->getDefaultImage()) {
+            return $imageUrl;
+        }
+
+        // For external URLs or storage URLs, we can't easily check if they exist
+        // So we return the URL and let frontend handle the fallback
+        return $imageUrl;
     }
 
     /**
@@ -273,12 +290,45 @@ class Category extends Model
     public function getImageSizes()
     {
         return [
-            'thumbnail' => $this->getImageUrl('thumbnail'),
-            'small' => $this->getImageUrl('small'),
-            'medium' => $this->getImageUrl('medium'),
-            'large' => $this->getImageUrl('large'),
-            'original' => $this->getImageUrl('original')
+            'thumbnail' => $this->getSafeImageUrl('thumbnail'),
+            'small' => $this->getSafeImageUrl('small'),
+            'medium' => $this->getSafeImageUrl('medium'),
+            'large' => $this->getSafeImageUrl('large'),
+            'original' => $this->getSafeImageUrl('original')
         ];
+    }
+
+    /**
+     * Check if category has a custom image (not default)
+     */
+    public function hasCustomImage()
+    {
+        return $this->image_original || $this->image_thumbnail ||
+               $this->image_small || $this->image_medium ||
+               $this->image_large || $this->image;
+    }
+
+    /**
+     * Get image HTML tag with safe fallback
+     */
+    public function getImageTag($size = 'medium', $attributes = [])
+    {
+        $defaultAttributes = [
+            'src' => $this->getSafeImageUrl($size),
+            'alt' => $this->getName(),
+            'class' => 'category-image',
+            'data-default' => $this->getDefaultImage(),
+            'onerror' => 'this.src=this.dataset.default; this.onerror=null;'
+        ];
+
+        $attributes = array_merge($defaultAttributes, $attributes);
+
+        $attributeString = '';
+        foreach ($attributes as $key => $value) {
+            $attributeString .= sprintf('%s="%s" ', $key, htmlspecialchars($value));
+        }
+
+        return sprintf('<img %s/>', rtrim($attributeString));
     }
 
     /**
@@ -295,5 +345,28 @@ class Category extends Model
             'image_path' => $imageData['path'] ?? null,
             'image' => $imageData['sizes']['medium'] ?? $imageData['original'] ?? null
         ]);
+    }
+
+    /**
+     * Get safe image data for API responses
+     */
+    public function getImageData($includeDefault = true)
+    {
+        $data = [
+            'has_custom_image' => $this->hasCustomImage(),
+            'sizes' => [
+                'thumbnail' => $this->getSafeImageUrl('thumbnail'),
+                'small' => $this->getSafeImageUrl('small'),
+                'medium' => $this->getSafeImageUrl('medium'),
+                'large' => $this->getSafeImageUrl('large'),
+                'original' => $this->getSafeImageUrl('original')
+            ]
+        ];
+
+        if ($includeDefault) {
+            $data['default_image'] = $this->getDefaultImage();
+        }
+
+        return $data;
     }
 }

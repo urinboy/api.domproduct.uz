@@ -175,7 +175,7 @@
         <ul class="navbar-nav ml-auto">
             <!-- Language Dropdown -->
             <li class="nav-item dropdown">
-                <a class="nav-link d-flex align-items-center" data-toggle="dropdown" href="#" aria-expanded="false">
+                <a class="nav-link d-flex align-items-center justify-content-between" data-toggle="dropdown" href="#" aria-expanded="false">
                     @php
                         $currentLocale = app()->getLocale();
                         $languages = [
@@ -236,8 +236,8 @@
     <aside class="main-sidebar sidebar-dark-primary elevation-4">
         <!-- Brand Logo -->
         <a href="{{ route('admin.dashboard') }}" class="brand-link">
-            <img src="{{ asset('favicon.png') }}" alt="DOM Product Logo" class="brand-image img-circle elevation-3" style="opacity: .8">
-            <span class="brand-text font-weight-light">DOM Product</span>
+            <img src="{{ asset('favicon.png') }}" alt="{{ config('app.name') }} Logo" class="brand-image img-circle elevation-3" style="opacity: .8">
+            <span class="brand-text font-weight-light">{{ config('app.name') }}</span>
         </a>
 
         <!-- Sidebar -->
@@ -271,29 +271,20 @@
                         </a>
                     </li>
 
-                    <!-- Products Management -->
-                    <li class="nav-item {{ request()->routeIs('admin.products.*') || request()->routeIs('admin.categories.*') ? 'menu-open' : '' }}">
-                        <a href="#" class="nav-link {{ request()->routeIs('admin.products.*') || request()->routeIs('admin.categories.*') ? 'active' : '' }}">
-                            <i class="nav-icon fas fa-box"></i>
-                            <p>
-                                {{ __('admin.products') }}
-                                <i class="fas fa-angle-left right"></i>
-                            </p>
+                    <!-- Categories Management -->
+                    <li class="nav-item">
+                        <a href="{{ route('admin.categories.index') }}" class="nav-link {{ request()->routeIs('admin.categories.*') ? 'active' : '' }}">
+                            <i class="nav-icon fas fa-tags"></i>
+                            <p>{{ __('admin.categories') }}</p>
                         </a>
-                        <ul class="nav nav-treeview">
-                            <li class="nav-item">
-                                <a href="{{ route('admin.products.index') }}" class="nav-link {{ request()->routeIs('admin.products.*') ? 'active' : '' }}">
-                                    <i class="far fa-circle nav-icon"></i>
-                                    <p>{{ __('admin.all_products') }}</p>
-                                </a>
-                            </li>
-                            <li class="nav-item">
-                                <a href="{{ route('admin.categories.index') }}" class="nav-link {{ request()->routeIs('admin.categories.*') ? 'active' : '' }}">
-                                    <i class="far fa-circle nav-icon"></i>
-                                    <p>{{ __('admin.categories') }}</p>
-                                </a>
-                            </li>
-                        </ul>
+                    </li>
+
+                    <!-- Products Management -->
+                    <li class="nav-item">
+                        <a href="{{ route('admin.products.index') }}" class="nav-link {{ request()->routeIs('admin.products.*') ? 'active' : '' }}">
+                            <i class="nav-icon fas fa-box"></i>
+                            <p>{{ __('admin.products') }}</p>
+                        </a>
                     </li>
 
                     <!-- Orders Management -->
