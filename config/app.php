@@ -79,7 +79,7 @@ return [
     |
     */
 
-    'timezone' => 'Asia/Tashkent',
+    'timezone' => env('APP_TIMEZONE', 'Asia/Tashkent'),
 
     /*
     |--------------------------------------------------------------------------
@@ -92,7 +92,7 @@ return [
     |
     */
 
-    'locale' => 'uz',
+    'locale' => env('APP_LOCALE', 'uz'),
 
     /*
     |--------------------------------------------------------------------------
@@ -105,7 +105,7 @@ return [
     |
     */
 
-    'fallback_locale' => 'uz',
+    'fallback_locale' => env('APP_FALLBACK_LOCALE', 'uz'),
 
     /*
     |--------------------------------------------------------------------------
@@ -118,7 +118,15 @@ return [
     |
     */
 
-    'faker_locale' => 'en_US',
+    'faker_locale' => env('APP_FAKER_LOCALE', (function() {
+        $locale = env('APP_LOCALE', 'uz');
+        $fakerLocales = [
+            'uz' => 'uz_UZ', // O'zbek tili uchun o'zbekcha faker
+            'ru' => 'ru_RU', // Rus tili uchun ruscha faker
+            'en' => 'en_US', // Ingliz tili uchun inglizcha faker
+        ];
+        return $fakerLocales[$locale] ?? 'uz_UZ';
+    })()),
 
     /*
     |--------------------------------------------------------------------------
