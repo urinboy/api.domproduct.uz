@@ -1,10 +1,10 @@
 @extends('web.layouts.app')
 
-@section('title', 'DOM PRODUCT - Bosh sahifa')
+@section('title', __('web.home.title'))
 
-@section('meta_description', 'DOM PRODUCT - O\'zbekistondagi eng yaxshi onlayn oziq-ovqat marketi. Toza va sifatli mahsulotlar, tez yetkazib berish, qulay narxlar.')
+@section('meta_description', __('web.home.meta_description'))
 
-@section('meta_keywords', 'onlayn market, oziq-ovqat, yetkazib berish, Toshkent, mevalar, sabzavotlar')
+@section('meta_keywords', __('web.home.meta_keywords'))
 
 @section('content')
     <!-- Categories Bar -->
@@ -15,12 +15,12 @@
                     <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
                         <path d="M4 6h16M4 12h16M4 18h16"/>
                     </svg>
-                    <span>Kategoriyalar</span>
+                    <span>{{ __('web.nav.categories') }}</span>
                 </a>
                 @foreach($categories->take(6) as $category)
                     <a href="{{ route('web.products.index', ['category' => $category->slug]) }}"
                        class="text-gray-700 hover:text-primary whitespace-nowrap transition-colors">
-                        {{ $category->icon ?? '📦' }} {{ $category->name }}
+                        {{ $category->icon ?? '📦' }} {{ $category->getName() }}
                     </a>
                 @endforeach
             </div>
@@ -34,14 +34,14 @@
             <div class="bg-gradient-to-r from-primary to-green-600 rounded-2xl p-8 text-white relative overflow-hidden">
                 <div class="relative z-10 grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">
                     <div>
-                        <h2 class="text-3xl md:text-4xl font-bold mb-4">Yangi kelgan mahsulotlar!</h2>
-                        <p class="text-lg mb-6 opacity-90">Toza va sifatli oziq-ovqat mahsulotlari sizning uyingizgacha yetkazib beramiz. 50,000 so'mdan yuqori xaridlarda bepul yetkazib berish!</p>
+                        <h2 class="text-3xl md:text-4xl font-bold mb-4">{{ __('web.home.hero_title') }}</h2>
+                        <p class="text-lg mb-6 opacity-90">{{ __('web.home.hero_subtitle') }}</p>
                         <div class="flex flex-col sm:flex-row gap-4">
                             <a href="{{ route('web.products.index') }}" class="btn bg-white text-primary hover:bg-gray-100 font-semibold">
-                                Hoziroq xarid qiling
+                                {{ __('web.home.hero_cta') }}
                             </a>
                             <a href="{{ route('web.categories.index') }}" class="btn bg-transparent border-2 border-white text-white hover:bg-white hover:text-primary font-semibold">
-                                Kategoriyalarni ko'rish
+                                {{ __('web.nav.categories') }}
                             </a>
                         </div>
                     </div>
@@ -71,8 +71,8 @@
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/>
                         </svg>
                     </div>
-                    <h3 class="font-semibold text-gray-800 mb-2">Tez yetkazib berish</h3>
-                    <p class="text-sm text-gray-600">2-3 soat ichida uyingizgacha yetkazib beramiz</p>
+                    <h3 class="font-semibold text-gray-800 mb-2">{{ __('web.home.services.fast_delivery.title') }}</h3>
+                    <p class="text-sm text-gray-600">{{ __('web.home.services.fast_delivery.description') }}</p>
                 </div>
 
                 <div class="bg-white rounded-xl p-6 text-center shadow-sm">
@@ -81,8 +81,8 @@
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
                         </svg>
                     </div>
-                    <h3 class="font-semibold text-gray-800 mb-2">Sifat kafolati</h3>
-                    <p class="text-sm text-gray-600">Faqat sifatli va toza mahsulotlar</p>
+                    <h3 class="font-semibold text-gray-800 mb-2">{{ __('web.home.services.quality.title') }}</h3>
+                    <p class="text-sm text-gray-600">{{ __('web.home.services.quality.description') }}</p>
                 </div>
 
                 <div class="bg-white rounded-xl p-6 text-center shadow-sm">
@@ -91,8 +91,8 @@
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1"/>
                         </svg>
                     </div>
-                    <h3 class="font-semibold text-gray-800 mb-2">Qulay narxlar</h3>
-                    <p class="text-sm text-gray-600">Eng qulay narxlarda sotib oling</p>
+                    <h3 class="font-semibold text-gray-800 mb-2">{{ __('web.home.services.price.title') }}</h3>
+                    <p class="text-sm text-gray-600">{{ __('web.home.services.price.description') }}</p>
                 </div>
             </div>
         </section>
@@ -102,11 +102,11 @@
         <section class="mb-8">
             <div class="flex items-center justify-between mb-6">
                 <div>
-                    <h3 class="text-2xl font-bold text-gray-800">Tavsiya etilgan mahsulotlar</h3>
-                    <p class="text-gray-600">Eng ko'p sotilgan va mashhur mahsulotlar</p>
+                    <h3 class="text-2xl font-bold text-gray-800">{{ __('web.home.featured_products') }}</h3>
+                    <p class="text-gray-600">{{ __('web.home.featured_description') }}</p>
                 </div>
                 <a href="{{ route('web.products.index', ['featured' => 'true']) }}" class="text-primary hover:text-primary-dark font-semibold">
-                    Barchasini ko'rish →
+                    {{ __('web.home.view_all') }} →
                 </a>
             </div>
             <div class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-4">
@@ -155,10 +155,10 @@
                 <div class="bg-gradient-to-r from-red-500 to-pink-500 rounded-2xl p-6 text-white">
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-6 items-center">
                         <div>
-                            <h3 class="text-2xl font-bold mb-2">🔥 Bugungi chegirmalar</h3>
-                            <p class="opacity-90 mb-4">Tanlangan mahsulotlarga 50% gacha chegirma. Chegirma faqat bugun amal qiladi!</p>
+                            <h3 class="text-2xl font-bold mb-2">{{ __('web.home.special_offers.title') }}</h3>
+                            <p class="opacity-90 mb-4">{{ __('web.home.special_offers.description') }}</p>
                             <a href="{{ route('web.products.index', ['on_sale' => 'true']) }}" class="btn bg-white text-red-500 hover:bg-gray-100 font-semibold">
-                                Chegirmalarni ko'rish
+                                {{ __('web.home.special_offers.view_deals') }}
                             </a>
                         </div>
                         <div class="text-right">
@@ -176,11 +176,11 @@
         <section class="mb-8">
             <div class="flex items-center justify-between mb-6">
                 <div>
-                    <h3 class="text-2xl font-bold text-gray-800">Kategoriyalar</h3>
-                    <p class="text-gray-600">Kerakli mahsulotni toping</p>
+                    <h3 class="text-2xl font-bold text-gray-800">{{ __('web.home.categories.title') }}</h3>
+                    <p class="text-gray-600">{{ __('web.home.categories.description') }}</p>
                 </div>
                 <a href="{{ route('web.categories.index') }}" class="text-primary hover:text-primary-dark font-semibold">
-                    Barchasini ko'rish →
+                    {{ __('web.home.categories.view_all') }} →
                 </a>
             </div>
             <div class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-4">
@@ -190,7 +190,7 @@
                             <span class="text-2xl">{{ $category->icon ?? '📦' }}</span>
                         </div>
                         <h4 class="font-semibold text-gray-800">{{ $category->getName() }}</h4>
-                        <p class="text-sm text-gray-500">{{ $category->products_count ?? 0 }}+ mahsulot</p>
+                        <p class="text-sm text-gray-500">{{ $category->products_count ?? 0 }}+ {{ __('web.home.categories.products_count') }}</p>
                     </a>
                 @endforeach
             </div>
@@ -201,11 +201,11 @@
             <section class="mb-8">
                 <div class="flex items-center justify-between mb-6">
                     <div>
-                        <h3 class="text-2xl font-bold text-gray-800">Yangi mahsulotlar</h3>
-                        <p class="text-gray-600">Yangi qo'shilgan mahsulotlar</p>
+                        <h3 class="text-2xl font-bold text-gray-800">{{ __('web.home.new_products.title') }}</h3>
+                        <p class="text-gray-600">{{ __('web.home.new_products.description') }}</p>
                     </div>
                     <a href="{{ route('web.products.index', ['sort' => 'newest']) }}" class="text-primary hover:text-primary-dark font-semibold">
-                        Barchasini ko'rish →
+                        {{ __('web.home.new_products.view_all') }} →
                     </a>
                 </div>
                 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -242,7 +242,7 @@
                                     @endif
                                 </div>
                                 <button onclick="addToCart({{ $product->id }})" class="bg-primary text-white rounded-lg px-4 py-2 hover:bg-primary-dark transition-colors">
-                                    Savatga
+                                    {{ __('web.home.add_to_cart') }}
                                 </button>
                             </div>
                         </div>
@@ -254,14 +254,14 @@
         <!-- Newsletter Section -->
         <section class="mb-8">
             <div class="bg-gray-800 rounded-2xl p-8 text-white text-center">
-                <h3 class="text-2xl font-bold mb-2">Yangiliklar va aksiyalardan xabardor bo'ling</h3>
-                <p class="text-gray-300 mb-6">Email manzilingizni qoldiring va maxsus takliflarni birinchi bo'lib oling</p>
+                <h3 class="text-2xl font-bold mb-2">{{ __('web.home.newsletter.title') }}</h3>
+                <p class="text-gray-300 mb-6">{{ __('web.home.newsletter.description') }}</p>
                 <form action="{{ route('web.newsletter.subscribe') }}" method="POST" class="max-w-md mx-auto flex gap-3">
                     @csrf
-                    <input type="email" name="email" placeholder="Email manzilingiz" required
+                    <input type="email" name="email" placeholder="{{ __('web.home.newsletter.email_placeholder') }}" required
                            class="flex-1 px-4 py-3 rounded-lg bg-white text-gray-800 focus:outline-none focus:ring-2 focus:ring-primary">
                     <button type="submit" class="btn bg-primary text-white hover:bg-primary-dark px-6">
-                        Obuna bo'lish
+                        {{ __('web.home.newsletter.subscribe_button') }}
                     </button>
                 </form>
             </div>
@@ -275,13 +275,13 @@
                 <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
                     <path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/>
                 </svg>
-                <span class="text-xs mt-1">Bosh sahifa</span>
+                <span class="text-xs mt-1">{{ __('web.home.mobile_nav.home') }}</span>
             </a>
             <a href="{{ route('web.categories.index') }}" class="flex flex-col items-center py-2 px-3 text-gray-500">
                 <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 10h16M4 14h16M4 18h16"/>
                 </svg>
-                <span class="text-xs mt-1">Kategoriya</span>
+                <span class="text-xs mt-1">{{ __('web.home.mobile_nav.category') }}</span>
             </a>
             <a href="{{ route('web.cart') }}" class="flex flex-col items-center py-2 px-3 text-gray-500">
                 <div class="relative">
@@ -292,27 +292,27 @@
                         {{ session('cart') ? count(session('cart')) : 0 }}
                     </span>
                 </div>
-                <span class="text-xs mt-1">Savat</span>
+                <span class="text-xs mt-1">{{ __('web.home.mobile_nav.cart') }}</span>
             </a>
             <a href="{{ route('web.products.search') }}" class="flex flex-col items-center py-2 px-3 text-gray-500">
                 <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m21 21-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
                 </svg>
-                <span class="text-xs mt-1">Qidiruv</span>
+                <span class="text-xs mt-1">{{ __('web.home.mobile_nav.search') }}</span>
             </a>
             @auth
                 <a href="{{ route('web.profile') }}" class="flex flex-col items-center py-2 px-3 text-gray-500">
                     <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/>
                     </svg>
-                    <span class="text-xs mt-1">Profil</span>
+                    <span class="text-xs mt-1">{{ __('web.home.mobile_nav.profile') }}</span>
                 </a>
             @else
                 <a href="{{ route('web.login') }}" class="flex flex-col items-center py-2 px-3 text-gray-500">
                     <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/>
                     </svg>
-                    <span class="text-xs mt-1">Kirish</span>
+                    <span class="text-xs mt-1">{{ __('auth.login') }}</span>
                 </a>
             @endauth
         </div>

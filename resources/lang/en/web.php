@@ -7,16 +7,8 @@ return [
         'categories' => 'Categories',
         'products' => 'Products',
         'about' => 'About Us',
-        'contact' => 'Cont    // Profile
-    'profile' => [
-        'wishlist_description' => 'List of products you liked',
-        'wishlist_empty' => 'Wishlist is Empty',
-        'wishlist_empty_message' => 'You haven\'t added any products to wishlist yet',
-        'wishlist_empty_description' => 'Add your favorite products to wishlist so you don\'t lose them',
-        'added_to_wishlist' => 'Added to Wishlist',
-        'confirm_remove_wishlist' => 'Do you want to remove from wishlist?',
-        'removed_from_wishlist' => 'Removed from Wishlist'
-    ],     'cart' => 'Cart',
+        'contact' => 'Contact',
+        'cart' => 'Cart',
         'profile' => 'Profile',
         'login' => 'Login',
         'register' => 'Register',
@@ -27,11 +19,13 @@ return [
 
     // Home page
     'home' => [
-        'title' => 'DOM PRODUCT - Best Products',
+        'title' => 'DOM PRODUCT - Home Page',
+        'meta_description' => 'DOM PRODUCT - The best online grocery store in Uzbekistan. Fresh and quality products, fast delivery, affordable prices.',
+        'meta_keywords' => 'online store, groceries, delivery, Tashkent, fruits, vegetables',
         'subtitle' => 'Quality products, fast delivery, affordable prices',
-        'hero_title' => 'Best products for your home',
-        'hero_subtitle' => 'High quality, affordable prices and fast delivery service',
-        'hero_cta' => 'Start Shopping',
+        'hero_title' => 'New Product Arrivals!',
+        'hero_subtitle' => 'We deliver fresh and quality food products right to your doorstep. Free delivery on orders over 50,000 sum!',
+        'hero_cta' => 'Shop Now',
         'hero_learn_more' => 'Learn More',
         'best_sellers' => 'Best Sellers',
         'new_products' => 'New Products',
@@ -40,6 +34,25 @@ return [
         'view_all' => 'View All',
         'add_to_cart' => 'Add to Cart',
         'buy_now' => 'Buy Now',
+        'featured_products' => 'Featured Products',
+        'featured_description' => 'Best-selling and popular products',
+
+        // Services
+        'services' => [
+            'fast_delivery' => [
+                'title' => 'Fast Delivery',
+                'description' => 'We deliver to your home in 2-3 hours'
+            ],
+            'quality' => [
+                'title' => 'Quality Guarantee',
+                'description' => 'Only quality and fresh products'
+            ],
+            'price' => [
+                'title' => 'Affordable Prices',
+                'description' => 'Shop at the most competitive prices'
+            ]
+        ],
+
         'features_title' => 'Why choose us?',
         'features' => [
             'quality' => [
@@ -69,6 +82,50 @@ return [
             'products' => 'Products',
             'orders' => 'Orders',
             'satisfaction' => 'Satisfaction'
+        ],
+        'featured_products' => 'Featured Products',
+        'featured_description' => 'Most popular and best-selling products',
+
+        // Special offers
+        'special_offers' => [
+            'title' => '🔥 Today\'s Deals',
+            'description' => 'Up to 50% off on selected products. Limited time offer!',
+            'view_deals' => 'View Deals'
+        ],
+
+        // Categories
+        'categories' => [
+            'title' => 'Categories',
+            'description' => 'Find the product you need',
+            'view_all' => 'View All',
+            'products_count' => 'products'
+        ],
+
+        // New products
+        'new_products' => [
+            'title' => 'New Products',
+            'description' => 'Recently added products',
+            'view_all' => 'View All'
+        ],
+
+        // Common buttons
+        'add_to_cart' => 'Add to Cart',
+
+        // Newsletter
+        'newsletter' => [
+            'title' => 'Stay updated with news and promotions',
+            'description' => 'Leave your email and be the first to get special offers',
+            'email_placeholder' => 'Your email',
+            'subscribe_button' => 'Subscribe'
+        ],
+
+        // Mobile navigation
+        'mobile_nav' => [
+            'home' => 'Home',
+            'category' => 'Category',
+            'cart' => 'Cart',
+            'search' => 'Search',
+            'profile' => 'Profile'
         ]
     ],
 

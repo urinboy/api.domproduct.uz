@@ -18,5 +18,6 @@ return [
     'throttle' => 'Juda ko\'p kirish urinishi. Iltimos, :seconds soniyadan keyin qayta urinib ko\'ring.',
     'login_success' => 'Xush kelibsiz, :name! Muvaffaqiyatli tizimga kirdingiz.',
     'logout_success' => 'Muvaffaqiyatli tizimdan chiqdingiz. Xayr!',
+    'login' => 'Kirish',
 
 ];

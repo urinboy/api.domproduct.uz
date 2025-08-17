@@ -18,5 +18,6 @@ return [
     'throttle' => 'Too many login attempts. Please try again in :seconds seconds.',
     'login_success' => 'Welcome, :name! You have successfully logged in.',
     'logout_success' => 'You have been successfully logged out. Goodbye!',
+    'login' => 'Login',
 
 ];

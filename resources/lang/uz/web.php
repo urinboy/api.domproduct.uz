@@ -19,11 +19,13 @@ return [
 
     // Home page
     'home' => [
-        'title' => 'DOM PRODUCT - Eng yaxshi mahsulotlar',
+        'title' => 'DOM PRODUCT - Bosh sahifa',
+        'meta_description' => 'DOM PRODUCT - O\'zbekistondagi eng yaxshi onlayn oziq-ovqat marketi. Toza va sifatli mahsulotlar, tez yetkazib berish, qulay narxlar.',
+        'meta_keywords' => 'onlayn market, oziq-ovqat, yetkazib berish, Toshkent, mevalar, sabzavotlar',
         'subtitle' => 'Sifatli mahsulotlar, tez yetkazib berish, arzon narxlar',
-        'hero_title' => 'Eng yaxshi mahsulotlar sizning uyingiz uchun',
-        'hero_subtitle' => 'Yuqori sifat, qulay narx va tez yetkazib berish xizmati bilan tanishing',
-        'hero_cta' => 'Xarid qilishni boshlash',
+        'hero_title' => 'Yangi kelgan mahsulotlar!',
+        'hero_subtitle' => 'Toza va sifatli oziq-ovqat mahsulotlari sizning uyingizgacha yetkazib beramiz. 50,000 so\'mdan yuqori xaridlarda bepul yetkazib berish!',
+        'hero_cta' => 'Hoziroq xarid qiling',
         'hero_learn_more' => 'Batafsil ma\'lumot',
         'best_sellers' => 'Eng ko\'p sotilganlar',
         'new_products' => 'Yangi mahsulotlar',
@@ -32,6 +34,58 @@ return [
         'view_all' => 'Barchasini ko\'rish',
         'add_to_cart' => 'Savatga qo\'shish',
         'buy_now' => 'Xarid qilish',
+        'featured_products' => 'Tavsiya etilgan mahsulotlar',
+        'featured_description' => 'Eng ko\'p sotilgan va mashhur mahsulotlar',
+
+        // Special offers
+        'special_offers' => [
+            'title' => '🔥 Bugungi chegirmalar',
+            'description' => 'Tanlangan mahsulotlarga 50% gacha chegirma. Chegirma faqat bugun amal qiladi!',
+            'view_deals' => 'Chegirmalarni ko\'rish'
+        ],
+
+        // Categories
+        'categories' => [
+            'title' => 'Kategoriyalar',
+            'description' => 'Kerakli mahsulotni toping',
+            'view_all' => 'Barchasini ko\'rish',
+            'products_count' => 'mahsulot'
+        ],
+
+        // New products
+        'new_products' => [
+            'title' => 'Yangi mahsulotlar',
+            'description' => 'Yangi qo\'shilgan mahsulotlar',
+            'view_all' => 'Barchasini ko\'rish'
+        ],
+
+        // Common buttons
+        'add_to_cart' => 'Savatga',
+
+        // Newsletter
+        'newsletter' => [
+            'title' => 'Yangiliklar va aksiyalardan xabardor bo\'ling',
+            'description' => 'Email manzilingizni qoldiring va maxsus takliflarni birinchi bo\'lib oling',
+            'email_placeholder' => 'Email manzilingiz',
+            'subscribe_button' => 'Obuna bo\'lish'
+        ],
+
+        // Services
+        'services' => [
+            'fast_delivery' => [
+                'title' => 'Tez yetkazib berish',
+                'description' => '2-3 soat ichida uyingizgacha yetkazib beramiz'
+            ],
+            'quality' => [
+                'title' => 'Sifat kafolati',
+                'description' => 'Faqat sifatli va toza mahsulotlar'
+            ],
+            'price' => [
+                'title' => 'Qulay narxlar',
+                'description' => 'Eng qulay narxlarda sotib oling'
+            ]
+        ],
+
         'features_title' => 'Nega aynan bizni tanlashadi?',
         'features' => [
             'quality' => [
@@ -61,6 +115,33 @@ return [
             'products' => 'Mahsulotlar',
             'orders' => 'Buyurtmalar',
             'satisfaction' => 'Qoniqish darajasi'
+        ],
+
+        // New products
+        'new_products' => [
+            'title' => 'Yangi mahsulotlar',
+            'description' => 'Yangi qo\'shilgan mahsulotlar',
+            'view_all' => 'Barchasini ko\'rish'
+        ],
+
+        // Common buttons
+        'add_to_cart' => 'Savatga',
+
+        // Newsletter
+        'newsletter' => [
+            'title' => 'Yangiliklar va aksiyalardan xabardor bo\'ling',
+            'description' => 'Email manzilingizni qoldiring va maxsus takliflarni birinchi bo\'lib oling',
+            'email_placeholder' => 'Email manzilingiz',
+            'subscribe_button' => 'Obuna bo\'lish'
+        ],
+
+        // Mobile navigation
+        'mobile_nav' => [
+            'home' => 'Bosh sahifa',
+            'category' => 'Kategoriya',
+            'cart' => 'Savat',
+            'search' => 'Qidiruv',
+            'profile' => 'Profil'
         ]
     ],
 
