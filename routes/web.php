@@ -16,6 +16,10 @@ use App\Http\Controllers\Web\ProfileController;
 use App\Http\Controllers\Web\CartController;
 use App\Http\Controllers\Web\WishlistController;
 
+// Template Controllers
+use App\Http\Controllers\Template\WebTemplateController;
+use App\Http\Controllers\Template\MobileTemplateController;
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -119,6 +123,28 @@ Route::name('web.')->group(function () {
     // Profile shortcut
     Route::get('/profile', [ProfileController::class, 'index'])->name('profile')->middleware('auth');
     Route::get('/cart', [CartController::class, 'index'])->name('cart');
+});
+
+/*
+|--------------------------------------------------------------------------
+| Template Routes - For Testing New Templates
+|--------------------------------------------------------------------------
+*/
+
+// Web Template Routes (Desktop)
+Route::prefix('w')->name('template.web.')->group(function () {
+    Route::get('/', [WebTemplateController::class, 'home'])->name('home');
+    Route::get('/products', [WebTemplateController::class, 'products'])->name('products');
+});
+
+// Mobile Template Routes
+Route::prefix('m')->name('template.mobile.')->group(function () {
+    Route::get('/', [MobileTemplateController::class, 'home'])->name('home');
+    Route::get('/categories', [MobileTemplateController::class, 'categories'])->name('categories');
+    Route::get('/products', [MobileTemplateController::class, 'products'])->name('products');
+    Route::get('/product/{id}', [MobileTemplateController::class, 'productDetail'])->name('product.detail');
+    Route::get('/cart', [MobileTemplateController::class, 'cart'])->name('cart');
+    Route::get('/wishlist', [MobileTemplateController::class, 'wishlist'])->name('wishlist');
 });
 
 /*
