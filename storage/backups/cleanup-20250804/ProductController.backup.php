@@ -10,19 +10,21 @@ use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Log;
+use App\Http\Resources\ProductResource;
+use App\Http\Resources\ProductCollection;
 
 /**
  * @group Product Management
- * 
+ *
  * APIs for managing products with comprehensive documentation and validation
  */
 class ProductController extends Controller
 {
     /**
      * Get products list with filtering and pagination
-     * 
+     *
      * @group Public API
-     * 
+     *
      * @queryParam language string The language code for translations (uz, ru, en). Example: uz
      * @queryParam category_id integer Filter by category ID. Example: 1
      * @queryParam is_featured boolean Filter featured products. Example: 1
@@ -33,7 +35,7 @@ class ProductController extends Controller
      * @queryParam sort_order string Sort direction (asc, desc). Example: desc
      * @queryParam page integer Page number for pagination. Example: 1
      * @queryParam per_page integer Items per page (max 50). Example: 10
-     * 
+     *
      * @response 200 {
      *   "data": [
      *     {
@@ -72,7 +74,7 @@ class ProductController extends Controller
      *     "last_page": 3
      *   }
      * }
-     * 
+     *
      * @response 422 {
      *   "error": "Validation Error",
      *   "message": "The given data was invalid.",
@@ -153,7 +155,7 @@ class ProductController extends Controller
                 // Apply sorting
                 $sortBy = $request->get('sort_by', 'created_at');
                 $sortOrder = $request->get('sort_order', 'desc');
-                
+
                 if ($sortBy === 'name') {
                     $query->join('product_translations', function($join) use ($language) {
                         $join->on('products.id', '=', 'product_translations.product_id')
@@ -190,73 +192,6 @@ class ProductController extends Controller
                 'message' => 'Something went wrong while fetching products.'
             ], 500);
         }
-    }
-                $query->where('category_id', $category->id);
-            }
-        }
-
-        // Search by name
-        if ($request->filled('search')) {
-            $search = $request->search;
-            $language = $request->header('Accept-Language', 'uz');
-
-            $query->whereHas('translations', function ($q) use ($search, $language) {
-                $q->where('language', $language)
-                  ->where(function ($q2) use ($search) {
-                      $q2->where('name', 'LIKE', "%{$search}%")
-                         ->orWhere('short_description', 'LIKE', "%{$search}%")
-                         ->orWhere('description', 'LIKE', "%{$search}%");
-                  });
-            });
-        }
-
-        // Filter by featured
-        if ($request->boolean('featured')) {
-            $query->featured();
-        }
-
-        // Filter by in stock
-        if ($request->boolean('in_stock')) {
-            $query->inStock();
-        }
-
-        // Filter by price range
-        if ($request->filled('min_price')) {
-            $query->where('price', '>=', $request->min_price);
-        }
-        if ($request->filled('max_price')) {
-            $query->where('price', '<=', $request->max_price);
-        }
-
-        // Sort options
-        $sortBy = $request->get('sort_by', 'created_at');
-        $sortOrder = $request->get('sort_order', 'desc');
-
-        switch ($sortBy) {
-            case 'price':
-                $query->orderBy('price', $sortOrder);
-                break;
-            case 'name':
-                $language = $request->header('Accept-Language', 'uz');
-                $query->join('product_translations', function ($join) use ($language) {
-                    $join->on('products.id', '=', 'product_translations.product_id')
-                         ->where('product_translations.language', $language);
-                })->orderBy('product_translations.name', $sortOrder);
-                break;
-            case 'rating':
-                $query->orderBy('rating', $sortOrder);
-                break;
-            case 'popularity':
-                $query->orderBy('view_count', $sortOrder);
-                break;
-            default:
-                $query->orderBy('created_at', $sortOrder);
-        }
-
-        $perPage = min($request->get('per_page', 15), 50); // Max 50 items per page
-        $products = $query->paginate($perPage);
-
-        return new ProductCollection($products);
     }
 
     /**
