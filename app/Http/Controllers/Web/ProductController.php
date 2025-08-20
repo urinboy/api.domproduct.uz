@@ -6,67 +6,26 @@ use App\Http\Controllers\Controller;
 use App\Models\Product;
 use App\Models\Category;
 use Illuminate\Http\Request;
+use App\Services\ProductService;
 
 class ProductController extends Controller
 {
+    protected $service;
+
+    public function __construct(ProductService $service)
+    {
+        $this->service = $service;
+    }
+
     /**
-     * Display a listing of products
+     * Display a listing of products (refactored to use ProductService)
      */
     public function index(Request $request)
     {
-        $categoryId = $request->get('category');
-        $sort = $request->get('sort', 'newest');
-        $priceMin = $request->get('price_min');
-        $priceMax = $request->get('price_max');
-        $perPage = $request->get('per_page', 20);
+        $perPage = (int) $request->get('per_page', 20);
+        $params = $request->only(['category', 'sort', 'price_min', 'price_max', 'search']);
 
-        $products = Product::where('is_active', true);
-
-        // Kategoriya filtri
-        if ($categoryId) {
-            $category = Category::find($categoryId);
-            if ($category) {
-                // Asosiy kategoriya va uning bolalari
-                $categoryIds = [$categoryId];
-                $childCategories = Category::where('parent_id', $categoryId)->pluck('id')->toArray();
-                $categoryIds = array_merge($categoryIds, $childCategories);
-
-                $products->whereIn('category_id', $categoryIds);
-            }
-        }
-
-        // Narx filtri
-        if ($priceMin) {
-            $products->where('price', '>=', $priceMin);
-        }
-        if ($priceMax) {
-            $products->where('price', '<=', $priceMax);
-        }
-
-        // Saralash
-        switch ($sort) {
-            case 'price_low':
-                $products->orderBy('price', 'asc');
-                break;
-            case 'price_high':
-                $products->orderBy('price', 'desc');
-                break;
-            case 'name_asc':
-                $products->orderBy('name->'.app()->getLocale(), 'asc');
-                break;
-            case 'name_desc':
-                $products->orderBy('name->'.app()->getLocale(), 'desc');
-                break;
-            case 'popular':
-                $products->orderBy('view_count', 'desc');
-                break;
-            case 'newest':
-            default:
-                $products->orderBy('created_at', 'desc');
-                break;
-        }
-
-        $products = $products->paginate($perPage);
+        $products = $this->service->getListing($params, $perPage);
 
         // Kategoriyalar
         $categories = Category::where('is_active', true)
@@ -78,13 +37,7 @@ class ProductController extends Controller
         $priceRange = Product::where('is_active', true)->selectRaw('MIN(price) as min, MAX(price) as max')->first();
 
         return view('web.products.index', compact(
-            'products',
-            'categories',
-            'categoryId',
-            'sort',
-            'priceMin',
-            'priceMax',
-            'priceRange'
+            'products', 'categories', 'priceRange'
         ));
     }
 
@@ -93,7 +46,7 @@ class ProductController extends Controller
      */
     public function show($id)
     {
-        $product = Product::where('is_active', true)->findOrFail($id);
+        $product = $this->service->find((int)$id);
 
         // Ko'rishlar sonini oshirish
         $product->increment('view_count');
@@ -119,26 +72,26 @@ class ProductController extends Controller
     /**
      * Add product to favorites (requires authentication)
      */
-    public function addToFavorites(Request $request, $id)
-    {
-        if (!auth()->check()) {
-            return response()->json(['message' => 'Tizimga kirishingiz kerak'], 401);
-        }
+    // public function addToFavorites(Request $request, $id)
+    // {
+    //     if (!auth()->check()) {
+    //         return response()->json(['message' => 'Tizimga kirishingiz kerak'], 401);
+    //     }
 
-        $product = Product::findOrFail($id);
-        $user = auth()->user();
+    //     $product = Product::findOrFail($id);
+    //     $user = auth()->user();
 
-        // Sevimlilar jadvalidagi bog'lanishni tekshirish
-        $exists = $user->favoriteProducts()->where('product_id', $id)->exists();
+    //     // Sevimlilar jadvalidagi bog'lanishni tekshirish
+    //     $exists = $user->favoriteProducts()->where('product_id', $id)->exists();
 
-        if ($exists) {
-            $user->favoriteProducts()->detach($id);
-            return response()->json(['message' => 'Sevimlilardan olib tashlandi', 'status' => 'removed']);
-        } else {
-            $user->favoriteProducts()->attach($id);
-            return response()->json(['message' => 'Sevimlilarga qo\'shildi', 'status' => 'added']);
-        }
-    }
+    //     if ($exists) {
+    //         $user->favoriteProducts()->detach($id);
+    //         return response()->json(['message' => 'Sevimlilardan olib tashlandi', 'status' => 'removed']);
+    //     } else {
+    //         $user->favoriteProducts()->attach($id);
+    //         return response()->json(['message' => 'Sevimlilarga qo\'shildi', 'status' => 'added']);
+    //     }
+    // }
 
     /**
      * Get product quick view data
