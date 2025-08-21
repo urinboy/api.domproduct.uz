@@ -1,6 +1,48 @@
 # Laravel (Blade) ga toʻliq moslashish — Reja va tavsiyalar
 
-Mazkur hujjat loyihani hozirgi holatidan toza Laravel Blade arxitekturasiga moslashtirish bo‘yicha bosqichma-bosqich reja va aniqlangan kamchiliklarni beradi. Maqsad: API-first arxitekturadan (React/Vite reja hujjatlari, backup fayllar) to‘liq Laravel Blade server-rendered ilovaga o‘tish.
+Mazkur hujjat loyihani hozirgi holatidan toza Laravel Blade arxitekturasiga mAgar tasdiqlasangiz, keyingi bosqichni boshlayman va har bosqichdan so'ng shu formatda hisobot qoldiraman.
+
+---
+
+## Hisobot — Bosqich 2: React Frontend uchun to'liq API Documentation (2025-08-20)
+
+Qisqacha: loyiha uchun React frontend ishlab chiqishga tayyor bo'lgan barcha API endpointlar to'liq hujjatlashtirildi va amaliy misollar bilan birga `public/API_DOCUMENTATION_FOR_REACT.md` faylida jamlandi.
+
+Qilingan ishlar:
+- Loyihadagi barcha API route'lar tahlil qilindi (`routes/api.php` va controllerlar orqali)
+- 10 ta asosiy API bo'limi uchun to'liq documentation yaratildi:
+  1. Authentication API (register, login, logout, current user)
+  2. Products API (list, details, featured, related, by category)
+  3. Categories API (list, tree, details, breadcrumbs)
+  4. Shopping Cart API (get, add, update, remove, clear)
+  5. Orders API (list, create, details, status)
+  6. User Profile API (get, update, avatar upload, change password)
+  7. Address Management API (CRUD operations, set default)
+  8. Payment API (methods, process payment)
+  9. Notifications API (list, unread count, mark read)
+  10. Languages API (available languages)
+
+Qo`shilgan / o`zgartirilgan fayllar:
+- + `public/API_DOCUMENTATION_FOR_REACT.md` (yangi, 500+ qator)
+
+Texnik xususiyatlar:
+- Har bir endpoint uchun: HTTP metod, URL, request/response format, query parameterlari
+- Validation qoidalari va error handling
+- Rate limiting ma'lumotlari
+- React uchun amaliy misollar (Axios setup, custom hooks, Context API)
+- Authentication flow va token management
+- Pagination va filtering logikasi
+
+Frontend developer uchun faydalar:
+- To'liq ishlaydigan API reference
+- Copy-paste tayyor kod misollar
+- Error handling strategiyalari
+- Best practices (hooks, context, interceptors)
+
+Keyingi qadamlar:
+1. API testlash va validation (Postman yoki Thunder Client orqali)
+2. React loyiha structure taklifi va starter template yaratish
+3. Component library va state management strategiyasislashtirish bo‘yicha bosqichma-bosqich reja va aniqlangan kamchiliklarni beradi. Maqsad: API-first arxitekturadan (React/Vite reja hujjatlari, backup fayllar) to‘liq Laravel Blade server-rendered ilovaga o‘tish.
 
 ## 1. Maqsad
 - Barcha frontend funksiyalarni Blade shablonlarga o‘tkazish.
