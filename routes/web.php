@@ -109,6 +109,7 @@ Route::name('web.')->group(function () {
 
     // Newsletter
     Route::post('/newsletter/subscribe', [HomeController::class, 'subscribeNewsletter'])->name('newsletter.subscribe');
+    Route::post('/newsletter/unsubscribe', [HomeController::class, 'unsubscribeNewsletter'])->name('newsletter.unsubscribe');
 
     // Wishlist
     Route::middleware('auth')->prefix('wishlist')->name('wishlist.')->group(function () {

@@ -933,6 +933,271 @@ FormData: {
 
 ## 10. LANGUAGES API
 
+### Newsletter Subscription
+Подписка и управление рассылкой новостей.
+
+#### Subscribe to Newsletter
+```http
+POST /api/v1/languages/subscribe
+Content-Type: application/json
+
+{
+    "email": "user@example.com",
+    "name": "User Name" // optional
+}
+```
+
+**Success Response (201 Created - New subscription):**
+```json
+{
+    "success": true,
+    "message": "Muvaffaqiyatli obuna bo'ldingiz!",
+    "data": {
+        "email": "user@example.com",
+        "status": "active",
+        "subscribed_at": "2025-08-21T03:00:10.000000Z"
+    }
+}
+```
+
+**Success Response (200 OK - Reactivated subscription):**
+```json
+{
+    "success": true,
+    "message": "Siz yana obuna bo'ldingiz!",
+    "data": {
+        "email": "user@example.com",
+        "status": "active",
+        "subscribed_at": "2025-08-21T03:02:33.000000Z"
+    }
+}
+```
+
+**Error Response (409 Conflict - Already subscribed):**
+```json
+{
+    "success": false,
+    "message": "Siz allaqachon obuna bo'lgansiz!",
+    "errors": {
+        "email": ["Bu email allaqachon obuna bo'lgan."]
+    }
+}
+```
+
+#### Unsubscribe from Newsletter
+```http
+POST /api/v1/languages/unsubscribe
+Content-Type: application/json
+
+{
+    "email": "user@example.com"
+}
+```
+
+**Success Response (200 OK):**
+```json
+{
+    "success": true,
+    "message": "Siz muvaffaqiyatli obunani bekor qildingiz.",
+    "data": {
+        "email": "user@example.com",
+        "status": "unsubscribed",
+        "unsubscribed_at": "2025-08-21T03:01:12.000000Z"
+    }
+}
+```
+
+**Error Response (404 Not Found):**
+```json
+{
+    "success": false,
+    "message": "Bu email bilan obuna topilmadi.",
+    "errors": {
+        "email": ["Bu email bilan obuna mavjud emas."]
+    }
+}
+```
+
+#### Check Subscription Status
+```http
+POST /api/v1/languages/status
+Content-Type: application/json
+
+{
+    "email": "user@example.com"
+}
+```
+
+**Success Response (200 OK - Active subscription):**
+```json
+{
+    "success": true,
+    "message": "Obuna statusi olindi.",
+    "data": {
+        "email": "user@example.com",
+        "subscribed": true,
+        "status": "active",
+        "subscribed_at": "2025-08-21T03:02:33.000000Z",
+        "unsubscribed_at": null
+    }
+}
+```
+
+**Response (404 Not Found - No subscription):**
+```json
+{
+    "success": false,
+    "message": "Bu email bilan obuna topilmadi.",
+    "data": {
+        "subscribed": false,
+        "status": null
+    }
+}
+```
+
+#### React Hook Example - Newsletter
+```jsx
+// hooks/useLanguages.js
+import { useState } from 'react';
+import { toast } from 'react-toastify';
+
+export const useLanguages = () => {
+    const [loading, setLoading] = useState(false);
+
+    const subscribe = async (email, name = '') => {
+        setLoading(true);
+        try {
+            const response = await fetch('/api/v1/languages/subscribe', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ email, name }),
+            });
+
+            const result = await response.json();
+
+            if (result.success) {
+                toast.success(result.message);
+                return result.data;
+            } else {
+                toast.error(result.message);
+                return null;
+            }
+        } catch (error) {
+            toast.error('Xatolik yuz berdi. Qaytadan urinib ko\'ring.');
+            return null;
+        } finally {
+            setLoading(false);
+        }
+    };
+
+    const unsubscribe = async (email) => {
+        setLoading(true);
+        try {
+            const response = await fetch('/api/v1/languages/unsubscribe', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ email }),
+            });
+
+            const result = await response.json();
+
+            if (result.success) {
+                toast.success(result.message);
+                return result.data;
+            } else {
+                toast.error(result.message);
+                return null;
+            }
+        } catch (error) {
+            toast.error('Xatolik yuz berdi. Qaytadan urinib ko'ring.');
+            return null;
+        } finally {
+            setLoading(false);
+        }
+    };
+
+    const checkStatus = async (email) => {
+        try {
+            const response = await fetch('/api/v1/languages/status', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ email }),
+            });
+
+            const result = await response.json();
+            return result.success ? result.data : null;
+        } catch (error) {
+            console.error('Languages status check error:', error);
+            return null;
+        }
+    };
+
+    return { subscribe, unsubscribe, checkStatus, loading };
+};
+
+// components/LanguagesForm.jsx
+import React, { useState } from 'react';
+import { useLanguages } from '../hooks/useLanguages';
+
+const LanguagesForm = () => {
+    const [email, setEmail] = useState('');
+    const [name, setName] = useState('');
+    const { subscribe, loading } = useLanguages();
+
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+        if (!email) {
+            alert('Email manzilini kiriting');
+            return;
+        }
+
+        const result = await subscribe(email, name);
+        if (result) {
+            setEmail('');
+            setName('');
+        }
+    };
+
+    return (
+        <form onSubmit={handleSubmit} className="languages-form">
+            <div className="form-group">
+                <input
+                    type="email"
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                    placeholder="Email manzilingiz"
+                    required
+                    className="form-control"
+                />
+            </div>
+            <div className="form-group">
+                <input
+                    type="text"
+                    value={name}
+                    onChange={(e) => setName(e.target.value)}
+                    placeholder="Ismingiz (ixtiyoriy)"
+                    className="form-control"
+                />
+            </div>
+            <button 
+                type="submit" 
+                disabled={loading}
+                className="btn btn-primary"
+            >
+                {loading ? 'Kuting...' : 'Obuna bo'lish'}
+            </button>
+        </form>
+    );
+};
+
+export default LanguagesForm;
+
 ### 10.1 Get Languages
 **GET** `/v1/languages`
 

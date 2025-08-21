@@ -5,7 +5,9 @@ namespace App\Http\Controllers\Web;
 use App\Http\Controllers\Controller;
 use App\Models\Category;
 use App\Models\Product;
+use App\Models\NewsletterSubscription;
 use Illuminate\Http\Request;
+use Carbon\Carbon;
 
 class HomeController extends Controller
 {
@@ -136,17 +138,80 @@ class HomeController extends Controller
     public function subscribeNewsletter(Request $request)
     {
         $request->validate([
-            'email' => 'required|email|unique:newsletter_subscriptions,email'
+            'email' => 'required|email|unique:newsletter_subscriptions,email',
+            'name' => 'nullable|string|max:255'
         ]);
 
         try {
-            // Newsletter subscription logic here
-            // For now, just return success
+            // Check if already exists but unsubscribed
+            $existingSubscription = NewsletterSubscription::where('email', $request->email)->first();
+
+            if ($existingSubscription) {
+                if ($existingSubscription->status === NewsletterSubscription::STATUS_UNSUBSCRIBED) {
+                    // Reactivate subscription
+                    $existingSubscription->resubscribe();
+
+                    return response()->json([
+                        'success' => true,
+                        'message' => 'Siz yana obuna bo\'ldingiz!'
+                    ]);
+                } else {
+                    return response()->json([
+                        'success' => false,
+                        'message' => 'Siz allaqachon obuna bo\'lgansiz!'
+                    ], 409);
+                }
+            }
+
+            // Create new subscription
+            NewsletterSubscription::create([
+                'email' => $request->email,
+                'name' => $request->name,
+                'status' => NewsletterSubscription::STATUS_ACTIVE,
+                'subscribed_at' => Carbon::now(),
+                'ip_address' => $request->ip(),
+                'user_agent' => $request->userAgent(),
+                'referrer' => $request->header('referer'),
+                'preferences' => []
+            ]);
 
             return response()->json([
                 'success' => true,
                 'message' => 'Muvaffaqiyatli obuna bo\'ldingiz!'
             ]);
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Xatolik yuz berdi. Qaytadan urinib ko\'ring.'
+            ], 500);
+        }
+    }
+
+    /**
+     * Unsubscribe from newsletter
+     */
+    public function unsubscribeNewsletter(Request $request)
+    {
+        $request->validate([
+            'email' => 'required|email|exists:newsletter_subscriptions,email'
+        ]);
+
+        try {
+            $subscription = NewsletterSubscription::where('email', $request->email)->first();
+
+            if ($subscription && $subscription->isActive()) {
+                $subscription->unsubscribe();
+
+                return response()->json([
+                    'success' => true,
+                    'message' => 'Siz muvaffaqiyatli obunani bekor qildingiz.'
+                ]);
+            } else {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Siz allaqachon obunani bekor qilgansiz yoki bunday email mavjud emas.'
+                ], 404);
+            }
         } catch (\Exception $e) {
             return response()->json([
                 'success' => false,

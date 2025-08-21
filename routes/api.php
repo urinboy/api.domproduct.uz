@@ -83,6 +83,13 @@ Route::prefix('v1')->middleware('rate_limit:60,1')->group(function () {
         Route::get('/{id}/related', [ProductController::class, 'related']);
         Route::get('/category/{categoryId}', [ProductController::class, 'byCategory']);
     });
+
+    // NEWSLETTER (public access)
+    Route::prefix('newsletter')->group(function () {
+        Route::post('/subscribe', [App\Http\Controllers\Api\NewsletterController::class, 'subscribe']);
+        Route::post('/unsubscribe', [App\Http\Controllers\Api\NewsletterController::class, 'unsubscribe']);
+        Route::post('/status', [App\Http\Controllers\Api\NewsletterController::class, 'status']);
+    });
 });
 
 // ADMIN API'LAR - Role-based Access
